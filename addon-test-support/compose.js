@@ -12,7 +12,6 @@ export default function composeSteps(libraryFactory, ...stepDefinitions) {
 
           const [, methodNameRaw, assertionName] = stepName.match(REGEX_STEP_NAME);
           const methodName = methodNameRaw.toLowerCase();
-          const assertionNameWithTags = `^${assertionName}( @debug)?`;
 
           const decoratedCallback = function (...args) {
             return stepImplementation.call(this, ...args);
@@ -22,9 +21,13 @@ export default function composeSteps(libraryFactory, ...stepDefinitions) {
             throw new Error(`Yadda step name must start with given/when/then, was: "${stepName}"`);
           }
 
-          library[methodName](assertionNameWithTags, decoratedCallback);
+          console.log(assertionName)
+
+          library[methodName](assertionName, decoratedCallback);
         });
     });
+
+    console.log('library', library)
 
     return library;
   };

@@ -132,6 +132,9 @@ module('Integration | Util | find-by-label', function(hooks) {
     m = "`9th Comment`";
     assert.equal(findByLabel('9th Comment').id, 'comment_3_3', m);
 
+    m = "`the 1st Comment`";
+    assert.equal(findByLabel('the 1st Comment').id, 'comment_1_1', m);
+
     ///
 
     m = "`Comment of 3st Post`";

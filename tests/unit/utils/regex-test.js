@@ -27,6 +27,7 @@ const cases = [
   { name: 'REGEX_LABEL', str: 'Post',  matches: [] },
   { name: 'REGEX_LABEL', str: 'a Post',  matches: [] },
   { name: 'REGEX_LABEL', str: '2nd Post',  matches: [] },
+  { name: 'REGEX_LABEL', str: 'the 2nd Post',  matches: [] },
   { name: 'REGEX_LABEL', str: '4554th Post',  matches: [] },
   { name: 'REGEX_LABEL', str: 'a Comment under 2nd Post',  matches: [] },
   { name: 'REGEX_LABEL', str: 'a Reaction-Emoji under CommentReply in a comment under 2nd Post',  matches: [] },

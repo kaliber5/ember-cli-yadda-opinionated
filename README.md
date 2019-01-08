@@ -224,16 +224,23 @@ You can compose such steps with the `composeSteps` helper:
 ```js
 // tests/acceptance/steps/post-steps.js
 
-// The helper
-import { composeSteps } from 'ember-cli-yadda-opinionated/test-support';
+import {
+  composeSteps, // The helper
+
+  // Opinionated steps!
+  givenSteps,
+  whenSteps,
+  thenSteps
+} from 'ember-cli-yadda-opinionated/test-support';
 
 // Step implementations
-import library from 'my-app/tests/acceptance/steps'; // An empty steps library, but full with converters, etc
-import opinionatedSteps from 'ember-cli-yadda-opinionated/steps'; // Third-party steps!
+import library from 'my-app/tests/acceptance/steps'; // A steps library, can be empty, but initialized with converters, etc
 import loginSteps from 'my-app/tests/acceptance/login-steps'; // Hand-written steps from the previous example
 
 export default composeSteps(library, [
-  opinionatedSteps,
+  givenSteps,
+  whenSteps,
+  thenSteps,
   loginSteps,
 ]);
 ```
@@ -267,10 +274,30 @@ export default const steps = {
 Installation
 ------------------------------------------------------------------------------
 
-```
-ember install ember-cli-yadda-opinionated
-```
+1. Make sure you have `ember-cli-yadda installed.
 
+2. Install the addon:
+
+        ember install ember-cli-yadda-opinionated
+
+3. Extend your dictionary.
+
+    In your app's `tests/acceptance/steps/steps.js` file, you should have this:
+
+    ```js
+    new yadda.Dictionary()
+    ```
+
+    Extend it like this:
+
+    ```js
+    import { REGEX_LABEL, element } from 'ember-cli-yadda-opinionated/test-support';
+
+    new yadda.Dictionary()
+      .define('element', REGEX_LABEL, element)
+    ```
+
+4. Extend you steps. See below.
 
 
 Usage
