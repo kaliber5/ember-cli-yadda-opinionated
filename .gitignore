@@ -9,15 +9,16 @@
 /node_modules/
 
 # misc
-/.sass-cache
-/connect.lock
+/.sass-cache/
 /coverage/
-/libpeerconnection.log
-/npm-debug.log*
-/testem.log
-/yarn-error.log
+/*.lock
+/*.log*
 
 # ember-try
 /.node_modules.ember-try/
 /bower.json.ember-try
 /package.json.ember-try
+
+# IDE
+/jsconfig.json
+/.idea/
