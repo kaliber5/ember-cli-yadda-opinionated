@@ -1,17 +1,19 @@
 import { assert } from '@ember/debug';
 import { dasherize }  from '@ember/string';
-import { find, findAll } from "@ember/test-helpers";
+import { findAll } from "@ember/test-helpers";
 
-const REGEX_ITEM = /^(?:(?:(a|an|the) )|(\d+)(?:(?:st|nd|rd|th)) )?([\w-]+)s?$/i;
-const REGEX_SEPARATOR = / (?:of|on|in|inside|under) /;
-const REGEX_SELECTOR_WITH_EQ = /(\[data-test-.+\])(?::eq\((\d+)\))?/;
+import {
+  REGEX_ITEM_MATCHING,
+  REGEX_SEPARATOR,
+  REGEX_SELECTOR_WITH_EQ
+} from './regex';
 
 export function selectorFromLabel(label) {
   return label
     .split(new RegExp(REGEX_SEPARATOR))
     .reverse()
     .map((label) => {
-      const matchResult = label.match(REGEX_ITEM);
+      const matchResult = label.match(REGEX_ITEM_MATCHING);
 
       assert(`selectorFromLabel failed to parse the label: "${label}"`, matchResult);
 
