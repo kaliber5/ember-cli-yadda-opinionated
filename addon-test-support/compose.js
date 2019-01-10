@@ -21,13 +21,9 @@ export default function composeSteps(libraryFactory, ...stepDefinitions) {
             throw new Error(`Yadda step name must start with given/when/then, was: "${stepName}"`);
           }
 
-          console.log(assertionName)
-
           library[methodName](assertionName, decoratedCallback);
         });
     });
-
-    console.log('library', library)
 
     return library;
   };

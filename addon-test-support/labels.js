@@ -17,13 +17,14 @@ export function selectorFromLabel(label) {
 
       assert(`selectorFromLabel failed to parse the label: "${label}"`, matchResult);
 
-      const [, article, indexOneStr, subLabel] = matchResult;
-      const subAttr = dasherize(subLabel);
-      let result = `[data-test-${subAttr}]`;
+      const [, article, indexOneStr, subAttrRaw, valueRaw] = matchResult;
+      const subAttr = dasherize(subAttrRaw);
+      const value = valueRaw ? `="${valueRaw}"` : '';
+      let result = `[data-test-${subAttr}${value}]`;
 
       const indexZero =
-        article     ? 0                               :
         indexOneStr ? (parseInt(indexOneStr, 10) - 1) :
+        article     ? 0                               :
         null;
 
       if (indexZero != null) {

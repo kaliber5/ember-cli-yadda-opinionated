@@ -50,7 +50,7 @@ module('Integration | Util | find-by-label', function(hooks) {
         </section>
       </article>
 
-      <article data-test-post id="post_3">
+      <article data-test-post="3rd" id="post_3">
         <section data-test-comment id="comment_3_1">
           <summary data-test-reply id="reply_3_1_1"></summary>
           <summary data-test-reply id="reply_3_1_2"></summary>
@@ -162,6 +162,10 @@ module('Integration | Util | find-by-label', function(hooks) {
 
     m = "`Foo`";
     assert.equal(findByLabel('Foo').length, 0, m);
+
+    ///
+    m = "`a Post(3rd)`";
+    assert.equal(findByLabel('a Post(3rd)').id, "post_3", m);
 
   });
 });
