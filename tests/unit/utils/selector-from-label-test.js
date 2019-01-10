@@ -1,4 +1,5 @@
 import { selectorFromLabel } from 'ember-cli-yadda-opinionated/test-support/labels';
+import labelMap from 'ember-cli-yadda-opinionated/test-support/label-map';
 import { module, test } from 'qunit';
 
 const cases = [
@@ -24,11 +25,26 @@ const cases = [
   { input: 'a FooBar(Baz) under the 33rd Baz-Quux in Zomg', expected: '[data-test-zomg] [data-test-baz-quux]:eq(32) [data-test-foo-bar="Baz"]:eq(0)' },
 ]
 
-module('Unit | Utility | selector-from-label', function(/* hooks */) {
+module('Unit | Utility | selector-from-label', function(hooks) {
+  hooks.beforeEach(() => {
+    labelMap.clear();
+  });
+
   cases.forEach(({input, expected}) => {
     test(input, function(assert) {
       let result = selectorFromLabel(input);
       assert.equal(result, expected);
     });
-  })
+  });
+
+  test('Working with labelMap', function (assert) {
+    let m;
+    labelMap.set("Boo", "Bar");
+
+    m = "Foo in Boo of Baz";
+    assert.equal(selectorFromLabel(m, m), "[data-test-baz] Bar [data-test-foo]");
+
+    m = "a Foo in a Boo of Baz";
+    assert.equal(selectorFromLabel(m, m), "[data-test-baz] Bar:eq(0) [data-test-foo]:eq(0)");
+  });
 });

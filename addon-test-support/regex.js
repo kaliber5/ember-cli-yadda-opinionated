@@ -3,7 +3,7 @@
 export const REGEX_ITEM_MATCHING = /^(?:(a|an|the) )?(?:(\d+)(?:st|nd|rd|th) )?([\w-]+?)(?:s\b|\b)?(?:\((.+?)\))?$/i;
 export const STR_SEPARATOR = ' (?:of|on|in|inside|under) ';
 export const REGEX_SEPARATOR = new RegExp(STR_SEPARATOR);
-export const REGEX_SELECTOR_WITH_EQ = /(\[data-test-.+\])(?::eq\((\d+)\))?/;
+export const REGEX_SELECTOR_WITH_EQ = /(.+?)(?::eq\((\d+)\)$|$)/;
 export const STR_ITEM_NON_MATCHING = `(?:(?:a|an|the) )?(?:\\d+(?:st|nd|rd|th) )?[\\w-]+s?(?:\\(.+?\\))?`;
 
 export function generateLabelRegexString(depth = 5) {

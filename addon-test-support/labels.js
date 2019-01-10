@@ -8,6 +8,8 @@ import {
   REGEX_SELECTOR_WITH_EQ
 } from './regex';
 
+import labelMap from './label-map';
+
 export function selectorFromLabel(label) {
   return label
     .split(new RegExp(REGEX_SEPARATOR))
@@ -18,9 +20,15 @@ export function selectorFromLabel(label) {
       assert(`selectorFromLabel failed to parse the label: "${label}"`, matchResult);
 
       const [, article, indexOneStr, subAttrRaw, valueRaw] = matchResult;
-      const subAttr = dasherize(subAttrRaw);
-      const value = valueRaw ? `="${valueRaw}"` : '';
-      let result = `[data-test-${subAttr}${value}]`;
+//
+      let result;
+      if (labelMap.has(subAttrRaw)) {
+        result = labelMap.get(subAttrRaw);
+      } else {
+        const subAttr = dasherize(subAttrRaw);
+        const value = valueRaw ? `="${valueRaw}"` : '';
+        result = `[data-test-${subAttr}${value}]`;
+      }
 
       const indexZero =
         indexOneStr ? (parseInt(indexOneStr, 10) - 1) :
