@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { assert }  from '@ember/debug';
 import { currentURL, pauseTest, settled } from '@ember/test-helpers';
-import { pause } from './helpers';
+import { pause } from 'ember-cli-yadda-opinionated/test-support/helpers';
 
 const steps = {
 
@@ -23,22 +23,14 @@ const steps = {
     expect(currentURL()).to.equal(url);
   },
 
-  "Then there should be (?:(\\d+) )?$element"(countRaw, element) {
-    if (countRaw) {
-      assert("Should receive an array of elements. Did you use a/the unintentionally?", Array.isArray(element));
-
-      const count = parseInt(countRaw, 10);
-
-      expect(element, this.step).to.have.length(count);
-    } else {
-      expect(element, this.step).to.be.ok;
-    }
+  "Then there should be (?:(\\d+) )?$element"(countRaw = "1", [collection]) {
+    const count = parseInt(countRaw, 10);
+    expect(collection, this.step).to.have.length(count);
   },
 
-  "Then $element should have text \"$text\""(element, text) {
-    assert("Expected a single element, did you forget a/the in the label?", !Array.isArray(element));
-    assert(`Element not found: ${this.step}`, element);
-    expect(element.textContent.trim(), this.step).equal(text);
+  "Then $element should have text \"$text\""([collection, label, selector], text) {
+    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+    expect(collection[0].textContent.trim(), this.step).equal(text);
   },
 
 };

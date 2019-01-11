@@ -20,17 +20,14 @@ const steps = {
     return settled();
   },
 
-  "When I click (?:on )?$element"(element) {
-    assert("Expected a single element, did you forget a/the in the label?", !Array.isArray(element));
-    assert(`Element not found: ${this.step}`, element);
-    return click(element);
+  "When I click (?:on )?$element"([collection, label, selector]) {
+    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+    return click(collection[0]);
   },
 
-
-  "When I fill \"$text\" into $element"(text, element) {
-    assert("Expected a single element, did you forget a/the in the label?", !Array.isArray(element));
-    assert(`Element not found: ${this.step}`, element);
-    return fillIn(element, text);
+  "When I fill \"$text\" into $element"(text, [collection, label, selector]) {
+    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+    return fillIn(collection[0], text);
   },
 
 };
