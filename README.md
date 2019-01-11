@@ -115,6 +115,10 @@ In the worst case, you'll have to create one step per model. In such a step, you
 * Cast types, create non-primitive values, lookup relationships by criteria, etc.
 * Expand a single source value to a certain combination of attribute values.
 
+Note that steps don't need to rely on context (`this.ctx`), since they can cross-reference each other with ids and types.
+
+
+
 #### Pros and cons
 
 Let's start with **cons**.
@@ -145,6 +149,51 @@ By paying this price, you get the following **pros**:
 
 
 
+### Using labels as direct references to elements with test selectors
+
+As explained above, we want to move the truth from step implementations to feature files. A great way to do it is with test selectors.
+
+To learn about test selectors, please see the [ember-test-selectors](https://github.com/simplabs/ember-test-selectors) addon. This addon is not required but it may be useful.
+
+`ember-cli-yadda-opinonated` introduces *labels*: a DSL to reference page elements via test selectors.
+
+In its simplest form, a label can look like: `Menu-Item`, `MenuItem` or `menu-item`. Any of these lables translates to `[data-test-menu-item]`.
+
+You can also use articles: `a Menu-Item` and `the Menu-Item` behave identically to `Menu-Item`.
+
+
+
+#### Composite labels produce nested selectors
+
+You can compose labels using prepositions `in`, `inside`, `under`, `of`, `on` and `from`.
+
+For example, `Save-Button in Post-Edit-Form` produces selector `[data-test-post-edit-form] [data-test-save-button]`.
+
+You can nest selectors up to 5 levels deep.
+
+
+
+#### Referencing Nth element
+
+If you have multiple elements on the same page and you want to target one of them by index, you can use index prefixes like: `1st`, `2nd`, `3rd`, `4th`, `543rd`, etc. Since we're using a natural language, they are one-indexed.
+
+A label `2nd Menu-Item` or `the 2nd Menu-Item` produces a selector `[data-test-menu-item]:eq(1)` internally.
+
+`:eq(n)` is not a standard selector. We use it as an equivalent to `array[n]` in JS.
+
+So `[data-test-menu-item]:eq(1)` will find all menu items on the page, then pick the second one.
+
+Note that this is totally different from `:nth-child(n)`!
+
+Here's a more complicated example:
+
+    Link in 2nd Menu-Item from the 1st Menu
+
+This will find the first menu, in that menu it will take the second menu item, and in that menu item it will take a link.
+
+
+
+
 ### Composing Yadda step implementations
 
 #### The problem
@@ -152,7 +201,7 @@ By paying this price, you get the following **pros**:
 Yadda uses method chains to register step implementations. Here's an example from the `ember-cli-yadda` readme:
 
 ```js
-import steps from './steps';
+import steps from 'ember-cli-yadda-opinionated/test-support/steps';
 
 export default function(assert) {
   return steps(assert)
@@ -185,6 +234,7 @@ This approach has two disadvantages:
     You can work around this by not inheriting from `steps.js`. This works, but only until you want to borrow some more steps from another step file: if two step files inherit from `steps.js`, you can't inherit from both! :(
 
     The only solution is to move all shared steps to the generic `steps.js`. Eventually it becomes large, mixed up, hard to read and to maintain.
+
 
 
 #### The solution
@@ -334,7 +384,7 @@ Create an individual `steps/*-steps.js` file for your acceptance test, as you no
 In that file, you normally would have:
 
 ```js
-import steps from './steps';
+import steps from 'ember-cli-yadda-opinionated/test-support/steps';
 
 export default function() {
   return steps()
@@ -347,7 +397,7 @@ export default function() {
 Replace it with:
 
 ```js
-import libraryFactory from './steps';
+import libraryFactory from 'ember-cli-yadda-opinionated/test-support/steps';
 import { composeSteps, givenSteps, whenSteps, thenSteps } from 'ember-cli-yadda-opinionated/test-support';
 import authenticationSteps from '<my-app>/tests/acceptance/steps/_authentication-steps';
 
@@ -375,7 +425,7 @@ labelMap.set('Bootstrap-Textarea',   'textarea.form-control');
 
 These labels will be automatically converted to selectors (case-sensitive).
 
-You should consider scoping those selectors with a library's unique HTML class, if available.
+You should consider scoping those selectors with a library's unique HTML class, if available. And stay semantic!
 
 
 
