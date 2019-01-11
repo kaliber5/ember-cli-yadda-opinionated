@@ -5,6 +5,7 @@ import { module, test } from 'qunit';
 const cases = [
   { input: 'FooBar', expected: '[data-test-foo-bar]' },
   { input: 'Foo-Bar', expected: '[data-test-foo-bar]' },
+  { input: 'Foo+Bar', expected: '[data-test-foo][data-test-bar]' },
   { input: 'foo-bar', expected: '[data-test-foo-bar]' },
   { input: 'FooBar(Baz)', expected: '[data-test-foo-bar="Baz"]' },
   { input: 'FoosBars', expected: '[data-test-foos-bar]' },
@@ -22,7 +23,7 @@ const cases = [
   { input: 'the 1st FooBar(Baz)', expected: '[data-test-foo-bar="Baz"]:eq(0)' },
   { input: 'FooBar of Baz-Quux', expected: '[data-test-baz-quux] [data-test-foo-bar]' },
   { input: 'a FooBar under the 33rd Baz-Quux in Zomg', expected: '[data-test-zomg] [data-test-baz-quux]:eq(32) [data-test-foo-bar]' },
-  { input: 'a FooBar(Baz) under the 33rd Baz-Quux in Zomg', expected: '[data-test-zomg] [data-test-baz-quux]:eq(32) [data-test-foo-bar="Baz"]' },
+  { input: 'a FooBar(Baz) under the 33rd Baz+Quux in Zomg', expected: '[data-test-zomg] [data-test-baz][data-test-quux]:eq(32) [data-test-foo-bar="Baz"]' },
 ]
 
 module('Unit | Utility | selector-from-label', function(hooks) {

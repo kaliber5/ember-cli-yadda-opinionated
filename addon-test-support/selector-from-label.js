@@ -24,8 +24,15 @@ export default function selectorFromLabel(label) {
         result = labelMap.get(subAttrRaw);
       } else {
         const subAttr = dasherize(subAttrRaw);
-        const value = valueRaw ? `="${valueRaw}"` : '';
-        result = `[data-test-${subAttr}${value}]`;
+
+        result =
+          subAttr
+            .split('+')
+            .map((attr) => {
+              const value = valueRaw ? `="${valueRaw}"` : '';
+              return `[data-test-${attr}${value}]`;
+            })
+            .join('');
       }
 
       if (indexOneStr) {

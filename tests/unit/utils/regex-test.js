@@ -3,15 +3,16 @@ import { module, test } from 'qunit';
 import * as regexes from 'ember-cli-yadda-opinionated/test-support/regex';
 
 const cases = [
-  { name: 'REGEX_ITEM_MATCHING', str: 'Post',         matches: [null,  null, 'Post', null] },
-  { name: 'REGEX_ITEM_MATCHING', str: 'a Post',       matches: ["a",   null, 'Post', null] },
-  { name: 'REGEX_ITEM_MATCHING', str: 'the Post',     matches: ["the", null, 'Post', null] },
-  { name: 'REGEX_ITEM_MATCHING', str: 'an Post',      matches: ["an",  null, 'Post', null] },
-  { name: 'REGEX_ITEM_MATCHING', str: 'THE Post',     matches: ["THE", null, 'Post', null] },
-  { name: 'REGEX_ITEM_MATCHING', str: '1st Post',     matches: [null,  '1',  'Post', null] },
-  { name: 'REGEX_ITEM_MATCHING', str: 'a 1st Post',   matches: ['a',   '1',  'Post', null] },
-  { name: 'REGEX_ITEM_MATCHING', str: 'the 1st Post', matches: ['the', '1',  'Post', null] },
-  { name: 'REGEX_ITEM_MATCHING', str: 'Foo(Bar)',     matches: [null,  null, 'Foo', 'Bar'] },
+  { name: 'REGEX_ITEM_MATCHING', str: 'Post',         matches: [null,  null, 'Post',    null] },
+  { name: 'REGEX_ITEM_MATCHING', str: 'a Post',       matches: ["a",   null, 'Post',    null] },
+  { name: 'REGEX_ITEM_MATCHING', str: 'the Post',     matches: ["the", null, 'Post',    null] },
+  { name: 'REGEX_ITEM_MATCHING', str: 'an Post',      matches: ["an",  null, 'Post',    null] },
+  { name: 'REGEX_ITEM_MATCHING', str: 'THE Post',     matches: ["THE", null, 'Post',    null] },
+  { name: 'REGEX_ITEM_MATCHING', str: '1st Post',     matches: [null,  '1',  'Post',    null] },
+  { name: 'REGEX_ITEM_MATCHING', str: 'a 1st Post',   matches: ['a',   '1',  'Post',    null] },
+  { name: 'REGEX_ITEM_MATCHING', str: 'the 1st Post', matches: ['the', '1',  'Post',    null] },
+  { name: 'REGEX_ITEM_MATCHING', str: 'Foo(Bar)',     matches: [null,  null, 'Foo',     'Bar'] },
+  { name: 'REGEX_ITEM_MATCHING', str: 'Foo+Bar',      matches: [null,  null, 'Foo+Bar', null] },
 
   { name: 'REGEX_SEPARATOR', str: ' of ',     matches: [] },
   { name: 'REGEX_SEPARATOR', str: ' on ',     matches: [] },
@@ -43,7 +44,7 @@ const cases = [
   { name: 'REGEX_LABEL_CONSTRAINED', str: '2nd Foo(Bar)',  matches: [] },
   { name: 'REGEX_LABEL_CONSTRAINED', str: 'the 2nd Foo(Bar)',  matches: [] },
   { name: 'REGEX_LABEL_CONSTRAINED', str: '2543rd Foo(Bar)',  matches: [] },
-  { name: 'REGEX_LABEL_CONSTRAINED', str: 'a Foo(Bar) in Zomg(Lol)',  matches: [] },
+  { name: 'REGEX_LABEL_CONSTRAINED', str: 'a Foo(Bar) in Zomg+Lol',  matches: [] },
   { name: 'REGEX_LABEL_CONSTRAINED', str: 'the 1st Foo(Bar) in 2nd Zomg(Lol) of Baz',  matches: [] },
 ];
 

@@ -163,9 +163,9 @@ You can also use articles: `a Menu-Item` and `the Menu-Item` behave identically 
 
 
 
-#### Composite labels produce nested selectors
+#### Targeting nested elements
 
-You can compose labels using prepositions `in`, `inside`, `under`, `of`, `on` and `from`.
+You can nest labels using prepositions `in`, `inside`, `under`, `of`, `on` and `from`.
 
 For example, `Save-Button in Post-Edit-Form` produces selector `[data-test-post-edit-form] [data-test-save-button]`.
 
@@ -191,6 +191,21 @@ Here's a more complicated example:
 
 This will find the first menu, in that menu it will take the second menu item, and in that menu item it will take a link.
 
+
+
+#### Compound labels
+
+Each element you want to target should have one semantic label.
+
+In addition to a semantic label, you might want to add additional labels. Here are two common cases:
+* Distinguishing sibling items. E. g. each menu item may have a unique label such as `Home`, `Products`, `About`, `Contacts`, etc.
+* Tracking state: `Active`, `Expanded`, etc.
+
+Use `+` to compose multiple labels.
+
+E. g. you can target an active menu item with `Active+MenuItem`. This will translate to `[data-test-menu-item][data-test-active]`.
+
+Note that you can use the [label map](mapping-labels-to-selectors) to map the `Active` label to the `.active` selector. If you do, `Active+MenuItem` will translate to `[data-test-menu-item].active`.
 
 
 

@@ -56,7 +56,7 @@ module('Integration | Util | find-by-label', function(hooks) {
           <summary data-test-reply id="reply_3_1_2"></summary>
           <summary data-test-reply id="reply_3_1_3"></summary>
         </section>
-        <section data-test-comment id="comment_3_2">
+        <section data-test-comment id="comment_3_2" data-test-active>
           <summary data-test-reply id="reply_3_2_1"></summary>
           <summary data-test-reply id="reply_3_2_2"></summary>
           <summary data-test-reply id="reply_3_2_3"></summary>
@@ -172,6 +172,11 @@ module('Integration | Util | find-by-label', function(hooks) {
     ///
     m = "`a Post(3rd)`";
     assert.equal(findByLabel('a Post(3rd)')[0][0].id, "post_3", m);
+
+    ///
+    m = `Active+Comment`;
+    assert.equal(findByLabel('Active+Comment')[0][0].id, "comment_3_2", m);
+
 
   });
 });
