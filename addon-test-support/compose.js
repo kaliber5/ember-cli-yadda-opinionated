@@ -18,7 +18,7 @@ export default function composeSteps(libraryFactory, ...stepDefinitions) {
           };
 
           if (typeof library[methodName] !== "function") {
-            throw new Error(`Yadda step name must start with given/when/then, was: "${stepName}"`);
+            throw new Error(`Yadda step name must start with given/when/then/define, was: "${stepName}"`);
           }
 
           // https://github.com/acuminous/yadda/issues/243#issuecomment-453115035

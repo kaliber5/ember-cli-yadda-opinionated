@@ -5,7 +5,7 @@ import { pause } from 'ember-cli-yadda-opinionated/test-support/helpers';
 
 const steps = {
 
-  "Then pause ?(\\d+)?"(countRaw) {
+  "Then pause (?: for ?(\\d+) ms)?"(countRaw) {
     if (countRaw) {
       const count = parseInt(countRaw, 10);
       return pause(count);
@@ -14,7 +14,7 @@ const steps = {
     }
   },
 
-  "Then debugger"() {
+  "Then debug(?:ger)?"() {
     debugger; // eslint-disable-line no-debugger
   },
 
@@ -28,7 +28,7 @@ const steps = {
     expect(collection, this.step).to.have.length(count);
   },
 
-  "Then $element should have text \"$text\""([collection, label, selector], text) {
+  "Then $element should (?:have text|say) \"$text\""([collection, label, selector], text) {
     assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
     expect(collection[0].textContent.trim(), this.step).equal(text);
   },

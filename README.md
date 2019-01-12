@@ -365,20 +365,56 @@ Installation
 Usage
 ------------------------------------------------------------------------------
 
-### Defining custom steps with the composable syntax
+### Project structure
 
-[See above](#composing-yadda-step-implementations) for rationale behind composable steps syntax.
+According to `ember-cli-yadda`, you are supposed to organize steps like this:
 
-You can store step implementations in simple POJOs and store them however you like.
+1. Primary `steps.js`
 
-We suggest that you organize them in files by function, each file prefixed with an underscore:
+    Located at `tests/acceptance/steps/steps.js`. In this file, you:
+    
+    1. Initialize a Yadda [dictionary with converters](https://acuminous.gitbooks.io/yadda-user-guide/en/usage/dictionaries.html).
+    2. Optionally, bind to Yadda [events](https://acuminous.gitbooks.io/yadda-user-guide/en/usage/events.html) (though this can also be done in `tests/test-helper.js`).
+    3. Implement steps that should be shared across multiple feature files.
+
+    Though this is not strictly required, we suggest that you move all step implementations from `steps.js` to composable step definitions (see below).
+
+2. Per-feature steps files: `<feature>-steps.js`
+
+    Located at `tests/acceptance/steps/<feature-name>-steps.js`.
+
+    You must have such file for each feature file, otherwise tests won't start.
+
+    In these files, you are supposed to implement steps that are only relevant to one feature.
+
+As explained in [the rationale section](#composing-yadda-step-implementations), this approach is troublesome because very often you want to use steps from one feature in another feature. The only way to do it with `ember-cli-yadda` is to move those step implementations to the primary `steps.js`, preventing you from organizing step implementations into files by topic.
+
+`ember-cli-yadda-opinionated` lets you organize steps by topic, not directly bound to a specific feature. For example, you can have a collection of *authentication* steps. You can use these steps in a `login-and-logout.feature`, but in addition to that you can use them in any other features that need logging in as part of user stories. Say, in an `admin-panel.feature` you want to test that the access to the admin panel is restricted once the user logs out.
+
+We suggest that you organize such composable steps in files prefixed with an underscore (file contents is explained below):
 
     tests/acceptances/steps/_authentication-steps.js
     tests/acceptances/steps/_side-menu-steps.js
 
-The underscore would distinguish composable steps to traditional Yadda steps (libararies).
+The underscore would distinguish composable steps from `ember-cli-yadda`'s step fiels..
 
-The file content should be like this:
+We also recommend that you move all existing step implementations from `steps.js` and `<feature>-steps.js` into composable step files.
+
+If you do so, the `steps.js` file should export an empty Yadda step library factory:
+
+```js
+export default function() {
+  return yadda.localisation.default.library(dictionary);
+}
+```
+
+
+
+### Composable step files
+
+`ember-cli-yadda-opinionated` uses a simple syntax for defining step implementations.
+
+Each composable step file, e. g. `_authentication-steps.js`, should export a simple object with methods:
 
 ```js
 export default {
@@ -388,15 +424,25 @@ export default {
 }
 ```
 
+The name of each method is a step name pattern.
+
+The pattern should start with `Given`, `When`, `Then` or `Define`.
+
+The name can contain converter macros, e. g. `$role`, and regular expressions. In fact, the whole step name is used a regular expression.
+
+Yadda adds `^` to the beginning of the regex, and `ember-cli-yadda-opinionated` also terminates it with a `$`.
+
+Don't forget that you must use double backslashes for escaping, e. g. `(\\d+)`. Single backslashes are swallowed by the string.
+
 
 
 ### Composing steps
 
-Create an individual `steps/*-steps.js` file for your acceptance test, as you normally would with `ember-cli-yadda`:
+`ember-cli-yadda` still requires that you have one individual step file for each accepatnce test, e. g.:
 
-    tests/acceptance/steps/my-test-name-steps.js
+    tests/acceptance/steps/login-logout-steps.js
 
-In that file, you normally would have:
+In that file, you normally would normally have:
 
 ```js
 import steps from 'ember-cli-yadda-opinionated/test-support/steps';
@@ -419,9 +465,71 @@ import authenticationSteps from '<my-app>/tests/acceptance/steps/_authentication
 export default composeSteps(libraryFactory, givenSteps, whenSteps, thenSteps, authenticationSteps);
 ```
 
-This way you can keep your step implementations organized by function. For each acceptance test, you can include the ones you need.
+`composeSteps` accepts the Yadda step library factory (from `steps.js`) as the first argument. Other arguments are composable step files that you want to be used with this feature.
 
-If you make your steps fully reusable and not concealing any truth ([rationale](moving-the-truth-to-feature-files)), then you can include *all* your steps. This way, all individual step files for your acceptance tests will be identical.
+Note that `<feature>-steps.js` files no longer contain step implementations. Instead, for each feature, you compose steps from reusable composable step files.
+
+This way you can keep your step implementations organized by topic. For each acceptance test, you can include the ones you need.
+
+If you make your steps fully reusable and not concealing any truth (see [rationale](moving-the-truth-to-feature-files)), then you can include *all* your steps for every feature. This way, all individual `<feature>-steps.js` files for your acceptance tests will be identical.
+
+Otherwise, composable steps behave as normal Yadda steps defined with the chained syntax `.given().when().then()`. If you return a promise from a step, the step will become async. You can also make a step async by using the `async/await` syntax.
+
+
+
+### Implementing steps with the $element converter
+
+The `$element` [converter](https://acuminous.gitbooks.io/yadda-user-guide/en/usage/dictionaries.html) accepts an `ember-cli-yadda-opinionated` label (see above) and returns an array of matching elements.
+
+A step pattern `When I click $element` will match the following step names:
+
+```feature
+When I click Button
+When I click a Button
+When I click the 2nd Button in the Post-Edit-Form of the Active+Post
+```
+
+In each case, `$element` will resolve with a collection of matched buttons.
+
+:warning: Note that it will always return an array, even for `a Button`. When only a single element is matched, the array will contain one element. If none are matched, the array will be empty.
+
+The exact return value of `$element` is `[collection, label, selector]`. It is a tuple (an array with fixed number of elements) that contains:
+
+* 0: `collection`: an array with matched elements.
+* 1: `label`: the label used in the step name, useful for debugging.
+* 2: `selector`: the selector that the label was converted to, useful for debugging.
+
+In its simplest form, a clicking step could be implemented like this: 
+
+```js
+import {click} from `@ember/test-helpers`;
+
+export {
+  "When I click $element"([collection]) {
+    const element = collection[0];
+    return click(element);
+  }
+}
+```
+
+But this step will crash with a cryptic error in case the label didn't match an element. And if the element matched multiple elements, the outcome of the step may be unpredictable and hard to debug.
+
+To resolve this issue, you should guard against it:
+
+```js
+import {click} from `@ember/test-helpers`;
+
+export {
+  "When I click $element"([collection, label, selector]) {
+    assert(
+      `Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`,
+      collection.length === 1
+    );
+
+    return click(collection[0]);
+  }
+}
+```
 
 
 
@@ -440,7 +548,129 @@ labelMap.set('Bootstrap-Textarea',   'textarea.form-control');
 
 These labels will be automatically converted to selectors (case-sensitive).
 
-You should consider scoping those selectors with a library's unique HTML class, if available. And stay semantic!
+You should consider scoping those selectors with a library's unique HTML class, if available.
+
+
+
+### The steps library
+
+`ember-cli-yadda-opinionated` aims to offer an extensive and universal steps library. Steps are organized into three composable modules: given, when and then. See [Composing steps](#composing-steps) to find out how to them.
+
+#### Given steps
+
+#### When steps
+
+* **Visit**
+
+    Implements [`visit()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#visit) from `@ember/test-helpers`.
+
+    Signature: `When I (?:visit|am at|proceed to) URL $text`.
+
+    Examples:
+
+    * When I visit URL /login
+    * When I am at URL /products/1
+    * When I proceed to URL /
+
+* **Settled**
+
+    Implements [`await settled()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#settled) from `@ember/test-helpers`.
+
+    Signature: `When the app settles`.
+
+    Example:
+
+    * When the app settles
+
+* **Click**
+
+    Implements [`click()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#click) from `@ember/test-helpers`.
+
+    Signature: `When I click (?:on )?$element`.
+
+    Examples:
+
+    * When I click the Submit-Button
+    * When I click on the 2nd Menu-Item in the Navigation-Menu
+
+* **Fill in**
+
+    Implements [`fillIn()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) from `@ember/test-helpers`.
+
+    Signature: `When I fill \"$text\" into $element`.
+
+    Example:
+
+    * When I fill "cheese" into the Username-Field
+
+
+
+#### Then steps
+
+* **Pause**
+
+  When used without an argument, implements [`pauseTest()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#pauseTest) from `@ember/test-helpers`.
+
+  When used with a number, waits for given number of milliseconds, then waits for [settled state](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#settled).
+
+  Useful for debugging and waiting for processess that are not respected by `settled()`. Please note that doing so makes your tests slow and brittle. Instead, you should try making `settled()` aware of pending processes.
+
+  Signature: `Then pause (?: for ?(\\d+) ms)?`
+
+  Examples:
+
+  * Then pause
+  * Then pause for 50 ms
+
+* **Debugger**
+
+  Implements `debugger()`. Useful for, you guessed it, debugging. :)
+
+  Signature: `Then debug(?:ger)?`
+
+  Examples:
+
+  * Then debug
+  * Then debugger
+
+* **Current URL**
+
+    Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) to be an exact match of given URL.
+
+    Signature: `Then I should (?:still )?be (?:at|on) URL $text`.
+
+    Example:
+
+    * Then I should be at URL /about
+    * Then I should be on URL /products
+    * Then I still should be at URL /products/1
+    * Then I still should be on URL /
+
+* **Element existence**
+
+    Checks for exactly one instance of given element to exist in the DOM.
+
+    If a number is provided, checks for exact amount of instances to exist.
+
+    Signature: `Then there should be (?:(\\d+) )?$element`.
+
+    Example:
+
+    * Then there should be an Error-Message
+    * Then there should be 2 Posts
+
+* **Element text**
+
+    Checks if given element's trimmed text is equal to the given text.
+
+    Will crash if no elements or more than one elements matched.
+
+    Signature: `Then $element should (?:have text|say) \"$text\"`.
+
+    Example:
+
+    * Then the Error-Message should have text "Something went wrong!"
+    * Then the Title of 1st Post should say "Hello, World!"
 
 
 
