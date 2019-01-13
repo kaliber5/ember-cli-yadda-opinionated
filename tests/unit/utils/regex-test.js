@@ -46,6 +46,8 @@ const cases = [
   { name: 'REGEX_LABEL_CONSTRAINED', str: '2543rd Foo(Bar)',  matches: [] },
   { name: 'REGEX_LABEL_CONSTRAINED', str: 'a Foo(Bar) in Zomg+Lol',  matches: [] },
   { name: 'REGEX_LABEL_CONSTRAINED', str: 'the 1st Foo(Bar) in 2nd Zomg(Lol) of Baz',  matches: [] },
+
+  { name: 'REGEX_COMMA_AND_SEPARATOR', str: 'foo,bar,    baz and    quux ,fooandbar', matches: [',', ',    ', ' and    ', ' ,']},
 ];
 
 module('Unit | Utility | regex', function(/* hooks */) {
@@ -60,8 +62,10 @@ module('Unit | Utility | regex', function(/* hooks */) {
         assert.ok(result, "Expected to match, but it didn't");
 
         matches.forEach((match, i) => {
+          const indexEffective = regex.flags.includes('g') ? i : i + 1;
+
           m = `Match #${i}: ${match}`;
-          assert.equal(result[i + 1], match, m);
+          assert.equal(result[indexEffective], match, m);
         });
       } else if (matches && !matches.length) {
         m = "Expected to match (not checking submatches)";

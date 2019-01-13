@@ -566,9 +566,9 @@ For advanced cases, we recommend to implement one custom seeding per each model 
 
 
 
-##### Seed a single record
+##### Seed record(s) with same properties/traits
 
-It will simply pass provided properties and traits as-is to Mirage's `server.create()`, with the following nuances:
+It will simply pass provided properties and traits as-is to Mirage's `server.createList()`, with the following nuances:
 
 * The model name will be camelCased.
 * Property names and values are used as-is.
@@ -578,7 +578,7 @@ It will simply pass provided properties and traits as-is to Mirage's `server.cre
 
     Alternatively, you can use Mirage's default behavior and pass ids, e. g. `{"comment_ids": [1, 2]}`.
 
-Signature: `Given there(?: is|'s) a record of type (\w+)(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))? in Mirage`
+Signature: `Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type (\\w+)(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))? in Mirage`
 
 Examples:
 
@@ -587,14 +587,14 @@ Given there is a record of type Post in Mirage
 Given there's a record of type Post in Mirage
 Given there is a record of type Post with property {"id": "1"} in Mirage
 Given there is a record of type Post with properties {"id": "1", "title": "Foo", author: "@mike"} in Mirage
-Given there is a record of type Post with trait published in Mirage
+Given there are 2 records of type Post with trait published in Mirage
 Given there is a record of type Post with traits published, pinned and commented in Mirage
 Given there is a record of type Post with traits published and commented and properties {"id": "1", "title": "Foo"} in Mirage
 ```
 
 
 
-##### Seed a number of records
+##### Seed records with different properties
 
 Works similar to the step above, but accepts a table.
 
