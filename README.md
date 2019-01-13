@@ -10,8 +10,6 @@ It is a companion for the [ember-cli-yadda](https://github.com/albertjan/ember-c
 
 
 
-
-
 Roadmap
 ------------------------------------------------------------------------------
 
@@ -123,9 +121,10 @@ Note that steps don't need to rely on context (`this.ctx`), since they can cross
 
 Let's start with **cons**.
 
-* The suggested approach:
-  * Makes feature files more explicit and more techinical.
-  * As a result, features become harder to read, especially for non-developers.
+The suggested approach:
+
+* Makes feature files more explicit and more techinical.
+* As a result, features become harder to read, especially for non-developers.
 
 This is an inevitable price you have to pay for the compromise. The other side of the coin.
 
@@ -145,7 +144,7 @@ By paying this price, you get the following **pros**:
 * The truth is no longer hidden inside the black box of step implementations:
     * It is now possible to reliable validate features: by reading them, ensure they are making correct assertions in correct connditions.
     * No false positives caused by black-boxed logic.
-    * Steps no longer need to rely on context (`this.ctx`), making the implementation less tangled.
+    * Steps can cross-reference records with ids. As a result, they no longer need to rely on context (`this.ctx`), making the implementation less tangled.
 
 
 
@@ -362,6 +361,7 @@ Installation
 4. Extend you steps. See below.
 
 
+
 Usage
 ------------------------------------------------------------------------------
 
@@ -556,121 +556,219 @@ You should consider scoping those selectors with a library's unique HTML class, 
 
 `ember-cli-yadda-opinionated` aims to offer an extensive and universal steps library. Steps are organized into three composable modules: given, when and then. See [Composing steps](#composing-steps) to find out how to them.
 
+
+
 #### Given steps
+
+`ember-cli-yadda-opinionated` provides a generic step to seed Mirage records of any type. It covers basic cases.
+
+For advanced cases, we recommend to implement one custom seeding per each model (see below).
+
+
+
+##### Seed a single record
+
+It will simply pass provided properties and traits as-is to Mirage's `server.create()`, with the following nuances:
+
+* The model name will be camelCased.
+* Property names and values are used as-is.
+* If a value starts with `@`, it is treated as a relationship id. The key will be camelCased and used to look up a related record and associated with the new record.
+  
+    This way you can populate one-to-one and one-to-many relationships (from the one side).
+
+    Alternatively, you can use Mirage's default behavior and pass ids, e. g. `{"comment_ids": [1, 2]}`.
+
+Signature: `Given there(?: is|'s) a record of type (\w+)(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))? in Mirage`
+
+Examples:
+
+```feature
+Given there is a record of type Post in Mirage
+Given there's a record of type Post in Mirage
+Given there is a record of type Post with property {"id": "1"} in Mirage
+Given there is a record of type Post with properties {"id": "1", "title": "Foo", author: "@mike"} in Mirage
+Given there is a record of type Post with trait published in Mirage
+Given there is a record of type Post with traits published, pinned and commented in Mirage
+Given there is a record of type Post with traits published and commented and properties {"id": "1", "title": "Foo"} in Mirage
+```
+
+
+
+##### Seed a number of records
+
+Works similar to the step above, but accepts a table.
+
+* The model name will be camelCased.
+* Property names are used as-is.
+* Numbers are treated as numbers.
+* Values that are wrapped with `[]`, `{}`, `""` or `''` are treated as JSON.
+* If a value starts with `@`, it is treated as a relationship id. The key will be camelCased and used to look up a related record and associated with the new record.
+  
+    This way you can populate one-to-one and one-to-many relationships (from the one side).
+
+    Alternatively, you can use Mirage's default behavior and pass ids, e. g. `{"comment_ids": [1, 2]}`.
+
+    If you need a non-id string that starts with `@`, wrap it with quotes.
+
+* Other values are treated as strings.
+
+Signature: `Given there are records of type (\w+)(?: with)?(?: traits? (.+?))?(?: and) the following properties:\n$stable`
+
+Examples:
+
+```feature
+Given there are records of type User with the following properties:
+  --------------------------------------
+  | id   | name                | role  |
+  | bloo | Blooregard Q. Kazoo | admin |
+  | wilt | Wilt                | user  |
+  --------------------------------------
+And there are records of type Post with the following properties:
+  -------------------------------
+  | id | title         | author |
+  | 1  | Hello, World! | @bloo  |
+  | 2  | Foo Bar Baz   | @wilt  |
+  -------------------------------
+```
+
 
 #### When steps
 
-* **Visit**
+##### Visit
 
-    Implements [`visit()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#visit) from `@ember/test-helpers`.
+Implements [`visit()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#visit) from `@ember/test-helpers`.
 
-    Signature: `When I (?:visit|am at|proceed to) URL $text`.
+Signature: `When I (?:visit|am at|proceed to) URL $text`.
 
-    Examples:
+Examples:
 
-    * When I visit URL /login
-    * When I am at URL /products/1
-    * When I proceed to URL /
+```feature
+When I visit URL /login
+When I am at URL /products/1
+When I proceed to URL /
+```
 
-* **Settled**
 
-    Implements [`await settled()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#settled) from `@ember/test-helpers`.
 
-    Signature: `When the app settles`.
+##### Settled
 
-    Example:
+Implements [`await settled()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#settled) from `@ember/test-helpers`.
 
-    * When the app settles
+Signature: `When the app settles`.
 
-* **Click**
+Example: `When the app settles`
 
-    Implements [`click()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#click) from `@ember/test-helpers`.
 
-    Signature: `When I click (?:on )?$element`.
 
-    Examples:
+##### Click
 
-    * When I click the Submit-Button
-    * When I click on the 2nd Menu-Item in the Navigation-Menu
+Implements [`click()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#click) from `@ember/test-helpers`.
 
-* **Fill in**
+Signature: `When I click (?:on )?$element`.
 
-    Implements [`fillIn()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) from `@ember/test-helpers`.
+Examples:
 
-    Signature: `When I fill \"$text\" into $element`.
+```feature
+When I click the Submit-Button
+When I click on the 2nd Menu-Item in the Navigation-Menu
+```
 
-    Example:
 
-    * When I fill "cheese" into the Username-Field
+
+##### Fill in
+
+Implements [`fillIn()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) from `@ember/test-helpers`.
+
+Signature: `When I fill \"$text\" into $element`.
+
+Example: `When I fill "cheese" into the Username-Field`
 
 
 
 #### Then steps
 
-* **Pause**
+##### Pause
 
-  When used without an argument, implements [`pauseTest()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#pauseTest) from `@ember/test-helpers`.
+When used without an argument, implements [`pauseTest()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#pauseTest) from `@ember/test-helpers`.
 
-  When used with a number, waits for given number of milliseconds, then waits for [settled state](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#settled).
+When used with a number, waits for given number of milliseconds, then waits for [settled state](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#settled).
 
-  Useful for debugging and waiting for processess that are not respected by `settled()`. Please note that doing so makes your tests slow and brittle. Instead, you should try making `settled()` aware of pending processes.
+Useful for debugging and waiting for processess that are not respected by `settled()`. Please note that doing so makes your tests slow and brittle. Instead, you should try making `settled()` aware of pending processes.
 
-  Signature: `Then pause (?: for ?(\\d+) ms)?`
+Signature: `Then pause(?: for ?(\\d+) ms)?`
 
-  Examples:
+Examples:
 
-  * Then pause
-  * Then pause for 50 ms
+```feature
+Then pause
+Then pause for 50 ms
+```
 
-* **Debugger**
 
-  Implements `debugger()`. Useful for, you guessed it, debugging. :)
 
-  Signature: `Then debug(?:ger)?`
+##### Debugger
 
-  Examples:
+Implements `debugger()`. Useful for, you guessed it, debugging. :)
 
-  * Then debug
-  * Then debugger
+Signature: `Then debug(?:ger)?`
 
-* **Current URL**
+Examples:
 
-    Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) to be an exact match of given URL.
+```feature
+Then debug
+Then debugger
+```
 
-    Signature: `Then I should (?:still )?be (?:at|on) URL $text`.
 
-    Example:
 
-    * Then I should be at URL /about
-    * Then I should be on URL /products
-    * Then I still should be at URL /products/1
-    * Then I still should be on URL /
+##### Current URL
 
-* **Element existence**
+Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) to be an exact match of given URL.
 
-    Checks for exactly one instance of given element to exist in the DOM.
+Signature: `Then I should (?:still )?be (?:at|on) URL $text`.
 
-    If a number is provided, checks for exact amount of instances to exist.
+Example:
 
-    Signature: `Then there should be (?:(\\d+) )?$element`.
+```feature
+Then I should be at URL /about
+Then I should be on URL /products
+Then I still should be at URL /products/1
+Then I still should be on URL /
+```
 
-    Example:
 
-    * Then there should be an Error-Message
-    * Then there should be 2 Posts
 
-* **Element text**
+##### Element existence
 
-    Checks if given element's trimmed text is equal to the given text.
+Checks for exactly one instance of given element to exist in the DOM.
 
-    Will crash if no elements or more than one elements matched.
+If a number is provided, checks for exact amount of instances to exist.
 
-    Signature: `Then $element should (?:have text|say) \"$text\"`.
+Signature: `Then there should be (?:(\\d+) )?$element`.
 
-    Example:
+Example:
 
-    * Then the Error-Message should have text "Something went wrong!"
-    * Then the Title of 1st Post should say "Hello, World!"
+```feature
+Then there should be an Error-Message
+Then there should be 2 Posts
+```
+
+
+
+##### Element text
+
+Checks if given element's trimmed text is equal to the given text.
+
+Will crash if no elements or more than one elements matched.
+
+Signature: `Then $element should (?:have text|say) \"$text\"`.
+
+Example:
+
+```feature
+Then the Error-Message should have text "Something went wrong!"
+Then the Title of 1st Post should say "Hello, World!"
+```
 
 
 
