@@ -355,8 +355,11 @@ Installation
     import { REGEX_LABEL, element } from 'ember-cli-yadda-opinionated/test-support';
 
     new yadda.Dictionary()
+      .define('table', /([^\u0000]*)/, yadda.converters.table)
       .define('element', REGEX_LABEL, element)
     ```
+
+    Note that the default table converter from Yadda is required, named `table`.
 
 4. Extend you steps. See below.
 
@@ -572,24 +575,25 @@ It will simply pass provided properties and traits as-is to Mirage's `server.cre
 
 * The model name will be camelCased.
 * Property names and values are used as-is.
-* If a value starts with `@`, it is treated as a relationship id. The key will be camelCased and used to look up a related record and associated with the new record.
+* If a value starts with `@`, it is treated as a relationship id. The key will be camelCased and used to look up a related record and associated with the new record. For a to-many relationship, use plural key and delimit ids with commas.
   
     This way you can populate one-to-one and one-to-many relationships (from the one side).
 
     Alternatively, you can use Mirage's default behavior and pass ids, e. g. `{"comment_ids": [1, 2]}`.
 
-Signature: `Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type (\\w+)(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))? in Mirage`
+Signature: `Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type (\\w+)(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))?`
 
 Examples:
 
 ```feature
-Given there is a record of type Post in Mirage
-Given there's a record of type Post in Mirage
-Given there is a record of type Post with property {"id": "1"} in Mirage
-Given there is a record of type Post with properties {"id": "1", "title": "Foo", author: "@mike"} in Mirage
-Given there are 2 records of type Post with trait published in Mirage
-Given there is a record of type Post with traits published, pinned and commented in Mirage
-Given there is a record of type Post with traits published and commented and properties {"id": "1", "title": "Foo"} in Mirage
+Given there is a record of type Post
+Given there's a record of type Post
+Given there is a record of type Post with property {"id": "1"}
+Given there is a record of type Post with properties {"id": "1", "title": "Foo", author: "@mike"}
+Given there is a record of type Post with properties {"id": "1", "title": "Foo", authors: "@mike, @bob"}
+Given there are 2 records of type Post with trait published
+Given there is a record of type Post with traits published, pinned and commented
+Given there is a record of type Post with traits published and commented and properties {"id": "1", "title": "Foo"}
 ```
 
 
@@ -599,10 +603,8 @@ Given there is a record of type Post with traits published and commented and pro
 Works similar to the step above, but accepts a table.
 
 * The model name will be camelCased.
-* Property names are used as-is.
-* Numbers are treated as numbers.
-* Values that are wrapped with `[]`, `{}`, `""` or `''` are treated as JSON.
-* If a value starts with `@`, it is treated as a relationship id. The key will be camelCased and used to look up a related record and associated with the new record.
+* Property names are used as-is, except for names `trait` and `traits`, which are used for traits.
+* If a value starts with `@`, it is treated as a relationship id. The key will be camelCased and used to look up a related record and associated with the new record. For a to-many relationship, use plural key and delimit ids with commas.
   
     This way you can populate one-to-one and one-to-many relationships (from the one side).
 
@@ -610,26 +612,29 @@ Works similar to the step above, but accepts a table.
 
     If you need a non-id string that starts with `@`, wrap it with quotes.
 
-* Other values are treated as strings.
+* Other values are parsed as JSON. Note that strings, numbers and booleans are JSON entries in their full right. :)
 
-Signature: `Given there are records of type (\w+)(?: with)?(?: traits? (.+?))?(?: and) the following properties:\n$stable`
+    This means that you must wrap strings in double quotes.
+
+Signature: `Given there are records of type (\\w+) with the following properties:\n$table`
 
 Examples:
 
 ```feature
 Given there are records of type User with the following properties:
-  --------------------------------------
-  | id   | name                | role  |
-  | bloo | Blooregard Q. Kazoo | admin |
-  | wilt | Wilt                | user  |
+  ----------------------------------------
+  | id     | name                  | trait |
+  | "bloo" | "Blooregard Q. Kazoo" | admin |
+  | "wilt" | "Wilt"                | user  |
   --------------------------------------
 And there are records of type Post with the following properties:
-  -------------------------------
-  | id | title         | author |
-  | 1  | Hello, World! | @bloo  |
-  | 2  | Foo Bar Baz   | @wilt  |
-  -------------------------------
+  ---------------------------------
+  | id | title           | author |
+  | 1  | "Hello, World!" | @bloo  |
+  | 2  | "Foo Bar Baz"   | @wilt  |
+  ---------------------------------
 ```
+
 
 
 #### When steps
