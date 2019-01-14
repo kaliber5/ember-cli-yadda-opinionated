@@ -1,4 +1,4 @@
-ember-cli-yadda-opinionated
+ember-cli-yadda-opinionated <!-- omit in toc -->
 ==============================================================================
 
 This Ember addon provides a few opnionated techniques to make working with Cucumber easier:
@@ -7,6 +7,56 @@ This Ember addon provides a few opnionated techniques to make working with Cucum
 * An easy way to compose steps from multiple sources.
 
 It is a companion for the [ember-cli-yadda](https://github.com/albertjan/ember-cli-yadda#ember-cli-yadda) which in turn leverages the [Yadda](https://github.com/acuminous/yadda) library -- an implementation of Cucumber.
+
+
+
+Table of contents <!-- omit in toc -->
+------------------------------------------------------------------------------
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Roadmap](#roadmap)
+- [Rationale](#rationale)
+  - [Moving the truth to feature files](#moving-the-truth-to-feature-files)
+    - [The problem](#the-problem)
+    - [The solution](#the-solution)
+    - [Pros and cons](#pros-and-cons)
+  - [Using labels as direct references to elements with test selectors](#using-labels-as-direct-references-to-elements-with-test-selectors)
+    - [Targeting nested elements](#targeting-nested-elements)
+    - [Referencing Nth element](#referencing-nth-element)
+    - [Compound labels](#compound-labels)
+  - [Composing Yadda step implementations](#composing-yadda-step-implementations)
+    - [The problem](#the-problem-1)
+    - [The solution](#the-solution-1)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Project structure](#project-structure)
+  - [Composable step files](#composable-step-files)
+  - [Composing steps](#composing-steps)
+  - [Implementing steps with the $element converter](#implementing-steps-with-the-element-converter)
+  - [Mapping labels to selectors](#mapping-labels-to-selectors)
+  - [The steps library](#the-steps-library)
+    - [Given steps](#given-steps)
+      - [Seed record(s) with same properties/traits](#seed-records-with-same-propertiestraits)
+      - [Seed records with a table](#seed-records-with-a-table)
+    - [When steps](#when-steps)
+      - [Visit](#visit)
+      - [Settled](#settled)
+      - [Click](#click)
+      - [Fill in](#fill-in)
+    - [Then steps](#then-steps)
+      - [Pause](#pause)
+      - [Debugger](#debugger)
+      - [Current URL](#current-url)
+      - [Element existence](#element-existence)
+      - [Element text](#element-text)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 
@@ -51,6 +101,8 @@ One major reason for getting disappointed in Cucumber is the burden of maintaini
     It is impossible to validate (ensure correctness of) this feature file by reading it. You have to look into actual step implementations.
 
     This code sample is exagerrated and maybe even ridiculous. But every developer who dared to convert an acceptance test suite of a large project to Cucumber has surely stumbled into this problem.
+
+
 
 #### The solution
 
@@ -777,6 +829,17 @@ Example:
 Then the Error-Message should have text "Something went wrong!"
 Then the Title of 1st Post should say "Hello, World!"
 ```
+
+
+
+Development
+------------------------------------------------------------------------------
+
+Use Yarn.
+
+To update the table of contents after editing the readme, run:
+
+    npx doctoc README.md --github
 
 
 
