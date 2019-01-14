@@ -598,11 +598,12 @@ Given there is a record of type Post with traits published and commented and pro
 
 
 
-##### Seed records with different properties
+##### Seed records with a table
 
-Works similar to the step above, but accepts a table.
+Though this step is similar to the above, it has slightly different behavior:
 
 * The model name will be camelCased.
+* Keys (column headers) and values are trimmed.
 * Property names are used as-is, except for names `trait` and `traits`, which are used for traits.
 * If a value starts with `@`, it is treated as a relationship id. The key will be camelCased and used to look up a related record and associated with the new record. For a to-many relationship, use plural key and delimit ids with commas.
   
@@ -612,7 +613,9 @@ Works similar to the step above, but accepts a table.
 
     If you need a non-id string that starts with `@`, wrap it with quotes.
 
-* Other values are parsed as JSON. Note that strings, numbers and booleans are JSON entries in their full right. :)
+* Empty cells are treated as `null`.
+
+* Other values are parsed as JSON. Note that strings, numbers, booleans and `null` are JSON entries in their full right. :)
 
     This means that you must wrap strings in double quotes.
 
