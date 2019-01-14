@@ -605,7 +605,7 @@ Though this step is similar to the above, it has slightly different behavior:
 * The model name will be camelCased.
 * Keys (column headers) and values are trimmed.
 * Property names are used as-is, except for names `trait` and `traits`, which are used for traits.
-* If a value starts with `@`, it is treated as a relationship id. The key will be camelCased and used to look up a related record and associated with the new record. For a to-many relationship, use plural key and delimit ids with commas.
+* If a value starts with `@`, it is treated as a relationship id or ids. The key will be camelCased and used to look up a related record and associated with the new record. For a to-many relationship, use plural key and delimit ids with commas.
   
     This way you can populate one-to-one and one-to-many relationships (from the one side).
 
