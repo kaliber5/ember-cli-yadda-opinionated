@@ -35,7 +35,7 @@ Table of contents <!-- omit in toc -->
   - [Project structure](#project-structure)
   - [Composable step files](#composable-step-files)
   - [Composing steps](#composing-steps)
-  - [Implementing steps with the $opinionatedElement converter](#implementing-steps-with-the-element-converter)
+  - [Implementing steps with the $opinionatedElement converter](#implementing-steps-with-the-opinionatedelement-converter)
   - [Mapping labels to selectors](#mapping-labels-to-selectors)
   - [The steps library](#the-steps-library)
     - [Given steps](#given-steps)
@@ -339,23 +339,14 @@ You can compose such steps with the `composeSteps` helper:
 
 import {
   composeSteps, // The helper
-
-  // Opinionated steps!
-  givenSteps,
-  whenSteps,
-  thenSteps
+  opinonatedSteps // The step library
 } from 'ember-cli-yadda-opinionated/test-support';
 
 // Step implementations
 import library from 'my-app/tests/acceptance/steps'; // A steps library, can be empty, but initialized with converters, etc
 import loginSteps from 'my-app/tests/acceptance/login-steps'; // Hand-written steps from the previous example
 
-export default composeSteps(library, [
-  givenSteps,
-  whenSteps,
-  thenSteps,
-  loginSteps,
-]);
+export default composeSteps(library, opinonatedSteps, loginSteps);
 ```
 
 This way, you can compose steps from multiple sources.
@@ -518,10 +509,10 @@ Replace it with:
 
 ```js
 import libraryFactory from 'ember-cli-yadda-opinionated/test-support/-private/steps';
-import { composeSteps, givenSteps, whenSteps, thenSteps } from 'ember-cli-yadda-opinionated/test-support';
+import { composeSteps, opinonatedSteps } from 'ember-cli-yadda-opinionated/test-support';
 import authenticationSteps from '<my-app>/tests/acceptance/steps/_authentication-steps';
 
-export default composeSteps(libraryFactory, givenSteps, whenSteps, thenSteps, authenticationSteps);
+export default composeSteps(libraryFactory, opinonatedSteps, authenticationSteps);
 ```
 
 `composeSteps` accepts the Yadda step library factory (from `steps.js`) as the first argument. Other arguments are composable step files that you want to be used with this feature.

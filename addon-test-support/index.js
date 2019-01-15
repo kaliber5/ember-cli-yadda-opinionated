@@ -13,12 +13,15 @@ import givenSteps from 'ember-cli-yadda-opinionated/test-support/-private/given-
 import thenSteps from 'ember-cli-yadda-opinionated/test-support/-private/then-steps';
 import whenSteps from 'ember-cli-yadda-opinionated/test-support/-private/when-steps';
 
+const opinionatedSteps = {...givenSteps, ...whenSteps, ...thenSteps};
+
 export {
   composeSteps,
   element,
   findBylabel,
   givenSteps,
   labelMap,
+  opinionatedSteps,
   REGEX_LABEL,
   selectorFromLabel,
   setupDictionary,

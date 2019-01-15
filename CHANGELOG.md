@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved modules to the `-private/` subfolder, fixes #12
 - Namespaced `table` and `element` converters as `opinionatedTable` and `opinionatedElement` to avoid conflicts.
 - Offer a `setupDictionary` convenience helper instead of populating a dictionary by hand, fixes #11.
+- Offer `opinionatedSteps` export that includes all available steps, fixes #10.
 
 ### Documentation
 
