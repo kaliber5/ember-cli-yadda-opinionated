@@ -4,9 +4,9 @@ import { dasherize }  from '@ember/string';
 import {
   REGEX_ITEM_MATCHING,
   REGEX_SEPARATOR,
-} from 'ember-cli-yadda-opinionated/test-support/regex';
+} from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 
-import { labelMap } from 'ember-cli-yadda-opinionated/test-support/maps';
+import { labelMap } from 'ember-cli-yadda-opinionated/test-support/-private/maps';
 
 export default function selectorFromLabel(label) {
   return label

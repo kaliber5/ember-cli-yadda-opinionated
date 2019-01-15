@@ -1,5 +1,5 @@
-import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/selector-from-label';
-import { labelMap } from 'ember-cli-yadda-opinionated/test-support/maps';
+import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/-private/selector-from-label';
+import { labelMap } from 'ember-cli-yadda-opinionated/test-support/-private/maps';
 import { module, test } from 'qunit';
 
 const cases = [

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 
-import * as regexes from 'ember-cli-yadda-opinionated/test-support/regex';
+import * as regexes from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 
 const cases = [
   { name: 'REGEX_ITEM_MATCHING', str: 'Post',         matches: [null,  null, 'Post',    null] },

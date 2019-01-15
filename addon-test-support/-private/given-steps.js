@@ -3,7 +3,7 @@
 import { assert }  from '@ember/debug';
 import { camelize, dasherize }  from '@ember/string';
 import { pluralize, singularize } from 'ember-inflector';
-import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-support/regex';
+import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 
 function findRelatedRecords(relatedTypeRaw, idOrIdsRaw, step) {
   let result;

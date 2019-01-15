@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { assert }  from '@ember/debug';
 import { currentURL, pauseTest, settled } from '@ember/test-helpers';
-import { pause } from 'ember-cli-yadda-opinionated/test-support/helpers';
+import { pause } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';
 
 const steps = {
 

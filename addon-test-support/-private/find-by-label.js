@@ -1,7 +1,7 @@
 import { assert } from '@ember/debug';
 import { findAll } from "@ember/test-helpers";
-import { REGEX_SELECTOR_WITH_EQ } from 'ember-cli-yadda-opinionated/test-support/regex';
-import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/selector-from-label';
+import { REGEX_SELECTOR_WITH_EQ } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
+import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/-private/selector-from-label';
 
 
 

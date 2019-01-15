@@ -267,7 +267,7 @@ Note that you can use the [label map](mapping-labels-to-selectors) to map the `A
 Yadda uses method chains to register step implementations. Here's an example from the `ember-cli-yadda` readme:
 
 ```js
-import steps from 'ember-cli-yadda-opinionated/test-support/steps';
+import steps from 'my-app/tests/acceptance/steps/steps';
 
 export default function(assert) {
   return steps(assert)
@@ -500,7 +500,7 @@ Don't forget that you must use double backslashes for escaping, e. g. `(\\d+)`. 
 In that file, you normally would normally have:
 
 ```js
-import steps from 'ember-cli-yadda-opinionated/test-support/steps';
+import steps from 'ember-cli-yadda-opinionated/test-support/-private/steps';
 
 export default function() {
   return steps()
@@ -513,7 +513,7 @@ export default function() {
 Replace it with:
 
 ```js
-import libraryFactory from 'ember-cli-yadda-opinionated/test-support/steps';
+import libraryFactory from 'ember-cli-yadda-opinionated/test-support/-private/steps';
 import { composeSteps, givenSteps, whenSteps, thenSteps } from 'ember-cli-yadda-opinionated/test-support';
 import authenticationSteps from '<my-app>/tests/acceptance/steps/_authentication-steps';
 

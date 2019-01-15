@@ -8,11 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Removed `ember-cli-release` ([a72f832](https://github.com/kaliber5/ember-cli-yadda-opinionated/commit/a72f832ee71207059a129fe42a792d3243f0054d) by [@lolmaus](https://github.com/lolmaus)) since that addon develompment has stalled. Releases can be done with `npm` and `git`.
+- Removed `ember-cli-release` since that addon develompment has stalled. Releases can be done with `npm` and `git`.
+- Moved modules to the `-private/` subfolder, fixes #12
 
 ### Documentation
 
-- Added Table of Contents to the readme ([422cc18e](https://github.com/kaliber5/ember-cli-yadda-opinionated/commit/422cc18ed8a3f82fb801b3adf00382ef3d2c1832) by [@lolmaus](https://github.com/lolmaus)).
+- Added Table of Contents to the readme.
 
 
 

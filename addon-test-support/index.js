@@ -1,16 +1,16 @@
-import composeSteps from 'ember-cli-yadda-opinionated/test-support/compose';
-import { element } from 'ember-cli-yadda-opinionated/test-support/converters';
+import composeSteps from 'ember-cli-yadda-opinionated/test-support/-private/compose';
+import { element } from 'ember-cli-yadda-opinionated/test-support/-private/converters';
 
 import {
   REGEX_LABEL
-} from 'ember-cli-yadda-opinionated/test-support/regex';
+} from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 
-import { labelMap, transformsMap } from 'ember-cli-yadda-opinionated/test-support/maps';
-import findBylabel from 'ember-cli-yadda-opinionated/test-support/find-by-label';
-import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/selector-from-label';
-import givenSteps from 'ember-cli-yadda-opinionated/test-support/given-steps';
-import thenSteps from 'ember-cli-yadda-opinionated/test-support/then-steps';
-import whenSteps from 'ember-cli-yadda-opinionated/test-support/when-steps';
+import { labelMap, transformsMap } from 'ember-cli-yadda-opinionated/test-support/-private/maps';
+import findBylabel from 'ember-cli-yadda-opinionated/test-support/-private/find-by-label';
+import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/-private/selector-from-label';
+import givenSteps from 'ember-cli-yadda-opinionated/test-support/-private/given-steps';
+import thenSteps from 'ember-cli-yadda-opinionated/test-support/-private/then-steps';
+import whenSteps from 'ember-cli-yadda-opinionated/test-support/-private/when-steps';
 
 export {
   composeSteps,
