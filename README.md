@@ -6,7 +6,7 @@ This Ember addon provides a few opnionated techniques to make working with Cucum
 * A compact library of fully reusable steps.
 * An easy way to compose steps from multiple sources.
 
-It is a companion for the [ember-cli-yadda](https://github.com/albertjan/ember-cli-yadda#ember-cli-yadda) which in turn leverages the [Yadda](https://github.com/acuminous/yadda) library -- an implementation of Cucumber.
+It is a companion for the [ember-cli-yadda](https://github.com/albertjan/ember-cli-yadda#ember-cli-yadda) addon which in turn leverages the [Yadda](https://github.com/acuminous/yadda) library -- an implementation of Cucumber.
 
 
 
