@@ -1,6 +1,9 @@
 ember-cli-yadda-opinionated <!-- omit in toc -->
 ==============================================================================
 
+[![Travis](https://img.shields.io/travis/kaliber5/ember-cli-yadda-opinionated.svg)](https://travis-ci.com/kaliber5/ember-cli-yadda-opinionated)
+![ember-cli](https://img.shields.io/badge/ember--cli-3.6.1-blue.svg)
+
 This Ember addon provides a few opnionated techniques to make working with Cucumber easier:
 
 * A compact library of fully reusable steps.

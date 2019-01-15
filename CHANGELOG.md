@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Added Table of Contents to the readme.
+- Added readme badges.
 
 
 
