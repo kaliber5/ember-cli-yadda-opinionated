@@ -17,7 +17,7 @@ export default function selectorFromLabel(label) {
 
       assert(`selectorFromLabel failed to parse the label: "${label}"`, matchResult);
 
-      const [,, indexOneStr, subAttrRaw, valueRaw] = matchResult;
+      const [,, indexOneStr, ordinal, subAttrRaw, valueRaw] = matchResult;
 
       let result;
       if (labelMap.has(subAttrRaw)) {
@@ -35,8 +35,20 @@ export default function selectorFromLabel(label) {
             .join('');
       }
 
-      if (indexOneStr) {
-        const indexZero = parseInt(indexOneStr, 10) - 1;
+      if (indexOneStr || ordinal) {
+        const indexZero =
+          ordinal === 'first'   ? 0 :
+          ordinal === 'second'  ? 1 :
+          ordinal === 'third'   ? 2 :
+          ordinal === 'fourth'  ? 3 :
+          ordinal === 'fifth'   ? 4 :
+          ordinal === 'sixth'   ? 5 :
+          ordinal === 'seventh' ? 6 :
+          ordinal === 'eighth'  ? 7 :
+          ordinal === 'ninth'   ? 8 :
+          ordinal === 'tenth'   ? 9 :
+                                 parseInt(indexOneStr, 10) - 1;
+
         result += `:eq(${indexZero})`;
       }
 

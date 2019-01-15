@@ -24,6 +24,16 @@ const cases = [
   { input: 'FooBar of Baz-Quux', expected: '[data-test-baz-quux] [data-test-foo-bar]' },
   { input: 'a FooBar under the 33rd Baz-Quux in Zomg', expected: '[data-test-zomg] [data-test-baz-quux]:eq(32) [data-test-foo-bar]' },
   { input: 'a FooBar(Baz) under the 33rd Baz+Quux in Zomg', expected: '[data-test-zomg] [data-test-baz][data-test-quux]:eq(32) [data-test-foo-bar="Baz"]' },
+  { input: 'first FooBar',  expected: '[data-test-foo-bar]:eq(0)' },
+  { input: 'second FooBar',  expected: '[data-test-foo-bar]:eq(1)' },
+  { input: 'third FooBar',  expected: '[data-test-foo-bar]:eq(2)' },
+  { input: 'fourth FooBar',  expected: '[data-test-foo-bar]:eq(3)' },
+  { input: 'fifth FooBar',  expected: '[data-test-foo-bar]:eq(4)' },
+  { input: 'sixth FooBar',  expected: '[data-test-foo-bar]:eq(5)' },
+  { input: 'seventh FooBar',  expected: '[data-test-foo-bar]:eq(6)' },
+  { input: 'eighth FooBar',  expected: '[data-test-foo-bar]:eq(7)' },
+  { input: 'ninth FooBar',  expected: '[data-test-foo-bar]:eq(8)' },
+  { input: 'tenth FooBar',  expected: '[data-test-foo-bar]:eq(9)' },
 ]
 
 module('Unit | Utility | selector-from-label', function(hooks) {

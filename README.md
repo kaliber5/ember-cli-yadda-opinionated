@@ -228,7 +228,9 @@ You can nest selectors up to 5 levels deep.
 
 If you have multiple elements on the same page and you want to target one of them by index, you can use index prefixes like: `1st`, `2nd`, `3rd`, `4th`, `543rd`, etc. Since we're using a natural language, they are one-indexed.
 
-A label `2nd Menu-Item` or `the 2nd Menu-Item` produces a selector `[data-test-menu-item]:eq(1)` internally.
+Literal indices from `first` to `tenth` are also available.
+
+A label `2nd Menu-Item`, `the 2nd Menu-Item`, `second Menu-Item` or `the second Menu-Item` produces a selector `[data-test-menu-item]:eq(1)` internally.
 
 `:eq(n)` is not a standard selector. We use it as an equivalent to `array[n]` in JS.
 

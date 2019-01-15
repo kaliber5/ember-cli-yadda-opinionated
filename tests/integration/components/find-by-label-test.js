@@ -99,11 +99,44 @@ module('Integration | Util | find-by-label', function(hooks) {
 
     m = "`1st Post`";
     assert.equal(findByLabel('1st Post')[0][0].id, 'post_1', m);
+
     m = "`2nd Post`";
     assert.equal(findByLabel('2nd Post')[0][0].id, 'post_2', m);
 
     m = "`3rd Post`";
     assert.equal(findByLabel('3rd Post')[0][0].id, 'post_3', m);
+
+    ///
+
+    m = "`first Comment`";
+    assert.equal(findByLabel('first Comment')[0][0].id, 'comment_1_1', m);
+
+    m = "`second Comment`";
+    assert.equal(findByLabel('second Comment')[0][0].id, 'comment_1_2', m);
+
+    m = "`third Comment`";
+    assert.equal(findByLabel('third Comment')[0][0].id, 'comment_1_3', m);
+
+    m = "`fourth Comment`";
+    assert.equal(findByLabel('fourth Comment')[0][0].id, 'comment_2_1', m);
+
+    m = "`fifth Comment`";
+    assert.equal(findByLabel('fifth Comment')[0][0].id, 'comment_2_2', m);
+
+    m = "`sixth Comment`";
+    assert.equal(findByLabel('sixth Comment')[0][0].id, 'comment_2_3', m);
+
+    m = "`seventh Comment`";
+    assert.equal(findByLabel('seventh Comment')[0][0].id, 'comment_3_1', m);
+
+    m = "`eighth Comment`";
+    assert.equal(findByLabel('eighth Comment')[0][0].id, 'comment_3_2', m);
+
+    m = "`ninth Comment`";
+    assert.equal(findByLabel('ninth Comment')[0][0].id, 'comment_3_3', m);
+
+    m = "`tenth Comment`";
+    assert.equal(findByLabel('tenth Comment')[0][0], null, m);
 
     ///
 
