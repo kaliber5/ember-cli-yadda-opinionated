@@ -77,7 +77,7 @@ const steps = {
     server.createList(type, count, ...traits, properties);
   },
 
-  "Given there are records of type (\\w+) with the following properties:\n$table"(typeRaw, rows) {
+  "Given there are records of type (\\w+) with the following properties:\n$opinionatedTable"(typeRaw, rows) {
     const type = dasherize(typeRaw);
     const typePlural = pluralize(camelize(typeRaw));
 

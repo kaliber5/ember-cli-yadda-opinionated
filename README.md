@@ -35,7 +35,7 @@ Table of contents <!-- omit in toc -->
   - [Project structure](#project-structure)
   - [Composable step files](#composable-step-files)
   - [Composing steps](#composing-steps)
-  - [Implementing steps with the $element converter](#implementing-steps-with-the-element-converter)
+  - [Implementing steps with the $opinionatedElement converter](#implementing-steps-with-the-element-converter)
   - [Mapping labels to selectors](#mapping-labels-to-selectors)
   - [The steps library](#the-steps-library)
     - [Given steps](#given-steps)
@@ -373,7 +373,7 @@ export default const steps = {
 
   // A step that uses table syntax: useful to seed multiple records,
   // but not practical to seed just one, since it consumes at least four lines of feature file
-  "Given the following posts with\n$table"(rows) {
+  "Given the following posts with\n$opinionatedTable"(rows) {
     rows.forEach(row => {
       steps["Given a post with $fields"].call(this, row);
     })
@@ -399,16 +399,20 @@ Installation
 
     ```js
     new yadda.Dictionary()
+      .define('number', /(\d+)/, yadda.converters.integer)
+      .define('table', /([^\u0000]*)/, yadda.converters.table);
     ```
 
     Extend it like this:
 
     ```js
-    import { REGEX_LABEL, element } from 'ember-cli-yadda-opinionated/test-support';
+    import { setupDictionary } from 'ember-cli-yadda-opinionated/test-support';
 
-    new yadda.Dictionary()
-      .define('table', /([^\u0000]*)/, yadda.converters.table)
-      .define('element', REGEX_LABEL, element)
+    const dictionary = new yadda.Dictionary()
+      .define('number', /(\d+)/, yadda.converters.integer)
+      .define('table', /([^\u0000]*)/, yadda.converters.table);
+
+    setupDictionary(dictionary)
     ```
 
     Note that the default table converter from Yadda is required, named `table`.
@@ -532,11 +536,11 @@ Otherwise, composable steps behave as normal Yadda steps defined with the chaine
 
 
 
-### Implementing steps with the $element converter
+### Implementing steps with the $opinionatedElement converter
 
-The `$element` [converter](https://acuminous.gitbooks.io/yadda-user-guide/en/usage/dictionaries.html) accepts an `ember-cli-yadda-opinionated` label (see above) and returns an array of matching elements.
+The `$opinionatedElement` [converter](https://acuminous.gitbooks.io/yadda-user-guide/en/usage/dictionaries.html) accepts an `ember-cli-yadda-opinionated` label (see above) and returns an array of matching elements.
 
-A step pattern `When I click $element` will match the following step names:
+A step pattern `When I click $opinionatedElement` will match the following step names:
 
 ```feature
 When I click Button
@@ -544,11 +548,11 @@ When I click a Button
 When I click the 2nd Button in the Post-Edit-Form of the Active+Post
 ```
 
-In each case, `$element` will resolve with a collection of matched buttons.
+In each case, `$opinionatedElement` will resolve with a collection of matched buttons.
 
 :warning: Note that it will always return an array, even for `a Button`. When only a single element is matched, the array will contain one element. If none are matched, the array will be empty.
 
-The exact return value of `$element` is `[collection, label, selector]`. It is a tuple (an array with fixed number of elements) that contains:
+The exact return value of `$opinionatedElement` is `[collection, label, selector]`. It is a tuple (an array with fixed number of elements) that contains:
 
 * 0: `collection`: an array with matched elements.
 * 1: `label`: the label used in the step name, useful for debugging.
@@ -560,7 +564,7 @@ In its simplest form, a clicking step could be implemented like this:
 import {click} from `@ember/test-helpers`;
 
 export {
-  "When I click $element"([collection]) {
+  "When I click $opinionatedElement"([collection]) {
     const element = collection[0];
     return click(element);
   }
@@ -575,7 +579,7 @@ To resolve this issue, you should guard against it:
 import {click} from `@ember/test-helpers`;
 
 export {
-  "When I click $element"([collection, label, selector]) {
+  "When I click $opinionatedElement"([collection, label, selector]) {
     assert(
       `Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`,
       collection.length === 1
@@ -671,7 +675,7 @@ Though this step is similar to the above, it has slightly different behavior:
 
     This means that you must wrap strings in double quotes.
 
-Signature: `Given there are records of type (\\w+) with the following properties:\n$table`
+Signature: `Given there are records of type (\\w+) with the following properties:\n$opinionatedTable`
 
 Examples:
 
@@ -724,7 +728,7 @@ Example: `When the app settles`
 
 Implements [`click()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#click) from `@ember/test-helpers`.
 
-Signature: `When I click (?:on )?$element`.
+Signature: `When I click (?:on )?$opinionatedElement`.
 
 Examples:
 
@@ -739,7 +743,7 @@ When I click on the 2nd Menu-Item in the Navigation-Menu
 
 Implements [`fillIn()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) from `@ember/test-helpers`.
 
-Signature: `When I fill \"$text\" into $element`.
+Signature: `When I fill \"$text\" into $opinionatedElement`.
 
 Example: `When I fill "cheese" into the Username-Field`
 
@@ -804,7 +808,7 @@ Checks for exactly one instance of given element to exist in the DOM.
 
 If a number is provided, checks for exact amount of instances to exist.
 
-Signature: `Then there should be (?:(\\d+) )?$element`.
+Signature: `Then there should be (?:(\\d+) )?$opinionatedElement`.
 
 Example:
 
@@ -821,7 +825,7 @@ Checks if given element's trimmed text is equal to the given text.
 
 Will crash if no elements or more than one elements matched.
 
-Signature: `Then $element should (?:have text|say) \"$text\"`.
+Signature: `Then $opinionatedElement should (?:have text|say) \"$text\"`.
 
 Example:
 

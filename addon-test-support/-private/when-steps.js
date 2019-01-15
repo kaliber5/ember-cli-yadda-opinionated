@@ -20,12 +20,12 @@ const steps = {
     return settled();
   },
 
-  "When I click (?:on )?$element"([collection, label, selector]) {
+  "When I click (?:on )?$opinionatedElement"([collection, label, selector]) {
     assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
     return click(collection[0]);
   },
 
-  "When I fill \"$text\" into $element"(text, [collection, label, selector]) {
+  "When I fill \"$text\" into $opinionatedElement"(text, [collection, label, selector]) {
     assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
     return fillIn(collection[0], text);
   },

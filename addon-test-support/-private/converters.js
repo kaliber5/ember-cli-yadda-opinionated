@@ -5,5 +5,3 @@ export function element(label, next) {
 
   next(null, collectionOrElement);
 }
-
-
