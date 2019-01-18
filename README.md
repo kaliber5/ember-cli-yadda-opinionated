@@ -55,6 +55,7 @@ Table of contents <!-- omit in toc -->
       - [Current URL](#current-url)
       - [Element existence](#element-existence)
       - [Element text](#element-text)
+  - [In integration tests](#in-integration-tests)
 - [Development](#development)
 - [Contributing](#contributing)
 - [License](#license)
@@ -829,6 +830,23 @@ Example:
 Then the Error-Message should have text "Something went wrong!"
 Then the Title of 1st Post should say "Hello, World!"
 ```
+
+
+
+### In integration tests
+
+`ember-cli-yadda-opinionated` offers a number of helpers, which are equivalents of helpers from `@ember/test-helpers`:
+
+```js
+import {
+  findByLabel,
+  clickByLabel
+} from 'ember-cli-yadda-opinionated/test-support;
+```
+
+* `findByLabel(label)` -- eqauivalent of `findAll`. Returns a tuple `[collection, label, selector]`, where `collection` is an array of found elements.
+* `clickByLabel(label)` -- equivalent of `click`. Will crash if found more than one element or no elements.
+* `fillInByLabel(label, text)` -- equivalent of `fillIn`. Will crash if found more than one element or no elements.
 
 
 

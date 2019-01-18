@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+
+## [0.2.1] - 2018-01-16
+
+### Added
+
+- Added and documented the  `clickByLabel` and `fillInByLabel` helpers for integration testing.
+
+### Fixed
+
+- Fixed import path for `findByLabel`.
+
+
+
+## [0.2.0] - 2018-01-15
+
 ### Added
 - Added a `setupDictionary` convenience helper to avoid populating a dictionary by hand, fixes #11.
 - Added `opinionatedSteps` export that includes all available steps, fixes #10.

@@ -5,7 +5,7 @@ import { pause } from 'ember-cli-yadda-opinionated/test-support/-private/helpers
 
 const steps = {
 
-  "Then pause(?: for ?(\\d+) ms)?"(countRaw) {
+  "Then pause(?: for ?(\\d+) ?ms)?"(countRaw) {
     if (countRaw) {
       const count = parseInt(countRaw, 10);
       return pause(count);
