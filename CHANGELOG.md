@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.3.0] - 2018-01-21
+
+### Added
+
+- The visibility assertion step.
+- Step aliases.
+
+
+
 ## [0.2.1] - 2018-01-16
 
 ### Added

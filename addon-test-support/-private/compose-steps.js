@@ -4,29 +4,43 @@ export default function composeSteps(libraryFactory, ...stepDefinitions) {
   return function () {
     const library = libraryFactory();
 
-    stepDefinitions.forEach((stepDefinition) => {
-      Object
-        .keys(stepDefinition)
-        .forEach((stepName) => {
-          const stepImplementation = stepDefinition[stepName];
+    const mergedStepDefinitions = stepDefinitions.reduce((a, b) => ({...a, ...b}));
 
-          const [, methodNameRaw, assertionNameRaw] = stepName.match(REGEX_STEP_NAME);
-          const methodName = methodNameRaw.toLowerCase();
+    Object
+      .keys(mergedStepDefinitions)
+      .forEach((stepName) => {
+        const stepImplementation = mergedStepDefinitions[stepName];
 
-          const decoratedCallback = function (...args) {
-            return stepImplementation.call(this, ...args);
-          };
+        const [, methodNameRaw, assertionNameRaw] = stepName.match(REGEX_STEP_NAME);
+        const methodName = methodNameRaw.toLowerCase();
 
-          if (typeof library[methodName] !== "function") {
-            throw new Error(`Yadda step name must start with given/when/then/define, was: "${stepName}"`);
+        const decoratedCallback = function (...args) {
+          let currentStepImplementation = stepImplementation;
+          let i = 0;
+
+          // Lookup by alias
+          while (typeof currentStepImplementation === "string") {
+            i++;
+
+            if (i >= 256) {
+              throw new Error(`Infinite loop in Yadda step aliases, step: ${stepImplementation}`);
+            }
+
+            currentStepImplementation = mergedStepDefinitions[stepImplementation];
           }
 
-          // https://github.com/acuminous/yadda/issues/243#issuecomment-453115035
-          const assertionName = `${assertionNameRaw}$`;
+          return currentStepImplementation.call(this, ...args);
+        };
 
-          library[methodName](assertionName, decoratedCallback);
-        });
-    });
+        if (typeof library[methodName] !== "function") {
+          throw new Error(`Yadda step name must start with given/when/then/define, was: "${stepName}"`);
+        }
+
+        // https://github.com/acuminous/yadda/issues/243#issuecomment-453115035
+        const assertionName = `${assertionNameRaw}$`;
+
+        library[methodName](assertionName, decoratedCallback);
+      });
 
     return library;
   };

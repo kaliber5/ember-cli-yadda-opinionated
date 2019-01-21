@@ -39,6 +39,7 @@ Table of contents <!-- omit in toc -->
   - [Composable step files](#composable-step-files)
   - [Composing steps](#composing-steps)
   - [Implementing steps with the $opinionatedElement converter](#implementing-steps-with-the-opinionatedelement-converter)
+  - [Using step aliases](#using-step-aliases)
   - [Mapping labels to selectors](#mapping-labels-to-selectors)
   - [The steps library](#the-steps-library)
     - [Given steps](#given-steps)
@@ -54,6 +55,7 @@ Table of contents <!-- omit in toc -->
       - [Debugger](#debugger)
       - [Current URL](#current-url)
       - [Element existence](#element-existence)
+      - [Element visibility](#element-visibility)
       - [Element text](#element-text)
   - [In integration tests](#in-integration-tests)
 - [Development](#development)
@@ -589,6 +591,31 @@ export {
 
 
 
+### Using step aliases
+
+Sometimes it's useful to provide two different phrasings for the same step. Very often the prhasing are too different to cover them with a single regular expression.
+
+You can resolve this by referencing one step from another like this:
+
+```js
+import {click} from `@ember/test-helpers`;
+
+export {
+  "When I click $opinionatedElement"([collection, label, selector]) {
+    assert(
+      `Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`,
+      collection.length === 1
+    );
+
+    return click(collection[0]);
+  },
+
+  "When $opinionatedElement is clicked": "When I click $opinionatedElement"
+}
+```
+
+
+
 ### Mapping labels to selectors
 
 Sometimes you want your tests to operate on page elements produced by a third-party addon or library. You don't have control over its HTML output and thus can't sprinkle it with test selectors.
@@ -803,7 +830,7 @@ Then I still should be on URL /
 
 Checks for exactly one instance of given element to exist in the DOM.
 
-If a number is provided, checks for exact amount of instances to exist.
+Or, if a number is provided, checks for exact amount of instances to exist.
 
 Signature: `Then there should be (?:(\\d+) )?$opinionatedElement`.
 
@@ -812,6 +839,28 @@ Example:
 ```feature
 Then there should be an Error-Message
 Then there should be 2 Posts
+```
+
+
+
+##### Element visibility
+
+Checks for exactly one instance of given element to be visible on the page.
+
+Or, if a number is provided, checks for exact amount of instances to be visible.
+
+:warning: Uses jQuery [understanding](https://github.com/jquery/jquery/blob/3.3.1/src/css/hiddenVisibleSelectors.js#L12) of [visibility](https://api.jquery.com/visible-selector/).
+
+Signatures:
+
+* `Then (?:(\\d+) )?$opinionatedElement should be visible`
+* `Then I should see (?:(\\d+) )?$opinionatedElement`
+
+Example:
+
+```feature
+Then an Error-Message should be visible
+Then I should see 2 Posts
 ```
 
 
