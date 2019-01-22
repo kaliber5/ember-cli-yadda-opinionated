@@ -1,4 +1,4 @@
-import { click, fillIn, settled, visit } from '@ember/test-helpers';
+import { click, doubleClick, fillIn, settled, visit } from '@ember/test-helpers';
 import { assert }  from '@ember/debug';
 
 const steps = {
@@ -23,6 +23,11 @@ const steps = {
   "When I click (?:on )?$opinionatedElement"([collection, label, selector]) {
     assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
     return click(collection[0]);
+  },
+
+  "When I double click (?:on )?$opinionatedElement"([collection, label, selector]) {
+    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+    return doubleClick(collection[0]);
   },
 
   "When I fill \"$text\" into $opinionatedElement"(text, [collection, label, selector]) {
