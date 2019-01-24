@@ -49,6 +49,7 @@ Table of contents <!-- omit in toc -->
       - [Visit](#visit)
       - [Settled](#settled)
       - [Click](#click)
+      - [Double click](#double-click)
       - [Fill in](#fill-in)
     - [Then steps](#then-steps)
       - [Pause](#pause)
@@ -752,6 +753,8 @@ Example: `When the app settles`
 
 Implements [`click()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#click) from `@ember/test-helpers`.
 
+Will crash if no elements or more than one element matched.
+
 Signature: `When I click (?:on )?$opinionatedElement`.
 
 Examples:
@@ -763,9 +766,28 @@ When I click on the 2nd Menu-Item in the Navigation-Menu
 
 
 
+##### Double click
+
+Implements [`doubleClick()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#click) from `@ember/test-helpers`.
+
+Will crash if no elements or more than one element matched.
+
+Signature: `When I double click (?:on )?$opinionatedElement`.
+
+Examples:
+
+```feature
+When I double click the Submit-Button
+When I double click on the 2nd Menu-Item in the Navigation-Menu
+```
+
+
+
 ##### Fill in
 
 Implements [`fillIn()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) from `@ember/test-helpers`.
+
+Will crash if no elements or more than one element matched.
 
 Signature: `When I fill \"$text\" into $opinionatedElement`.
 
@@ -869,7 +891,7 @@ Then I should see 2 Posts
 
 Checks if given element's trimmed text is equal to the given text.
 
-Will crash if no elements or more than one elements matched.
+Will crash if no elements or more than one element matched.
 
 Signature: `Then $opinionatedElement should (?:have text|say) \"$text\"`.
 
