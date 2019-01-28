@@ -26,6 +26,10 @@ export default function composeSteps(libraryFactory, ...stepDefinitions) {
               throw new Error(`Infinite loop in Yadda step aliases, step: ${stepImplementation}`);
             }
 
+            if (!mergedStepDefinitions[stepImplementation]) {
+              throw new Error(`Yadda step \`${stepName}\` references a non-existing step: \`${stepImplementation}\``);
+            }
+
             currentStepImplementation = mergedStepDefinitions[stepImplementation];
           }
 

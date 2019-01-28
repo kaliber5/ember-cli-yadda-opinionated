@@ -23,30 +23,59 @@ const steps = {
     expect(currentURL()).to.equal(url);
   },
 
-  "Then there should be (?:(\\d+) )?$opinionatedElement"(countRaw = "1", [collection,, selector]) {
-    const count = parseInt(countRaw, 10);
-    const m = `Step: ${this.step}, selector: ${selector}`;
+  "Then there should be (NO |no )?(?:(\\d+) )?$opinionatedElement"(no, countRaw, [collection, , selector]) {
+    assert(`Don't use NO and number at the same time, step: \`${this.step}\``, !(no && countRaw));
 
+    let count =
+      no       ? 0                      :
+      countRaw ? parseInt(countRaw, 10) :
+                 1;
+
+    let m = `Step: ${this.step}, selector: ${selector}`;
     expect(collection, m).to.have.length(count);
   },
 
-  "Then (?:(\\d+) )?$opinionatedElement should be visible"(countRaw = "1", [collection,, selector]) {
-    const count = parseInt(countRaw, 10);
+  "Then (NO |no )?(?:(\\d+) )?$opinionatedElement should be visible"(no, countRaw, [collection,, selector]) {
+    assert(`Don't use NOT and number at the same time, step: \`${this.step}\``, !(no && countRaw));
+
+    let count =
+      no       ? 0                      :
+      countRaw ? parseInt(countRaw, 10) :
+                 1;
 
     let m = `Element count. Step: ${this.step}, selector: ${selector}`;
     expect(collection, m).to.have.length(count);
 
     collection.forEach((element, i) => {
-      let m = `Element #${i} (zero-indexed) visibility. Step: ${this.step}, selector: ${selector}`;
+      m = `Element #${i} (zero-indexed) visibility. Step: ${this.step}, selector: ${selector}`;
       expect(isVisible(element), m).to.be.true;
     });
   },
 
-  "Then I should see (?:(\\d+) )?$opinionatedElement": "Then (?:(\\d+) )?$opinionatedElement should be visible",
+  "Then I should see (NO |no )?(?:(\\d+) )?$opinionatedElement": "Then (NO |no )?(?:(\\d+) )?$opinionatedElement should be visible",
 
-  "Then $opinionatedElement should (?:have text|say) \"$text\""([collection, label, selector], text) {
+  "Then $opinionatedElement should (NOT |not )?(?:have text|say) \"$text\""([collection, label, selector], not, text) {
     assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
-    expect(collection[0].textContent.trim(), this.step).equal(text);
+
+    not
+      ? expect(collection[0].textContent.trim(), this.step).not.equal(text)
+      : expect(collection[0].textContent.trim(), this.step).equal(text);
+  },
+
+  "Then $opinionatedElement should (NOT |not )?have HTML class \"$text\""([collection, label, selector], not, text) {
+    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+
+    not
+      ? expect(collection[0]).not.to.have.class(text)
+      : expect(collection[0]).to.have.class(text);
+  },
+
+  "Then $opinionatedElement should (NOT |not )?have HTML attr \"(.+?)\"(?: with value \"(.+?)\")?"([collection, label, selector], not, attrName, attrValue) {
+    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+
+    not
+      ? expect(collection[0]).not.to.have.attr(attrName, attrValue)
+      : expect(collection[0]).to.have.attr(attrName, attrValue);
   },
 
 };

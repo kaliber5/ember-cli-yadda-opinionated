@@ -58,6 +58,8 @@ Table of contents <!-- omit in toc -->
       - [Element existence](#element-existence)
       - [Element visibility](#element-visibility)
       - [Element text](#element-text)
+      - [Element HTML class](#element-html-class)
+      - [Element HTML attr](#element-html-attr)
   - [In integration tests](#in-integration-tests)
 - [Development](#development)
 - [Contributing](#contributing)
@@ -389,9 +391,11 @@ Installation
 
 1. Make sure you have `ember-cli-yadda installed.
 
-2. Install the addon:
+2. Install the addon and its dependencies:
 
         ember install ember-cli-yadda-opinionated
+        ember install ember-cli-chai
+        npm install -D chai-dom  # or: yarn add -D chai-dom
 
 3. Extend your dictionary.
 
@@ -850,39 +854,61 @@ Then I still should be on URL /
 
 ##### Element existence
 
-Checks for exactly one instance of given element to exist in the DOM.
+Checks for exactly the specified amount of given element(s) to exist in the DOM.
 
-Or, if a number is provided, checks for exact amount of instances to exist.
+If number is not provided, it defaults to `1`.
 
-Signature: `Then there should be (?:(\\d+) )?$opinionatedElement`.
+If `NO` is provided, the number is set to `0`.
+
+Signature: `Then there should be (NO |no )?(?:(\\d+) )?$opinionatedElement`.
 
 Example:
 
 ```feature
 Then there should be an Error-Message
 Then there should be 2 Posts
+Then there should be NO Comments
+```
+
+Invalid usage:
+
+```feature
+Then there should be NO 2 Comments
 ```
 
 
 
 ##### Element visibility
 
-Checks for exactly one instance of given element to be visible on the page.
+Checks that exactly the specified amount of given element(s) exist in the DOM and all of them are visible.
 
-Or, if a number is provided, checks for exact amount of instances to be visible.
+If number is not provided, it defaults to `1`.
+
+If `NOT` is provided, the number is set to `0`.
 
 :warning: Uses jQuery [understanding](https://github.com/jquery/jquery/blob/3.3.1/src/css/hiddenVisibleSelectors.js#L12) of [visibility](https://api.jquery.com/visible-selector/).
 
 Signatures:
 
-* `Then (?:(\\d+) )?$opinionatedElement should be visible`
-* `Then I should see (?:(\\d+) )?$opinionatedElement`
+* `Then (NO |no )?(?:(\\d+) )?$opinionatedElement should be visible`
+* `Then I should see (NO |no )?(?:(\\d+) )?$opinionatedElementke`
 
 Example:
 
 ```feature
 Then an Error-Message should be visible
+Then 5 Error-Messages should be visible
+Then NO Error-Messages should be visible
+Then I should see a Post
 Then I should see 2 Posts
+Then I should see NO Posts
+```
+
+Invalid usage:
+
+```feature
+Then NO 2 Error-Messages should be visible
+Then I should see NO 5 Posts
 ```
 
 
@@ -893,13 +919,51 @@ Checks if given element's trimmed text is equal to the given text.
 
 Will crash if no elements or more than one element matched.
 
-Signature: `Then $opinionatedElement should (?:have text|say) \"$text\"`.
+Signature: `Then $opinionatedElement should (NOT | not )?(?:have text|say) \"$text\"`.
 
 Example:
 
 ```feature
 Then the Error-Message should have text "Something went wrong!"
+Then the Error-Message should NOT have text "Something went wrong!"
 Then the Title of 1st Post should say "Hello, World!"
+Then the Title of 1st Post should NOT say "Hello, World!"
+```
+
+
+
+##### Element HTML class
+
+Checks if given element has given HTML class.
+
+Will crash if no elements or more than one element matched.
+
+Signature: `Then $opinionatedElement should have (NOT |not )?HTML class \"$text\"`.
+
+Example:
+
+```feature
+Then the second Menu-Item should have HTML class "active"
+Then the second Menu-Item should NOT have HTML class "active"
+```
+
+
+
+##### Element HTML attr
+
+Checks if given element has given HTML attr. Optionally checks the attr to match given value
+
+Will crash if no elements or more than one element matched.
+
+Signature: `Then $opinionatedElement should (NOT |not )?have HTML attr \"$text\"(?: with value \"(.+?)\")?`.
+
+Example:
+
+```feature
+Then the second Menu-Item should have HTML attr "href"
+Then the second Menu-Item should have HTML attr "href" with value "/products"
+Then the second Menu-Item should NOT have HTML attr "href"
+Then the second Menu-Item should NOT have HTML attr "href" with value "/products"
 ```
 
 
