@@ -51,6 +51,8 @@ Table of contents <!-- omit in toc -->
       - [Click](#click)
       - [Double click](#double-click)
       - [Fill in](#fill-in)
+      - [Mouse enter](#mouse-enter)
+      - [Mouse leave](#mouse-leave)
     - [Then steps](#then-steps)
       - [Pause](#pause)
       - [Debugger](#debugger)
@@ -796,6 +798,30 @@ Will crash if no elements or more than one element matched.
 Signature: `When I fill \"$text\" into $opinionatedElement`.
 
 Example: `When I fill "cheese" into the Username-Field`
+
+
+
+##### Mouse enter
+
+Triggers the `mouseenter` event on the element.
+
+Will crash if no elements or more than one element matched.
+
+Signature: `When I move the mouse pointer into $opinionatedElement`.
+
+Example: `When I move the mouse pointer into the Edit-Button`
+
+
+
+##### Mouse leave
+
+Triggers the `mouseleave` event on the element.
+
+Will crash if no elements or more than one element matched.
+
+Signature: `When I move the mouse pointer out of $opinionatedElement`.
+
+Example: `When I move the mouse pointer out of the Edit-Button`.
 
 
 

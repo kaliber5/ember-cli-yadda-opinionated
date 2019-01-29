@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.4.1] - 2018-01-29
+
+### Added
+
+- Mouseenter/mouseleave steps
+
+
+
 ## [0.4.0] - 2018-01-28
 
 ### Added
