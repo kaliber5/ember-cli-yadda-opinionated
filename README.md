@@ -62,6 +62,8 @@ Table of contents <!-- omit in toc -->
       - [Element text](#element-text)
       - [Element HTML class](#element-html-class)
       - [Element HTML attr](#element-html-attr)
+    - [ember-power-select steps](#ember-power-select-steps)
+      - [Items count](#items-count)
   - [In integration tests](#in-integration-tests)
 - [Development](#development)
 - [Contributing](#contributing)
@@ -977,7 +979,7 @@ Then the second Menu-Item should NOT have HTML class "active"
 
 ##### Element HTML attr
 
-Checks if given element has given HTML attr. Optionally checks the attr to match given value
+Checks if given element has given HTML attr. Optionally checks the attr to match given value.
 
 Will crash if no elements or more than one element matched.
 
@@ -990,6 +992,26 @@ Then the second Menu-Item should have HTML attr "href"
 Then the second Menu-Item should have HTML attr "href" with value "/products"
 Then the second Menu-Item should NOT have HTML attr "href"
 Then the second Menu-Item should NOT have HTML attr "href" with value "/products"
+```
+
+
+
+#### ember-power-select steps
+
+##### Items count
+
+Checks if a `ember-power-select` contains the specified number of items.
+
+Will crash if no elements or more than one element matched the power select.
+
+Signature: `Then there should be (NO|no )?(?:(\\d+) )items? in the dropdown $opinionatedElement`.
+
+Example:
+
+```feature
+Then there should be NO items in the dropdown Pet
+Then there should be 1 item in the dropdown Pet
+Then there should be 2 items in the dropdown Pet
 ```
 
 

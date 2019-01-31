@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.5.0] - 2018-01-31
+
+### Added
+
+- Items count step for `ember-power-select`.
+
+
+
 ## [0.4.1] - 2018-01-29
 
 ### Added
