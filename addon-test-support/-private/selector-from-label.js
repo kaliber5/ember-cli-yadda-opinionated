@@ -7,6 +7,7 @@ import {
 } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 
 import { labelMap } from 'ember-cli-yadda-opinionated/test-support/-private/maps';
+import { getIndexZero } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';
 
 export default function selectorFromLabel(label) {
   return label
@@ -35,20 +36,9 @@ export default function selectorFromLabel(label) {
             .join('');
       }
 
-      if (indexOneStr || ordinal) {
-        const indexZero =
-          ordinal === 'first'   ? 0 :
-          ordinal === 'second'  ? 1 :
-          ordinal === 'third'   ? 2 :
-          ordinal === 'fourth'  ? 3 :
-          ordinal === 'fifth'   ? 4 :
-          ordinal === 'sixth'   ? 5 :
-          ordinal === 'seventh' ? 6 :
-          ordinal === 'eighth'  ? 7 :
-          ordinal === 'ninth'   ? 8 :
-          ordinal === 'tenth'   ? 9 :
-                                 parseInt(indexOneStr, 10) - 1;
+      const indexZero = getIndexZero(ordinal, indexOneStr);
 
+      if (indexZero !== undefined) {
         result += `:eq(${indexZero})`;
       }
 

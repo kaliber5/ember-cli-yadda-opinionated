@@ -315,6 +315,7 @@ This approach has two disadvantages:
     You can work around this by not inheriting from `steps.js`. This works, but only until you want to borrow some more steps from another step file: if two step files inherit from `steps.js`, you can't inherit from both! :(
 
     The only solution is to move all shared steps to the generic `steps.js`. Eventually it becomes large, mixed up, hard to read and to maintain.
+* When an assertion error is thrown, the error message does not contain details such as step name, unless you provide the details manually for each individual assertion.
 
 
 
@@ -387,6 +388,13 @@ export default const steps = {
   
 };
 ```
+
+As for error messages thrown from inside composed steps, `ember-cli-yadda-opinionated` enriches them with details automatically:
+
+* Step name as it appears in the feature file.
+* Matched step name as it appears in step implementation*
+* Arguments passed into the step implementation.
+    For labels, extra details are provided: label, resulting selector and found elements count.
 
 
 

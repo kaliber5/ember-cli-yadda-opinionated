@@ -20,28 +20,28 @@ const steps = {
     return settled();
   },
 
-  "When I click (?:on )?$opinionatedElement"([collection, label, selector]) {
-    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+  "When I click (?:on )?$opinionatedElement"([collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     return click(collection[0]);
   },
 
-  "When I double click (?:on )?$opinionatedElement"([collection, label, selector]) {
-    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+  "When I double click (?:on )?$opinionatedElement"([collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     return doubleClick(collection[0]);
   },
 
-  "When I fill \"$text\" into $opinionatedElement"(text, [collection, label, selector]) {
-    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+  "When I fill \"$text\" into $opinionatedElement"(text, [collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     return fillIn(collection[0], text);
   },
 
-  "When I move the mouse pointer into $opinionatedElement"([collection, label, selector]) {
-    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+  "When I move the mouse pointer into $opinionatedElement"([collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     return triggerEvent(collection[0], 'mouseenter');
   },
 
-  "When I move the mouse pointer out of $opinionatedElement"([collection, label, selector]) {
-    assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\nStep: ${this.step}`, collection.length === 1);
+  "When I move the mouse pointer out of $opinionatedElement"([collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     return triggerEvent(collection[0], 'mouseeleave');
   },
 

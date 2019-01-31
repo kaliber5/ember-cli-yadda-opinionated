@@ -1,5 +1,47 @@
 export const REGEX_STEP_NAME = /^(\S+) ([\s\S]+)$/;
 
+function lookupStepByAlias(mergedStepDefinitions, stepImplementation) {
+  let currentStepImplementation = stepImplementation;
+  let i = 0;
+
+  // Lookup by alias
+  while (typeof currentStepImplementation === "string") {
+    i++;
+
+    if (i >= 256) {
+      throw new Error(`Infinite loop in Yadda step aliases`);
+    }
+
+    if (!mergedStepDefinitions[stepImplementation]) {
+      throw new Error(`Yadda step references a non-existing step.\nAlias: ${stepImplementation}`);
+    }
+
+    currentStepImplementation = mergedStepDefinitions[stepImplementation];
+  }
+
+  return currentStepImplementation;
+}
+
+
+
+function mutateMessage({error, step, matchedStep, args}) {
+  const stack = error.stack.slice(error.message.length + error.constructor.name.length + 2);
+  error.message = `${error.message}\n  Step: ${step}\n  Matched step: ${matchedStep}\n  Args:\n`;
+
+  args.forEach((arg, i) => {
+    const argMessage =
+      arg && arg.__isLabelTuple__
+        ? `Collection. Length: ${arg[0].length}, Label: ${arg[1]}, Selector: ${arg[2]}`
+        : arg;
+
+    error.message += `    ${i}: ${argMessage}\n`;
+  });
+
+  error.stack = `${error.message}${stack}`;
+}
+
+
+
 export default function composeSteps(libraryFactory, ...stepDefinitions) {
   return function () {
     const library = libraryFactory();
@@ -14,26 +56,18 @@ export default function composeSteps(libraryFactory, ...stepDefinitions) {
         const [, methodNameRaw, assertionNameRaw] = stepName.match(REGEX_STEP_NAME);
         const methodName = methodNameRaw.toLowerCase();
 
-        const decoratedCallback = function (...args) {
-          let currentStepImplementation = stepImplementation;
-          let i = 0;
+        const decoratedCallback = async function (...args) {
+          let result;
 
-          // Lookup by alias
-          while (typeof currentStepImplementation === "string") {
-            i++;
-
-            if (i >= 256) {
-              throw new Error(`Infinite loop in Yadda step aliases, step: ${stepImplementation}`);
-            }
-
-            if (!mergedStepDefinitions[stepImplementation]) {
-              throw new Error(`Yadda step \`${stepName}\` references a non-existing step: \`${stepImplementation}\``);
-            }
-
-            currentStepImplementation = mergedStepDefinitions[stepImplementation];
+          try {
+            const currentStepImplementation = lookupStepByAlias(mergedStepDefinitions, stepImplementation);
+            result = await currentStepImplementation.call(this, ...args);
+          } catch (error) {
+            mutateMessage({error, step: this.step, matchedStep: stepName, args});
+            throw error;
           }
 
-          return currentStepImplementation.call(this, ...args);
+          return result;
         };
 
         if (typeof library[methodName] !== "function") {

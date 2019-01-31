@@ -14,7 +14,9 @@ export function findByLabel(label) {
     return _findElements(parentCollection, selectorMaybeWithEq);
   }, null);
 
-  return [collection, label, selectorCompound];
+  const result = [collection, label, selectorCompound];
+  result.__isLabelTuple__ = true;
+  return result;
 }
 
 function _findElements(parentCollection, selectorMaybeWithEq) {

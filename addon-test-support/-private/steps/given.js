@@ -5,11 +5,11 @@ import { camelize, dasherize }  from '@ember/string';
 import { pluralize, singularize } from 'ember-inflector';
 import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 
-function findRelatedRecords(relatedTypeRaw, idOrIdsRaw, step) {
+function findRelatedRecords(relatedTypeRaw, idOrIdsRaw) {
   let result;
   const relatedTypePlural = pluralize(camelize(relatedTypeRaw));
   const relatedCollection = server.schema[relatedTypePlural];
-  assert(`Collection ${relatedTypePlural} does not exist in Mirage Schema, step: ${step}`, relatedCollection);
+  assert(`Collection ${relatedTypePlural} does not exist in Mirage Schema`, relatedCollection);
 
   if (relatedTypeRaw === pluralize(relatedTypeRaw)) {
     result =
@@ -19,13 +19,13 @@ function findRelatedRecords(relatedTypeRaw, idOrIdsRaw, step) {
         .map(str => str.trim().slice(1))
         .map(id => {
           const relatedRecord = relatedCollection.find(id);
-          assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage, step: ${step}`, relatedRecord);
+          assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage`, relatedRecord);
           return relatedRecord;
         });
   } else {
     const id = idOrIdsRaw.trim().slice(1);
     result = relatedCollection.find(id);
-    assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage, step: ${step}`, result);
+    assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage`, result);
   }
 
   return result;
@@ -38,7 +38,7 @@ const steps = {
     const type = singularize(dasherize(typeRaw));
     const typePlural = pluralize(camelize(typeRaw));
 
-    assert(`Collection ${typePlural} does not exist in Mirage, step: ${this.step}`, server.db[typePlural]);
+    assert(`Collection ${typePlural} does not exist in Mirage`, server.db[typePlural]);
 
     const traits = traitsRaw.split(REGEX_COMMA_AND_SEPARATOR).filter(str => str.length);
     let properties;
@@ -46,7 +46,7 @@ const steps = {
     try {
       properties = JSON.parse(propertiesRaw)
     } catch (e) {
-      throw new Error(`Invalid properties JSON passed into step: ${this.step}`);
+      throw new Error(`Invalid JSON passed as "properties"`);
     }
 
     properties = Object.entries(properties).reduce((result, [key, value]) => {
@@ -58,7 +58,7 @@ const steps = {
 
       // Ids
       if (value[0] === '@') {
-        value = findRelatedRecords(key, value.trim(), this.step);
+        value = findRelatedRecords(key, value.trim());
       }
 
       // Booleans, Arrays and Objects
@@ -66,7 +66,7 @@ const steps = {
         try {
           value = JSON.parse(value)
         } catch (e) {
-          throw new Error(`Invalid JSON passed as ${key} into step: ${this.step}`);
+          throw new Error(`Invalid JSON passed as "${key}"`);
         }
       }
 
@@ -81,7 +81,7 @@ const steps = {
     const type = dasherize(typeRaw);
     const typePlural = pluralize(camelize(typeRaw));
 
-    assert(`Collection ${typePlural} does not exist in Mirage, step: ${this.step}`, server.db[typePlural]);
+    assert(`Collection ${typePlural} does not exist in Mirage`, server.db[typePlural]);
     rows.forEach(row => {
       let traits = [];
 
@@ -96,7 +96,7 @@ const steps = {
 
         // Ids
         else if (value[0] === '@') {
-          value = findRelatedRecords(key, value, this.step);
+          value = findRelatedRecords(key, value);
         }
 
         // Empty cell
@@ -109,7 +109,7 @@ const steps = {
           try {
             value = JSON.parse(value)
           } catch (e) {
-            throw new Error(`Invalid JSON passed as ${key} into step: ${this.step}`);
+            throw new Error(`Invalid JSON passed as "${key}"`);
           }
         }
 
