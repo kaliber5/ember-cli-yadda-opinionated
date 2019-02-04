@@ -62,8 +62,12 @@ Table of contents <!-- omit in toc -->
       - [Element text](#element-text)
       - [Element HTML class](#element-html-class)
       - [Element HTML attr](#element-html-attr)
+    - [Mirage attr value](#mirage-attr-value)
     - [ember-power-select steps](#ember-power-select-steps)
-      - [Items count](#items-count)
+      - [Item count](#item-count)
+      - [Text of trigger](#text-of-trigger)
+      - [Text of item by index](#text-of-item-by-index)
+      - [Select item by index](#select-item-by-index)
   - [In integration tests](#in-integration-tests)
 - [Development](#development)
 - [Contributing](#contributing)
@@ -1003,10 +1007,25 @@ Then the second Menu-Item should NOT have HTML attr "href" with value "/products
 ```
 
 
+#### Mirage attr value
+
+Checks if given attr of a record of given type and id has given value.
+
+Value is expected to be JSON (including string, number and `null`).
+
+Signature: `Then record of type (\\w+) and id (\\w+) should have attribute (\\w+) with value (.+)`.
+
+Example:
+
+```feature
+Then record of type Post and id 1 should have attribute authorId with value "alice1"
+```
+
+
 
 #### ember-power-select steps
 
-##### Items count
+##### Item count
 
 Checks if a `ember-power-select` contains the specified number of items.
 
@@ -1020,6 +1039,56 @@ Example:
 Then there should be NO items in the dropdown Pet
 Then there should be 1 item in the dropdown Pet
 Then there should be 2 items in the dropdown Pet
+```
+
+
+
+##### Text of trigger
+
+Checks if an `ember-power-select` trigger contains the specified trimmed text.
+
+Will crash if no elements or more than one element matched the power select.
+
+Signature: `Then the dropdown $opinionatedElement should have \"(.*)\" selected`.
+
+Example:
+
+```feature
+Then dropdown Pet should have "Rex" selected
+```
+
+
+
+##### Text of item by index
+
+Checks if Nth item in an `ember-power-select` contains the specified trimmed text.
+
+Will crash if no elements or more than one element matched the power select.
+
+Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (NOT |not )?(?:have text|say) \"(.*)\"`.
+
+Example:
+
+```feature
+Then the item in the dropdown Pet should have text "Rex"
+Then the first item in the dropdown Pet should say "Tom"
+```
+
+
+
+##### Select item by index
+
+Clicks Nth item in an `ember-power-select`.
+
+Will crash if no elements or more than one element matched the power select.
+
+Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (NOT |not )?(?:have text|say) \"(.*)\"`.
+
+Example:
+
+```feature
+When I select the item in the dropdown Pet
+When I select the second item in the dropdown Pet
 ```
 
 

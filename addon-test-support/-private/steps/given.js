@@ -19,13 +19,13 @@ function findRelatedRecords(relatedTypeRaw, idOrIdsRaw) {
         .map(str => str.trim().slice(1))
         .map(id => {
           const relatedRecord = relatedCollection.find(id);
-          assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage`, relatedRecord);
+          assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage Schema`, relatedRecord);
           return relatedRecord;
         });
   } else {
     const id = idOrIdsRaw.trim().slice(1);
     result = relatedCollection.find(id);
-    assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage`, result);
+    assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage Schema`, result);
   }
 
   return result;

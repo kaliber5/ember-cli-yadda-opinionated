@@ -10,11 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.5.2] - 2018-02-04
+
+- Trigger text step for `ember-power-select`.
+- Select Nth item step for `ember-power-select`.
+- Mirage DB record key/value step.
+
+
+
 ## [0.5.1] - 2018-01-31
 
 ### Added
 
-- Nth item's text step for `ember-power-select`.
+- Nth item text step for `ember-power-select`.
 - Error messages now contain detailed information: step, chosen step, args (including label, selector and found elements count). No need to pass those details manually! :D
 
 

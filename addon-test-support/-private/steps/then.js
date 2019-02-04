@@ -1,7 +1,11 @@
+/* global server */
+
 import { expect } from 'chai';
 import { assert }  from '@ember/debug';
 import { currentURL, pauseTest, settled } from '@ember/test-helpers';
 import { isVisible, pause } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';
+import { camelize }  from '@ember/string';
+import { pluralize } from 'ember-inflector';
 
 const steps = {
 
@@ -76,6 +80,26 @@ const steps = {
       ? expect(collection[0]).not.to.have.attr(attrName, attrValue)
       : expect(collection[0]).to.have.attr(attrName, attrValue);
   },
+
+  "Then record of type (\\w+) and id (\\w+) should have attribute (\\w+) with value (.+)"(typeRaw, idStr, key, valueRaw) {
+    const typePlural = pluralize(camelize(typeRaw));
+
+    const collection = server.db[typePlural];
+    assert(`Collection ${typeRaw} does not exist in Mirage DB`, collection);
+
+    const value = (() => {
+      try {
+        return JSON.parse(valueRaw);
+      } catch (e) {
+        throw new Error("Invalid JSON passed as value");
+      }
+    })();
+
+    const record = collection.find(idStr);
+    assert(`Record of type ${typeRaw} with id ${idStr} not found in Mirage DB`, record);
+
+    expect(record[key]).equal(value);
+  }
 
 };
 

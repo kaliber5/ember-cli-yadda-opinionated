@@ -145,3 +145,27 @@ export async function powerSelectCollapse(trigger) {
     await settled();
   }
 }
+
+
+export function powerSelectFindOptionByValueOrSelector(trigger, valueOrSelector, optionIndex = 0) {
+  const options = powerSelectFindOptions(trigger);
+  let target;
+
+  let potentialTargets = Array.from(options).filter((opt) => opt.textContent.indexOf(valueOrSelector) > -1);
+  if (potentialTargets.length === 0) {
+    potentialTargets = options.querySelectorAll(valueOrSelector);
+  }
+
+  if (potentialTargets.length > 1) {
+    const filteredTargets = Array.from(potentialTargets).filter((t) => t.textContent.trim() === valueOrSelector);
+    target = filteredTargets[optionIndex] || potentialTargets[optionIndex];
+  } else {
+    target = potentialTargets[0];
+  }
+
+  if (!target) {
+    throw new Error(`Option ${valueOrSelector} not found in Power Select`);
+  }
+
+  return target;
+}

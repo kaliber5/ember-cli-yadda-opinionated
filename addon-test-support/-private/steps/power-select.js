@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { assert }  from '@ember/debug';
-import { currentURL, pauseTest, settled } from '@ember/test-helpers';
+import { click, currentURL, pauseTest, settled } from '@ember/test-helpers';
 import { getIndexZero, isVisible, pause } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';
 
 import {
@@ -8,7 +8,8 @@ import {
   powerSelectFindOptions,
   powerSelectIsDropdownExpanded,
   powerSelectExpand,
-  powerSelectCollapse
+  powerSelectCollapse,
+  powerSelectFindOptionByValueOrSelector
 } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 
 const steps = {
@@ -44,13 +45,13 @@ const steps = {
 
     const trigger = powerSelectFindTrigger(collection[0]);
     const isExpanded = powerSelectIsDropdownExpanded(trigger);
+    const indexZero = getIndexZero(ordinal, indexOneStr, 0);
 
     if (!isExpanded) {
       await powerSelectExpand(trigger);
     }
 
     const options = powerSelectFindOptions(trigger);
-    const indexZero = getIndexZero(ordinal, indexOneStr, 0);
 
     assert(`Expected the dropdown to have at least ${indexZero + 1} elements.`, options.length >= indexZero + 1);
 
@@ -62,6 +63,47 @@ const steps = {
     if (!isExpanded) {
       await powerSelectCollapse(trigger);
     }
+  },
+
+  async "When I select (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement"(indexOneStr, ordinal, [collection]) {
+    assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
+
+    const trigger = powerSelectFindTrigger(collection[0]);
+    const isExpanded = powerSelectIsDropdownExpanded(trigger);
+    const indexZero = getIndexZero(ordinal, indexOneStr, 0);
+
+    if (!isExpanded) {
+      await powerSelectExpand(trigger);
+    }
+
+    const options = powerSelectFindOptions(trigger);
+
+    assert(`Expected the dropdown to have at least ${indexZero + 1} elements.`, options.length >= indexZero + 1);
+
+    return click(options[indexZero]);
+  },
+
+  async "When I select (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item \"(.+)\" in the dropdown $opinionatedElement"(indexOneStr, ordinal, text, [collection]) {
+    assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
+
+    const trigger = powerSelectFindTrigger(collection[0]);
+    const isExpanded = powerSelectIsDropdownExpanded(trigger);
+    const indexZero = getIndexZero(ordinal, indexOneStr, 0);
+
+    if (!isExpanded) {
+      await powerSelectExpand(trigger);
+    }
+
+    const option = powerSelectFindOptionByValueOrSelector(trigger, text, indexZero);
+    return click(option);
+  },
+
+  "Then the dropdown $opinionatedElement should have \"(.*)\" selected"([collection], text) {
+    assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
+
+    const trigger = powerSelectFindTrigger(collection[0]);
+
+    expect(trigger).to.have.trimmed.text(text);
   },
 
 };
