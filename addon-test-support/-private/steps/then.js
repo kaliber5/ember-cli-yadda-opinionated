@@ -38,7 +38,7 @@ const steps = {
     expect(collection).to.have.length(count);
   },
 
-  "Then (NO |no )?(?:(\\d+) )?$opinionatedElement should be visible"(no, countRaw, [collection/* , label, selector */]) {
+  "Then (?:(\\d+) )?$opinionatedElement should (NOT |not )?be visible"(countRaw, [collection/* , label, selector */], no) {
     assert(`Don't use NOT and number at the same time`, !(no && countRaw));
 
     let count =
@@ -55,7 +55,9 @@ const steps = {
     });
   },
 
-  "Then I should see (NO |no )?(?:(\\d+) )?$opinionatedElement": "Then (NO |no )?(?:(\\d+) )?$opinionatedElement should be visible",
+  "Then I should see (NO |no )?(?:(\\d+) )?$opinionatedElement"(no, countRaw, [collection, label, selector]) {
+    return steps["Then (?:(\\d+) )?$opinionatedElement should (NOT |not )?be visible"](countRaw, [collection, label, selector], no);
+  },
 
   "Then $opinionatedElement should (NOT |not )?(?:have text|say) \"$text\""([collection/* , label, selector */], not, text) {
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);

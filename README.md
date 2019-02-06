@@ -930,7 +930,7 @@ If `NOT` is provided, the number is set to `0`.
 
 Signatures:
 
-* `Then (NO |no )?(?:(\\d+) )?$opinionatedElement should be visible`
+* `Then (?:(\\d+) )?$opinionatedElement should (NOT |not )?be visible`
 * `Then I should see (NO |no )?(?:(\\d+) )?$opinionatedElementke`
 
 Example:

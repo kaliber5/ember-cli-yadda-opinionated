@@ -8,9 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- :warning: Changed the signature of element visibility step.
+
 
 
 ## [0.5.2] - 2018-02-04
+
+### Added
 
 - Trigger text step for `ember-power-select`.
 - Select Nth item step for `ember-power-select`.
