@@ -8,8 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+
+## [0.5.3] - 2018-02-06
+
 ### Changed
 - :warning: Changed the signature of element visibility step.
+- :warning: The seeding step now properly looks up related record type instead of using relationship name as record type.
 
 
 

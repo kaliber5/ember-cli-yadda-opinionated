@@ -4,14 +4,22 @@ import { assert }  from '@ember/debug';
 import { camelize, dasherize }  from '@ember/string';
 import { pluralize, singularize } from 'ember-inflector';
 import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
+import HasMany from 'ember-cli-mirage/orm/associations/has-many';
 
-function findRelatedRecords(relatedTypeRaw, idOrIdsRaw) {
+function findRelationship(type, relationshipName) {
+  const Model = server.schema.modelClassFor(type);
+  return Model.associationFor(relationshipName);
+}
+
+function findRelatedRecords(type, relationshipName, idOrIdsRaw) {
   let result;
-  const relatedTypePlural = pluralize(camelize(relatedTypeRaw));
+  const relationship = findRelationship(type, relationshipName);
+  const relatedType = relationship.modelName;
+  const relatedTypePlural = pluralize(camelize(relatedType));
   const relatedCollection = server.schema[relatedTypePlural];
   assert(`Collection ${relatedTypePlural} does not exist in Mirage Schema`, relatedCollection);
 
-  if (relatedTypeRaw === pluralize(relatedTypeRaw)) {
+  if (relationship instanceof HasMany) {
     result =
       idOrIdsRaw
         .split(REGEX_COMMA_AND_SEPARATOR)
@@ -19,13 +27,13 @@ function findRelatedRecords(relatedTypeRaw, idOrIdsRaw) {
         .map(str => str.trim().slice(1))
         .map(id => {
           const relatedRecord = relatedCollection.find(id);
-          assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage Schema`, relatedRecord);
+          assert(`Record of type ${relatedType} with id ${id} not found in Mirage Schema`, relatedRecord);
           return relatedRecord;
         });
   } else {
     const id = idOrIdsRaw.trim().slice(1);
     result = relatedCollection.find(id);
-    assert(`Record of type ${relatedTypeRaw} with id ${id} not found in Mirage Schema`, result);
+    assert(`Record of type ${relatedType} with id ${id} not found in Mirage Schema`, result);
   }
 
   return result;
@@ -58,7 +66,7 @@ const steps = {
 
       // Ids
       if (value[0] === '@') {
-        value = findRelatedRecords(key, value.trim());
+        value = findRelatedRecords(type, key, value.trim());
       }
 
       // Booleans, Arrays and Objects
@@ -96,12 +104,21 @@ const steps = {
 
         // Ids
         else if (value[0] === '@') {
-          value = findRelatedRecords(key, value);
+          value = findRelatedRecords(type, key, value);
         }
 
         // Empty cell
         else if (value.length === 0) {
           value = null;
+
+          // If it's a hasMany relationship, set to empty array
+          let relationship;
+          try {
+            relationship = findRelationship(type, key);
+          } catch (e) {} // eslint-disable-line no-empty
+          if (relationship instanceof HasMany) {
+            value = [];
+          }
         }
 
         // Numbers, Strings, Booleans, Arrays and Objects
