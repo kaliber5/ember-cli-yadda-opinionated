@@ -7,18 +7,24 @@ import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-supp
 import HasMany from 'ember-cli-mirage/orm/associations/has-many';
 
 function findRelationship(type, relationshipName) {
-  const Model = server.schema.modelClassFor(type);
-  return Model.associationFor(relationshipName);
+  try {
+    const Model = server.schema.modelClassFor(type);
+    return Model.associationFor(relationshipName);
+  } catch (e) {} // eslint-disable-line no-empty
 }
 
 function findRelatedRecords(type, relationshipName, idOrIdsRaw) {
+  idOrIdsRaw = idOrIdsRaw.trim();
   let result;
   const relationship = findRelationship(type, relationshipName);
+  assert(`No such relationship "${relationshipName} on Mirage model ${type}`, relationship);
+
   const relatedType = relationship.modelName;
   const relatedTypePlural = pluralize(camelize(relatedType));
   const relatedCollection = server.schema[relatedTypePlural];
   assert(`Collection ${relatedTypePlural} does not exist in Mirage Schema`, relatedCollection);
 
+  // HasMany
   if (relationship instanceof HasMany) {
     result =
       idOrIdsRaw
@@ -30,10 +36,18 @@ function findRelatedRecords(type, relationshipName, idOrIdsRaw) {
           assert(`Record of type ${relatedType} with id ${id} not found in Mirage Schema`, relatedRecord);
           return relatedRecord;
         });
-  } else {
-    const id = idOrIdsRaw.trim().slice(1);
+  }
+
+  // BelongsTo non-empty
+  else if (idOrIdsRaw.length) {
+    const id = idOrIdsRaw.slice(1);
     result = relatedCollection.find(id);
     assert(`Record of type ${relatedType} with id ${id} not found in Mirage Schema`, result);
+  }
+
+  // BelongsTo empty
+  else {
+    result = null;
   }
 
   return result;
@@ -59,23 +73,28 @@ const steps = {
 
     properties = Object.entries(properties).reduce((result, [key, value]) => {
       key = key.trim();
+      const relationship = findRelationship(type, key);
 
       if (value.trim) {
         value = value.trim()
       }
 
-      // Ids
-      if (value[0] === '@') {
-        value = findRelatedRecords(type, key, value.trim());
+      // Relationship
+      if (relationship) {
+        value = findRelatedRecords(type, key, value);
       }
 
-      // Booleans, Arrays and Objects
-      else if (/^{.+}$/.test(value) || /^\[.+]$/.test(value) || value === "true" || value === "false") {
+      // Booleans, Arrays, Objects and Null
+      else if (/^{.+}$/.test(value) || /^\[.+]$/.test(value) || value === "true" || value === "false" || value === "null") {
         try {
           value = JSON.parse(value)
         } catch (e) {
           throw new Error(`Invalid JSON passed as "${key}"`);
         }
+      }
+
+      else {
+        throw new Error(`Unexpected value passed as ${key}: \`${value}\``);
       }
 
       result[key] = value;
@@ -96,35 +115,27 @@ const steps = {
       const properties = Object.entries(row).reduce((result, [key, value]) => {
         key = key.trim();
         value = value.trim();
+        const relationship = findRelationship(type, key);
 
-        // Traits
-        if (key === 'trait' || key === 'traits') {
-          traits = value.split(REGEX_COMMA_AND_SEPARATOR).filter(str => str.length)
+        // Relationship
+        if (relationship) {
+          value = findRelatedRecords(type, key, value);
         }
 
-        // Ids
-        else if (value[0] === '@') {
-          value = findRelatedRecords(type, key, value);
+        // Traits
+        else if (key === 'trait' || key === 'traits') {
+          traits = value.split(REGEX_COMMA_AND_SEPARATOR).filter(str => str.length)
         }
 
         // Empty cell
         else if (value.length === 0) {
           value = null;
-
-          // If it's a hasMany relationship, set to empty array
-          let relationship;
-          try {
-            relationship = findRelationship(type, key);
-          } catch (e) {} // eslint-disable-line no-empty
-          if (relationship instanceof HasMany) {
-            value = [];
-          }
         }
 
         // Numbers, Strings, Booleans, Arrays and Objects
         else {
           try {
-            value = JSON.parse(value)
+            value = JSON.parse(value);
           } catch (e) {
             throw new Error(`Invalid JSON passed as "${key}"`);
           }

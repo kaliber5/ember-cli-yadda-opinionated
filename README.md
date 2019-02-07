@@ -697,6 +697,13 @@ Given there is a record of type Post with traits published, pinned and commented
 Given there is a record of type Post with traits published and commented and properties {"id": "1", "title": "Foo"}
 ```
 
+Invalid example:
+
+```feature
+# Two records of the same type can't have the same id
+Given there are 2 records of type Post with properties {"id": "1", "title": "Foo", author: "@mike"}
+```
+
 
 
 ##### Seed records with a table

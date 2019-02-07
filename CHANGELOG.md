@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.5.4] - 2018-02-07
+
+### Added
+- Select item by text for `ember-power-select`.
+
+### Fixed
+- Adjusted the logic of the seeding step.
+
+
+
 ## [0.5.3] - 2018-02-06
 
 ### Changed
