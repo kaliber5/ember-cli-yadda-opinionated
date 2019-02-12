@@ -24,9 +24,9 @@ function lookupStepByAlias(mergedStepDefinitions, stepImplementation) {
 
 
 
-function mutateMessage({error, step, matchedStep, args}) {
+function makeBetterError({error, step, matchedStep, args}) {
   const stack = error.stack.slice(error.message.length + error.constructor.name.length + 2);
-  error.message = `${error.message}\n  Step: ${step}\n  Matched step: ${matchedStep}\n  Args:\n`;
+  let message = `${error.message}\n  Step: ${step}\n  Matched step: ${matchedStep}\n  Args:\n`;
 
   args.forEach((arg, i) => {
     const argMessage =
@@ -34,10 +34,13 @@ function mutateMessage({error, step, matchedStep, args}) {
         ? `Collection. Length: ${arg[0].length}, Label: ${arg[1]}, Selector: ${arg[2]}`
         : arg;
 
-    error.message += `    ${i}: ${argMessage}\n`;
+    message += `    ${i}: ${argMessage}\n`;
   });
 
-  error.stack = `${error.message}${stack}`;
+  const newError = new Error(message);
+  newError.stack = `${message}${stack}`;
+
+  return newError;
 }
 
 
@@ -63,8 +66,7 @@ export default function composeSteps(libraryFactory, ...stepDefinitions) {
             const currentStepImplementation = lookupStepByAlias(mergedStepDefinitions, stepImplementation);
             result = await currentStepImplementation.call(this, ...args);
           } catch (error) {
-            mutateMessage({error, step: this.step, matchedStep: stepName, args});
-            throw error;
+            throw makeBetterError({error, step: this.step, matchedStep: stepName, args});
           }
 
           return result;

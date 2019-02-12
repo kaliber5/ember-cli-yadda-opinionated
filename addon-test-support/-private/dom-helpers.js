@@ -2,7 +2,23 @@ import { assert } from '@ember/debug';
 import { find, findAll, settled } from "@ember/test-helpers";
 import { REGEX_SELECTOR_WITH_EQ } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/-private/selector-from-label';
-import { click, fillIn } from '@ember/test-helpers';
+import { click, doubleClick, fillIn, triggerEvent, triggerKeyEvent } from '@ember/test-helpers';
+
+
+
+export function findSelfOrChild (elementOrSelector, htmlClass) {
+  const childSelector = `.${htmlClass}`;
+
+  if (elementOrSelector instanceof HTMLElement) {
+    if (elementOrSelector.classList.contains(htmlClass)) {
+      return elementOrSelector;
+    } else {
+      return elementOrSelector.querySelector(childSelector);
+    }
+  } else {
+    return find(`${elementOrSelector} ${childSelector}`);
+  }
+}
 
 
 
@@ -54,52 +70,119 @@ function _findElement(parent, selector) {
 
 
 
-export function clickByLabel(label) {
+export function findAllByLabel(label) {
+  return findByLabel(label)[0];
+}
+
+
+
+export function findSingleByLabel(label) {
   const [collection,, selector] = findByLabel(label);
-  assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}`, collection.length === 1);
-  return click(collection[0]);
+  assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}\n\n`, collection.length === 1);
+
+  return collection[0];
+}
+
+
+
+export function clickByLabel(label) {
+  const element = findSingleByLabel(label);
+  return click(element);
+}
+
+
+
+export function doubleClickByLabel(label) {
+  const element = findSingleByLabel(label);
+  return doubleClick(element);
 }
 
 
 
 export function fillInByLabel(label, text) {
-  const [collection,, selector] = findByLabel(label);
-  assert(`Expected a single element, but ${collection.length} found.\nLabel: ${label}\nSelector: ${selector}`, collection.length === 1);
-  return fillIn(collection[0], text);
+  const element = findSingleByLabel(label);
+  return fillIn(element, text);
+}
+
+
+
+export function triggerByLabel(label, eventName, options) {
+  const element = findSingleByLabel(label);
+  return triggerEvent(element, eventName, options);
+}
+
+
+
+export function mouseEnterByLabel(label) {
+  const element = findSingleByLabel(label);
+  return triggerEvent(element, 'mouseenter');
+}
+
+
+
+export function mouseLeaveByLabel(label) {
+  const element = findSingleByLabel(label);
+  return triggerEvent(element, 'mouseleave');
+}
+
+
+
+export function triggerKeyByLabel(label, eventType, key, modifiers) {
+  const element = findSingleByLabel(label);
+  return triggerKeyEvent(element, eventType, key, modifiers);
+}
+
+
+
+export function findRadioForLabelWithText(element, text) {
+  assert('Element not found', element);
+
+  const labels =
+    Array
+      .from(element.querySelectorAll('label'))
+      .filter(el => el.textContent.trim() === text);
+
+  assert(`Expected to find exactly one label with text content "${text}", but ${labels.length} found`, labels.length === 1);
+
+  const [label] = labels;
+  const id = label.getAttribute('for');
+
+  let radioButton;
+
+  if (id) {
+    radioButton = document.getElementById(id);
+    assert(`Label with text "${text} had an attr for="${id}", but no radio button with such id found in element`, radioButton);
+  } else {
+    const radioButtons = element.querySelectorAll('input[type="radio"]');
+    assert(`Expected to find exactly one input[type="radio"] inside label with text "${text}", but ${radioButtons.length} found`, radioButtons.length === 1);
+    radioButton = radioButtons[0];
+  }
+
+  return radioButton;
 }
 
 
 
 // https://github.com/cibernox/ember-power-select/blob/v2.2.1/addon-test-support/index.js
 
-const EMBER_POWER_SELECT_TRIGGER_CLASS = 'ember-power-select-trigger';
-const EMBER_POWER_SELECT_TRIGGER_SELECTOR = `.${EMBER_POWER_SELECT_TRIGGER_CLASS}`;
-const EMBER_POWER_SELECT_DROPDOWN_PLACEHOLDER_CLASS = 'ember-basic-dropdown-content-placeholder';
-const EMBER_POWER_SEELCT_OPTION_CLASS = '.ember-power-select-option';
+const POWER_SELECT_TRIGGER_CLASS = 'ember-power-select-trigger';
+const POWER_SELECT_DROPDOWN_PLACEHOLDER_CLASS = 'ember-basic-dropdown-content-placeholder';
+const POWER_SEELCT_OPTIONS_SELECTOR = '.ember-power-select-options';
+const POWER_SEELCT_OPTION_SELECTOR = '.ember-power-select-option';
+const POWER_SEELCT_MULTIPLE_OPTIONS_SELECTOR = '.ember-power-select-multiple-options';
+const POWER_SEELCT_MULTIPLE_OPTION_SELECTOR = '.ember-power-select-multiple-option';
+const POWER_SEELCT_MULTIPLE_OPTION_DISABLED_CLASS = 'ember-power-select-multiple-option--disabled';
+const POWER_SELECT_MULTIPLE_OPTION_REMOVE_BUTTON_SELECTOR = '.ember-power-select-multiple-remove-btn';
 const powerSelectDropdownIdForTrigger = (trigger) => trigger.attributes['aria-owns'] && `${trigger.attributes['aria-owns'].value}`;
 
 
 
-export function powerSelectFindTrigger(cssPathOrTrigger) {
-  if (cssPathOrTrigger instanceof HTMLElement) {
-    if (cssPathOrTrigger.classList.contains(EMBER_POWER_SELECT_TRIGGER_CLASS)) {
-      return cssPathOrTrigger;
-    } else {
-      return cssPathOrTrigger.querySelector(EMBER_POWER_SELECT_TRIGGER_SELECTOR);
-    }
-  } else {
-    let trigger = find(`${cssPathOrTrigger} ${EMBER_POWER_SELECT_TRIGGER_SELECTOR}`);
+export function powerSelectFindTrigger(triggerOrSelector) {
+  const result = findSelfOrChild(triggerOrSelector, POWER_SELECT_TRIGGER_CLASS);
 
-    if (!trigger) {
-      trigger = find(cssPathOrTrigger);
-    }
+  assert(`Element with class ${POWER_SELECT_TRIGGER_CLASS} not found in ${triggerOrSelector}`, result);
 
-    if (!trigger) {
-      throw new Error("Power select not found");
-    }
-
-    return trigger;
-  }
+  return result;
 }
 
 
@@ -116,14 +199,54 @@ export function powerSelectFindDropdown(trigger) {
 
 export function powerSelectFindOptions(trigger) {
   const dropdown = powerSelectFindDropdown(trigger);
-  return dropdown.querySelectorAll(EMBER_POWER_SEELCT_OPTION_CLASS);
+  const options = dropdown.querySelectorAll(POWER_SEELCT_OPTION_SELECTOR);
+  return Array.from(options);
+}
+
+
+
+export function powerSelectFindSelectedOptions(trigger) {
+  const list = trigger.querySelector(POWER_SEELCT_MULTIPLE_OPTIONS_SELECTOR);
+  assert(`${POWER_SEELCT_MULTIPLE_OPTIONS_SELECTOR} not found. Power Select is not in multiple mode?`, list);
+  const options = list.querySelectorAll(POWER_SEELCT_MULTIPLE_OPTION_SELECTOR);
+  return Array.from(options);
+}
+
+
+
+export function powerSelectFilterSelectedOptionsByText(selectedOptions, text) {
+  return selectedOptions.filter(selectedOption => {
+    let trimmedText = selectedOption.textContent.trim();
+
+    trimmedText =
+      powerSelectIsSelectedOptionDisabled(selectedOption)
+        ? trimmedText
+        : trimmedText.slice(1).trim(); // remove the deselect button from text
+
+    return trimmedText === text;
+  });
+}
+
+
+
+export function powerSelectIsSelectedOptionDisabled(option) {
+  return option.classList.contains(POWER_SEELCT_MULTIPLE_OPTION_DISABLED_CLASS);
+}
+
+
+
+export function powerSelectRemoveSelectedOption(option) {
+  assert('Attempted to deselect a locked selected option', !powerSelectIsSelectedOptionDisabled(option));
+
+  const removeButton = option.querySelector(POWER_SELECT_MULTIPLE_OPTION_REMOVE_BUTTON_SELECTOR);
+  return click(removeButton);
 }
 
 
 
 export function powerSelectIsDropdownExpanded(trigger) {
   const dropdown = powerSelectFindDropdown(trigger);
-  return dropdown && !dropdown.classList.contains(EMBER_POWER_SELECT_DROPDOWN_PLACEHOLDER_CLASS);
+  return dropdown && !dropdown.classList.contains(POWER_SELECT_DROPDOWN_PLACEHOLDER_CLASS);
 }
 
 
@@ -151,13 +274,22 @@ export function powerSelectFindOptionByValueOrSelector(trigger, valueOrSelector,
   const options = powerSelectFindOptions(trigger);
   let target;
 
-  let potentialTargets = Array.from(options).filter((opt) => opt.textContent.indexOf(valueOrSelector) > -1);
+  let potentialTargets = options.filter((opt) => opt.textContent.indexOf(valueOrSelector) > -1);
   if (potentialTargets.length === 0) {
-    potentialTargets = options.querySelectorAll(valueOrSelector);
+    const selector =`${POWER_SEELCT_OPTIONS_SELECTOR} ${valueOrSelector}`;
+    try {
+      potentialTargets = trigger.querySelectorAll(selector);
+    } catch (e) {
+      if (e.message.includes("Failed to execute 'querySelectorAll'")) {
+        throw new Error(`Option "${valueOrSelector}" not found in PowerSelect`);
+      } else {
+        throw e;
+      }
+    }
   }
 
   if (potentialTargets.length > 1) {
-    const filteredTargets = Array.from(potentialTargets).filter((t) => t.textContent.trim() === valueOrSelector);
+    const filteredTargets = potentialTargets.filter((t) => t.textContent.trim() === valueOrSelector);
     target = filteredTargets[optionIndex] || potentialTargets[optionIndex];
   } else {
     target = potentialTargets[0];
@@ -169,3 +301,23 @@ export function powerSelectFindOptionByValueOrSelector(trigger, valueOrSelector,
 
   return target;
 }
+
+
+
+const POWER_DATE_PICKER_TRIGGER_CLASS = 'ember-power-datepicker-trigger';
+export const POWER_DATE_PICKER_DROPDOWN_SELECTOR = '.ember-power-datepicker-content';
+
+export function powerDatePickerFindTrigger (triggerOrSelector) {
+  let result = findSelfOrChild(triggerOrSelector, POWER_DATE_PICKER_TRIGGER_CLASS);
+
+  assert(`Element with class ${POWER_DATE_PICKER_TRIGGER_CLASS} not found in ${triggerOrSelector}`, result);
+
+  return result;
+}
+
+
+
+export function powerDatePickerFindDropdown() {
+  return find(POWER_DATE_PICKER_DROPDOWN_SELECTOR);
+}
+

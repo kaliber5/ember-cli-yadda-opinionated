@@ -62,12 +62,20 @@ Table of contents <!-- omit in toc -->
       - [Element text](#element-text)
       - [Element HTML class](#element-html-class)
       - [Element HTML attr](#element-html-attr)
-    - [Mirage attr value](#mirage-attr-value)
+      - [Mirage attr value](#mirage-attr-value)
     - [ember-power-select steps](#ember-power-select-steps)
       - [Item count](#item-count)
+      - [Selected Item count](#selected-item-count)
       - [Text of trigger](#text-of-trigger)
       - [Text of item by index](#text-of-item-by-index)
       - [Select item by index](#select-item-by-index)
+      - [Select item by text](#select-item-by-text)
+      - [Deselect selected item by index](#deselect-selected-item-by-index)
+      - [Deselect selected item by text](#deselect-selected-item-by-text)
+      - [Disabled status of selected item by index](#disabled-status-of-selected-item-by-index)
+      - [Disabled status of selected item by text](#disabled-status-of-selected-item-by-text)
+    - [ember-power-datepicker steps](#ember-power-datepicker-steps)
+      - [Select a date](#select-a-date)
   - [In integration tests](#in-integration-tests)
 - [Development](#development)
 - [Contributing](#contributing)
@@ -816,6 +824,8 @@ Implements [`fillIn()`](https://github.com/emberjs/ember-test-helpers/blob/maste
 
 Will crash if no elements or more than one element matched.
 
+If the referenced element is not fillable, a fillable element will be looked up inside the referenced element.
+
 Signature: `When I fill \"$text\" into $opinionatedElement`.
 
 Example: `When I fill "cheese" into the Username-Field`
@@ -1014,7 +1024,7 @@ Then the second Menu-Item should NOT have HTML attr "href" with value "/products
 ```
 
 
-#### Mirage attr value
+##### Mirage attr value
 
 Checks if given attr of a record of given type and id has given value.
 
@@ -1038,6 +1048,8 @@ Checks if a `ember-power-select` contains the specified number of items.
 
 Will crash if no elements or more than one element matched the power select.
 
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
+
 Signature: `Then there should be (NO|no )?(?:(\\d+) )items? in the dropdown $opinionatedElement`.
 
 Example:
@@ -1050,11 +1062,33 @@ Then there should be 2 items in the dropdown Pet
 
 
 
+##### Selected Item count
+
+Checks if a `ember-power-select` contains the specified number of selected items (in multiple mode).
+
+Will crash if no elements or more than one element matched the power select.
+
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
+
+Signature: `Then there should be (NO|no )?(?:(\\d+) )items? in the dropdown $opinionatedElement`.
+
+Example:
+
+```feature
+Then there should be NO selected items in the dropdown Pet
+Then there should be 1 selected item in the dropdown Pet
+Then there should be 2 selected items in the dropdown Pet
+```
+
+
+
 ##### Text of trigger
 
 Checks if an `ember-power-select` trigger contains the specified trimmed text.
 
 Will crash if no elements or more than one element matched the power select.
+
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
 
 Signature: `Then the dropdown $opinionatedElement should have \"(.*)\" selected`.
 
@@ -1072,13 +1106,17 @@ Checks if Nth item in an `ember-power-select` contains the specified trimmed tex
 
 Will crash if no elements or more than one element matched the power select.
 
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
+
 Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (NOT |not )?(?:have text|say) \"(.*)\"`.
 
 Example:
 
 ```feature
-Then the item in the dropdown Pet should have text "Rex"
 Then the first item in the dropdown Pet should say "Tom"
+
+# Checks against the first item. Does not assert the amount of items.
+Then the item in the dropdown Pet should have text "Rex"
 ```
 
 
@@ -1089,13 +1127,148 @@ Clicks Nth item in an `ember-power-select`.
 
 Will crash if no elements or more than one element matched the power select.
 
-Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (NOT |not )?(?:have text|say) \"(.*)\"`.
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
+
+Signature: `When I select (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement`.
 
 Example:
 
 ```feature
-When I select the item in the dropdown Pet
 When I select the second item in the dropdown Pet
+
+# Checks against the first item. Does not assert the amount of items.
+When I select the item in the dropdown Pet
+```
+
+
+
+##### Select item by text
+
+Clicks an item in an `ember-power-select` selected by text content or selector provided.
+
+Will crash if no elements or more than one element matched the power select.
+
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
+
+Signature: `When I select (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item \"(.+)\" in the dropdown $opinionatedElement`.
+
+Example:
+
+```feature
+When I select item "Rex" in the dropdown Pet
+
+# In case multiple elements with the same name exist
+When I select first item "Rex" in the dropdown Pet
+```
+
+
+
+##### Deselect selected item by index
+
+Clicks Nth selected item in an `ember-power-select`.
+
+Will crash if no elements or more than one element matched the power select.
+
+Will crash if the number provided is larger than the number of selected items.
+
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
+
+Signature: `When I deselect (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item in the dropdown $opinionatedElement`.
+
+Example:
+
+```feature
+When I select the second item in the dropdown Pet
+
+# Checks against the first item. Does not assert the amount of items.
+When I select the item in the dropdown Pet
+```
+
+
+
+##### Deselect selected item by text
+
+Clicks a selected item's remove button in an `ember-power-select`. The selected item is found by text content.
+
+Will crash if no elements or more than one element matched the power select.
+
+Will crash if the number provided is larger than the number of selected items having given text.
+
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
+
+Signature: `When I deselect (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item \"(.+)\" in the dropdown $opinionatedElement`.
+
+Example:
+
+```feature
+When I deselect selected item "Rex" in the dropdown Pet
+
+# In case multiple elements with the same name exist
+When I deselect first selected item "Rex" in the dropdown Pet
+```
+
+
+##### Disabled status of selected item by index
+
+Checks that Nth selected item in an `ember-power-select` is locked.
+
+Will crash if no elements or more than one element matched the power select.
+
+Will crash if the number provided is larger than the number of selected items.
+
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
+
+Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item in the dropdown $opinionatedElement should (NOT|not )?be disabled`.
+
+Example:
+
+```feature
+Then the second selected item in the dropdown Pet should be disabled
+
+# Checks against the first item. Does not assert the amount of items.
+Then the selected item in the dropdown Pet should be disabled
+```
+
+
+
+##### Disabled status of selected item by text
+
+Checks that a certain selected item in an `ember-power-select` is locked. The selected item is found by text content.
+
+Will crash if no elements or more than one element matched the power select.
+
+Will crash if the number provided is larger than the number of selected items having given text.
+
+If the referenced element is not a power select, a power select will be looked up inside the referenced element.
+
+Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item \"(.+)\" in the dropdown $opinionatedElement should (NOT|not )?be disabled`.
+
+Example:
+
+```feature
+Then selected item "Rex" in the dropdown Pet should be disabled
+
+# In case multiple elements with the same name exist
+Then the first selected item "Rex" in the dropdown Pet should be disabled
+```
+
+
+#### ember-power-datepicker steps
+
+##### Select a date
+
+Selects a date in a date picker. Will automatically expand the datepicker and scoll to required date, then click on it.
+
+Accepts a date in ISO format.
+
+If the referenced element is not a date picker, a date picker will be looked up inside the referenced element.
+
+Signature: `When I select date \"(.+)\" in the date picker $opinionatedElement`
+
+Expample:
+
+```feature
+When I select "2018-01-01" in the date picker Release-Date-Field
 ```
 
 
@@ -1111,9 +1284,31 @@ import {
 } from 'ember-cli-yadda-opinionated/test-support;
 ```
 
-* `findByLabel(label)` -- eqauivalent of `findAll`. Returns a tuple `[collection, label, selector]`, where `collection` is an array of found elements.
+* `findByLabel(label)` -- eqauivalent of `findAll`, but returns a tuple `[collection, label, selector]`, where `collection` is an array of found elements. Useful for making meaningful assertion error messages.
+* `findAllByLabel(label)` -- eqauivalent of `findAll`. Returns an array of found elements.
+* `findSingleByLabel(label)` -- eqauivalent of `find`. Returns an element. Will crash if found more than one element or no elements.
 * `clickByLabel(label)` -- equivalent of `click`. Will crash if found more than one element or no elements.
+* `doubleClickByLabel(label)` -- equivalent of `doubleClick`. Will crash if found more than one element or no elements.
 * `fillInByLabel(label, text)` -- equivalent of `fillIn`. Will crash if found more than one element or no elements.
+* `triggerByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements.
+* `triggerKeyByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements.
+* `mouseEnterByLabel(label)` -- triggers the `mouseenter` event on the element. Will crash if found more than one element or no elements.
+* `mouseLeaveByLabel(label)` -- triggers the `mouseleave` event on the element. Will crash if found more than one element or no elements.
+* `findRadioForLabelWithText(label, text)` -- finds a radio input on the page by searching for a label element with given text, then looking up a radio that corresponds to the label.
+* `findSelfOrChild(element, htmlClass)`: accepts a DOM element and an HTML class. Returns either the element or the first matching child.
+* `powerSelectFindTrigger(triggerOrSelector)` - find a power select inside given element or selector (including self).
+* `powerSelectFindDropdown(trigger)` - find a dropdown containing a list of options options corresponding to a given trigger.
+* `powerSelectFindOptions(trigger)` - find a options inside a dropdown corresponding to a given trigger. Expects the dropdown to be expanded.
+* `powerSelectFindSelectedOptions(trigger)` - find selected options inside a given trigger (for multi-select dropdown);
+* `powerSelectFilterSelectedOptionsByText(selectedOptions, text)` - filter selected options by text;
+* `powerSelectIsSelectedOptionDisabled(option)` - checks if given selected option is disabled (locked);
+* `powerSelectRemoveSelectedOption(option)` - clicks on the remove button of the given selected option;
+* `powerSelectIsDropdownExpanded(trigger)` - checks if a dropdown corresponding to given trigger is expanded;
+* `powerSelectExpand(trigger)` - clicks on given trigger, unless its dropdown is already expanded;
+* `powerSelectCollapse(trigger)` - clicks on given trigger, unless its dropdown is already collapsed;
+* `powerSelectFindOptionByValueOrSelector(trigger, valueOrSelector, optionIndex = 0)` - finds an option by text (and index, in case of multiple options with same text). Expects the dropdown to be expanded.
+* `powerDatePickerFindTrigger(triggerOrSelector)` - finds a power date picker inside given element (including self).
+* `powerDatePickerFindDropdown()` - finds a power date picker dropdown (globally).
 
 
 

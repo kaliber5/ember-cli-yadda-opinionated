@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { assert }  from '@ember/debug';
 import { currentURL, pauseTest, settled } from '@ember/test-helpers';
 import { isVisible, pause } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';
+import { findRadioForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 import { camelize }  from '@ember/string';
 import { pluralize } from 'ember-inflector';
 
@@ -100,7 +101,15 @@ const steps = {
     const record = collection.find(idStr);
     assert(`Record of type ${typeRaw} with id ${idStr} not found in Mirage DB`, record);
 
-    expect(record[key]).equal(value);
+    expect(record[key]).deep.equal(value);
+  },
+
+  "Then radio button \"(.+?)\" should be selected in $opinionatedElement"(text, [collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
+    const [element] = collection;
+    const radioButton = findRadioForLabelWithText(element, text);
+
+    return radioButton.checked;
   }
 
 };

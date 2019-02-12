@@ -1,5 +1,6 @@
 import { click, doubleClick, fillIn, settled, triggerEvent, visit } from '@ember/test-helpers';
 import { assert }  from '@ember/debug';
+import { findRadioForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 
 const steps = {
 
@@ -32,7 +33,25 @@ const steps = {
 
   "When I fill \"$text\" into $opinionatedElement"(text, [collection/* , label, selector */]) {
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
-    return fillIn(collection[0], text);
+    const element = collection[0];
+
+    const selectors = [
+      '[contenteditable]',
+      'textarea',
+      'input:not([hidden])',
+      'select',
+    ];
+
+    if (
+      element.isContentEditable
+      || selectors.some(selector => element.matches(selector))
+    ) {
+      return fillIn(element, text);
+    } else {
+      const children = element.querySelectorAll(selectors.join(', '));
+      assert(`Expected element to be fillable or have exactly one fillable child, but ${children.length} fillable children found`, children.length === 1);
+      return fillIn(children[0], text);
+    }
   },
 
   "When I move the mouse pointer into $opinionatedElement"([collection/* , label, selector */]) {
@@ -44,6 +63,14 @@ const steps = {
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     return triggerEvent(collection[0], 'mouseeleave');
   },
+
+  "When I select radio button \"(.+?)\" in $opinionatedElement"(text, [collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
+    const [element] = collection;
+    const radioButton = findRadioForLabelWithText(element, text);
+
+    return click(radioButton);
+  }
 
 };
 

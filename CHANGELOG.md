@@ -10,7 +10,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.5.4] - 2018-02-07
+# [0.6.0] - 2019-02-12
+
+### Added
+- A bunch of new integration test helpers:
+  - `findSelfOrChild` accepts an element and an HTML class name, returns self or a child with that class name.
+  - `findAllByLabel` and `findSingleByLabel`: equivalent of `findByLabel` but returns element(s) rather than a tuple.
+  - `triggerByLabel`, `mouseEnterByLabel`, `mouseLeaveByLabel`.
+  - `findRadioForLabelWithText`.
+  - `powerSelectFindSelectedOptions`, `powerSelectFilterSelectedOptionsByText`, `powerSelectIsSelectedOptionDisabled`, `powerSelectRemoveSelectedOption`.
+  - `powerDatePickerFindTrigger`, `powerDatePickerFindDropdown`.
+- A bunch of new steps:
+  - Power Date Picker step for selecting a certain date.
+  - Power Select steps:
+    - Assert count of selected items.
+    - Assert disabled state of a dropdown item targeted by index.
+    - Assert disabled state of a dropdown item targeted by text and optional index.
+    - Deselect a selected item targeted by index.
+    - Deselect a selected item targeted by text and optional index.
+    - Assert disabled state of a selected item targeted by index.
+    - Assert disabled state of a selected item targeted by text and optional index.
+  - Radio Button steps:
+    - Select a certain radio by clicking on a corresponding label targeted by text.
+    - Assert a certain radio button is selected targeted by text of a corresponding label.
+
+
+
+### Changed
+- The fill-in step will look up for a fillable child inside the referenced element, if the referenced element is not fillable. Will crash if more than one fillable child found.
+
+
+
+### Fixed
+- No longer crash by trying to mutate `DOMException` error message.
+
+
+
+## [0.5.4] - 2019-02-07
 
 ### Added
 - Select item by text for `ember-power-select`.
@@ -20,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.5.3] - 2018-02-06
+## [0.5.3] - 2019-02-06
 
 ### Changed
 - :warning: Changed the signature of element visibility step.
@@ -28,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.5.2] - 2018-02-04
+## [0.5.2] - 2019-02-04
 
 ### Added
 
@@ -38,7 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.5.1] - 2018-01-31
+## [0.5.1] - 2019-01-31
 
 ### Added
 
@@ -47,7 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.5.0] - 2018-01-31
+## [0.5.0] - 2019-01-31
 
 ### Added
 
@@ -55,7 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.4.1] - 2018-01-29
+## [0.4.1] - 2019-01-29
 
 ### Added
 
@@ -63,7 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.4.0] - 2018-01-28
+## [0.4.0] - 2019-01-28
 
 ### Added
 
@@ -80,7 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.3.1] - 2018-01-22
+## [0.3.1] - 2019-01-22
 
 ### Added
 
@@ -88,7 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.3.0] - 2018-01-21
+## [0.3.0] - 2019-01-21
 
 ### Added
 
@@ -97,7 +133,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.2.1] - 2018-01-16
+## [0.2.1] - 2019-01-16
 
 ### Added
 
@@ -109,7 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.2.0] - 2018-01-15
+## [0.2.0] - 2019-01-15
 
 ### Added
 - Added a `setupDictionary` convenience helper to avoid populating a dictionary by hand, fixes #11.
@@ -129,6 +165,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.1.0] - 2018-01-14
+## [0.1.0] - 2019-01-14
 
 First release.

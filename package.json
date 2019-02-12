@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "ember-cli-babel": "^7.1.2",
-    "ember-inflector": "^3.0.0"
+    "ember-inflector": "^3.0.0",
+    "ember-require-module": "^0.3.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^0.6.3",
