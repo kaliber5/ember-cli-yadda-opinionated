@@ -28,6 +28,28 @@ const steps = {
     expect(currentURL()).to.equal(url);
   },
 
+  async "Then current URL's pathname should be (.+)"(pathname) {
+    await settled();
+    const url = new URL(currentURL(), location.origin);
+    expect(url.pathname).to.equal(pathname);
+  },
+
+  async "Then current URL should (NOT |not )?have query param \"(\\w+)\""(not, key) {
+    await settled();
+    const url = new URL(currentURL(), location.origin);
+    expect(url.searchParams.has(key)).to.equal(!!not);
+  },
+
+  async "Then current URL should (NOT |not )?have query param \"(\\w+)\" with value \"(.*)\""(not, key, expectedValue) {
+    await settled();
+    const url = new URL(currentURL(), location.origin);
+    const actualValue = url.searchParams.get(key);
+
+    not
+     ? expect(actualValue).not.to.equal(expectedValue)
+     : expect(actualValue).to.equal(expectedValue);
+  },
+
   "Then there should be (NO |no )?(?:(\\d+) )?$opinionatedElement"(no, countRaw, [collection/* , label, selector */]) {
     assert(`Don't use NO and number at the same time`, !(no && countRaw));
 

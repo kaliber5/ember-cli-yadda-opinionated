@@ -10,7 +10,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-# [0.6.0] - 2019-02-12
+## [0.6.1] - 2019-02-23
+
+### Added
+- New steps:
+  - Current URL pathname (URL without query params)
+  - Query param presence in URL
+  - Query param value in URL
+
+### Fixed
+- Power Select selected item step now correctly detects lack of trigger.
+
+
+
+## [0.6.0] - 2019-02-12
 
 ### Added
 - A bunch of new integration test helpers:

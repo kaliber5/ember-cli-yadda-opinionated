@@ -57,6 +57,9 @@ Table of contents <!-- omit in toc -->
       - [Pause](#pause)
       - [Debugger](#debugger)
       - [Current URL](#current-url)
+      - [Current URL pathname](#current-url-pathname)
+      - [Query param presence](#query-param-presence)
+      - [Query param presence value](#query-param-presence-value)
       - [Element existence](#element-existence)
       - [Element visibility](#element-visibility)
       - [Element text](#element-text)
@@ -902,9 +905,62 @@ Example:
 
 ```feature
 Then I should be at URL /about
-Then I should be on URL /products
+Then I should be on URL /products?expand=true
 Then I still should be at URL /products/1
 Then I still should be on URL /
+```
+
+
+
+##### Current URL pathname
+
+Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) pathname (without query params and hash) to be an exact match of given URL.
+
+Signature: `Then current URL's pathname should be (.+)`.
+
+Example:
+
+```feature
+Then current URL's pathname should be /about
+Then current URL's pathname should be /
+```
+
+Incorret usage:
+
+```feature
+Then current URL's pathname should be /products?expand=true
+```
+
+
+
+##### Query param presence
+
+Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) contains or does not contain the specified query param.
+
+Signature: `Then current URL should (NOT |not )?have query param \"(\\w+)\"`.
+
+Example:
+
+```feature
+Then current URL should have query param "expand"
+Then current URL should NOT have query param "utm_source"
+```
+
+
+
+##### Query param presence value
+
+Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) contains a query param with or without given value.
+
+Note: produces positive result when a query param is not present and the step is used with `NOT`.
+
+Signature: `Then current URL should (NOT |not )?have query param \"(\\w+)\" with value \"(.*)\"`.
+
+Example:
+
+```feature
+Then current URL should have query param "expand" with value "true"
+Then current URL should NOT have query param "page" with value "1"
 ```
 
 
