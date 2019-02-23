@@ -217,10 +217,9 @@ const steps = {
 
   "Then the dropdown $opinionatedElement should have \"(.*)\" selected"([collection], text) {
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
-
-    const trigger = powerSelectFindTrigger(collection[0]);
-
-    assert('Power Select Trigger not found', !collection.length);
+    const [element] = collection;
+    const trigger = powerSelectFindTrigger(element);
+    assert('Power Select Trigger not found', trigger);
 
     expect(trigger).to.have.trimmed.text(text);
   },
