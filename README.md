@@ -53,6 +53,8 @@ Table of contents <!-- omit in toc -->
       - [Fill in](#fill-in)
       - [Mouse enter](#mouse-enter)
       - [Mouse leave](#mouse-leave)
+    - [Select/deselect checkbox or radio button](#selectdeselect-checkbox-or-radio-button)
+    - [Select/deselect checkbox or radio button corresponding to the label with given text](#selectdeselect-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
     - [Then steps](#then-steps)
       - [Pause](#pause)
       - [Debugger](#debugger)
@@ -63,6 +65,8 @@ Table of contents <!-- omit in toc -->
       - [Element existence](#element-existence)
       - [Element visibility](#element-visibility)
       - [Element text](#element-text)
+    - [State of checkbox or radio button](#state-of-checkbox-or-radio-button)
+    - [State of checkbox or radio button corresponding to the label with given text](#state-of-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
       - [Element HTML class](#element-html-class)
       - [Element HTML attr](#element-html-attr)
       - [Mirage attr value](#mirage-attr-value)
@@ -859,6 +863,60 @@ Example: `When I move the mouse pointer out of the Edit-Button`.
 
 
 
+#### Select/deselect checkbox or radio button
+
+Selects or deselects given checkbox/radio.
+
+The referenced element can be either an input or contain exactly one input.
+
+Will crash if the input is already in the desired state.
+
+A radio button cannot be deselected.
+
+Signature: `When I (de)?select (?:the )?(?:radio button|checkbox) in $opinionatedElement`
+
+Expamples:
+
+```feature
+When I select checkbox I-Am-Not-A-Robot-Field
+When I the select checkbox I-Am-Not-A-Robot-Field
+When I deselect checkbox I-Am-Not-A-Robot-Field
+When I deselect the checkbox I-Am-Not-A-Robot-Field
+When I select radio-button Prefer-Not-To-Tell
+When I select the radio-button Prefer-Not-To-Tell
+```
+
+
+
+#### Select/deselect checkbox or radio button corresponding to the label with given text
+
+First, a `<label>` containing given text is looked up inside the given element.
+
+Then a checkbox/radio is found that is associated with the label.
+
+The checkbox/radio must either be inside the label or be refernced via the `for` attribute.
+
+Will crash if more than one input exists inside the label.
+
+Will crash if the input is already in the desired state.
+
+A radio button cannot be deselected.
+
+Signature: `When I (de)?select (?:the )?(?:radio button|checkbox) \"(.+?)\" in $opinionatedElement`
+
+Expamples:
+
+```feature
+When I select checkbox "I am not a robot" in the Sign-Up-Form
+When I the select checkbox "I am not a robot" in the Sign-Up-Form
+When I deselect checkbox "I am not a robot" in the Sign-Up-Form
+When I deselect the checkbox "I am not a robot" in the Sign-Up-Form
+When I select radio-button "Prefer not to tell" in the Gender-Field
+When I select the radio-button "Prefer not to tell" in the Gender-Field
+```
+
+
+
 #### Then steps
 
 ##### Pause
@@ -1045,6 +1103,58 @@ Then the Title of 1st Post should NOT say "Hello, World!"
 
 
 
+#### State of checkbox or radio button
+
+Checks the state of a given checkbox/radio.
+
+The referenced element can be either an input or contain exactly one input.
+
+Signature: `Then (?:the )?(?:radio button|checkbox) $opinionatedElement should (NOT |not )?be selected`
+
+Expamples:
+
+```feature
+Then checkbox I-Am-Not-A-Robot-Field should be selected
+Then the checkbox I-Am-Not-A-Robot-Field should be selected
+Then checkbox I-Am-Not-A-Robot-Field should NOT be selected
+Then the checkbox I-Am-Not-A-Robot-Field should NOT be selected
+Then radio button Prefer-Not-To-Tell should be selected
+Then the radio button Prefer-Not-To-Tell should be selected
+Then radio button Prefer-Not-To-Tell should NOT be selected
+Then the radio button Prefer-Not-To-Tell should NOT be selected
+```
+
+
+
+#### State of checkbox or radio button corresponding to the label with given text
+
+Checks the state of checkbox/radio that is associated with a label containing provided text.
+
+First, a `<label>` containing given text is looked up inside the given element.
+
+Then a checkbox/radio is found that is associated with the label.
+
+The checkbox/radio must either be inside the label or be refernced via the `for` attribute.
+
+Will crash if more than one input exists inside the label.
+
+Signature: `Then (?:the )?(?:radio button|checkbox) \"(.+?)\" should (NOT |not )?be selected in $opinionatedElement`
+
+Expamples:
+
+```feature
+Then checkbox "I am not a robot" in the Sign-Up-Form should be selected
+Then the checkbox "I am not a robot" in the Sign-Up-Form should be selected
+Then checkbox "I am not a robot" in the Sign-Up-Form should NOT be selected
+Then the checkbox "I am not a robot" in the Sign-Up-Form should NOT be selected
+Then radio-button "Prefer not to tell" in the Gender-Field should be selected
+Then the radio-button "Prefer not to tell" in the Gender-Field should be selected
+Then radio-button "Prefer not to tell" in the Gender-Field should NOT be selected
+Then the radio-button "Prefer not to tell" in the Gender-Field should NOT be selected
+```
+
+
+
 ##### Element HTML class
 
 Checks if given element has given HTML class.
@@ -1151,7 +1261,7 @@ Signature: `Then the dropdown $opinionatedElement should have \"(.*)\" selected`
 Example:
 
 ```feature
-Then dropdown Pet should have "Rex" selected
+Then the dropdown Pet should have "Rex" selected
 ```
 
 
@@ -1350,7 +1460,7 @@ import {
 * `triggerKeyByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements.
 * `mouseEnterByLabel(label)` -- triggers the `mouseenter` event on the element. Will crash if found more than one element or no elements.
 * `mouseLeaveByLabel(label)` -- triggers the `mouseleave` event on the element. Will crash if found more than one element or no elements.
-* `findRadioForLabelWithText(label, text)` -- finds a radio input on the page by searching for a label element with given text, then looking up a radio that corresponds to the label.
+* `findInputForLabelWithText(text, parent)` -- finds an input on the page by searching for a label element with given text, then looking up an input that corresponds to the label. Parent is optional.
 * `findSelfOrChild(element, htmlClass)`: accepts a DOM element and an HTML class. Returns either the element or the first matching child.
 * `powerSelectFindTrigger(triggerOrSelector)` - find a power select inside given element or selector (including self).
 * `powerSelectFindDropdown(trigger)` - find a dropdown containing a list of options options corresponding to a given trigger.
@@ -1358,6 +1468,7 @@ import {
 * `powerSelectFindSelectedOptions(trigger)` - find selected options inside a given trigger (for multi-select dropdown);
 * `powerSelectFilterSelectedOptionsByText(selectedOptions, text)` - filter selected options by text;
 * `powerSelectIsSelectedOptionDisabled(option)` - checks if given selected option is disabled (locked);
+* `powerselectIsTriggerDisabled(trigger)` - returns `true` when given trigger is disabled;
 * `powerSelectRemoveSelectedOption(option)` - clicks on the remove button of the given selected option;
 * `powerSelectIsDropdownExpanded(trigger)` - checks if a dropdown corresponding to given trigger is expanded;
 * `powerSelectExpand(trigger)` - clicks on given trigger, unless its dropdown is already expanded;

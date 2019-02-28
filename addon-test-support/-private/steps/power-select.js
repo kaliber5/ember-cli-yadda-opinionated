@@ -18,6 +18,17 @@ import {
 
 const steps = {
 
+  async "Then the dropdown $opinionatedElement should (NOT |not )?be disabled"([collection/* , label, selector */], not) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
+    const [element] = collection;
+    const trigger = powerSelectFindTrigger(element);
+    assert('Trigger not found', trigger);
+
+    not
+      ? expect(trigger).not.to.have.attr('aria-disabled')
+      : expect(trigger).to.have.attr('aria-disabled');
+  },
+
   async "Then there should be (NO|no )?(?:(\\d+) )items? in the dropdown $opinionatedElement"(no, countStr, [collection/* , label, selector */]) {
     assert("Don't use NO and number at the same time", !(no && countStr));
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);

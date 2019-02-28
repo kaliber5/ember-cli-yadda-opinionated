@@ -134,12 +134,10 @@ export function triggerKeyByLabel(label, eventType, key, modifiers) {
 
 
 
-export function findRadioForLabelWithText(element, text) {
-  assert('Element not found', element);
+export function findInputForLabelWithText(text, parent) {
 
-  const labels =
-    Array
-      .from(element.querySelectorAll('label'))
+  let labels =
+    _findElement(parent, 'label')
       .filter(el => el.textContent.trim() === text);
 
   assert(`Expected to find exactly one label with text content "${text}", but ${labels.length} found`, labels.length === 1);
@@ -147,18 +145,18 @@ export function findRadioForLabelWithText(element, text) {
   const [label] = labels;
   const id = label.getAttribute('for');
 
-  let radioButton;
+  let input;
 
   if (id) {
-    radioButton = document.getElementById(id);
-    assert(`Label with text "${text} had an attr for="${id}", but no radio button with such id found in element`, radioButton);
+    input = document.getElementById(id);
+    assert(`Label with text "${text} had an attr for="${id}", but no input with such id found in element`, input);
   } else {
-    const radioButtons = element.querySelectorAll('input[type="radio"]');
-    assert(`Expected to find exactly one input[type="radio"] inside label with text "${text}", but ${radioButtons.length} found`, radioButtons.length === 1);
-    radioButton = radioButtons[0];
+    const inputs = _findElement(parent, 'input')
+    assert(`Expected to find exactly one input inside label with text "${text}", but ${inputs.length} found`, inputs.length === 1);
+    input = inputs[0];
   }
 
-  return radioButton;
+  return input;
 }
 
 
@@ -177,17 +175,27 @@ const powerSelectDropdownIdForTrigger = (trigger) => trigger.attributes['aria-ow
 
 
 
-export function powerSelectFindTrigger(triggerOrSelector) {
-  const result = findSelfOrChild(triggerOrSelector, POWER_SELECT_TRIGGER_CLASS);
+export function powerSelectFindTrigger(elementOrSelector) {
+  const result = findSelfOrChild(elementOrSelector, POWER_SELECT_TRIGGER_CLASS);
 
-  assert(`Element with class ${POWER_SELECT_TRIGGER_CLASS} not found in ${triggerOrSelector}`, result);
+  assert(`Element with class ${POWER_SELECT_TRIGGER_CLASS} not found in ${elementOrSelector}`, result);
 
   return result;
 }
 
 
 
+export function powerselectIsTriggerDisabled(trigger) {
+  assert('ember-power-select trigger expected', trigger);
+  const attr = trigger.getAttribute('aria-disabled');
+  return attr === '' || !!attr;
+}
+
+
+
 export function powerSelectFindDropdown(trigger) {
+  assert('ember-power-select trigger expected', trigger);
+
   const dropdownId = powerSelectDropdownIdForTrigger(trigger)
   const dropdown = find(`#${dropdownId}`);
 

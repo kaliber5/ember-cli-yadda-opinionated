@@ -1,6 +1,6 @@
 import { click, doubleClick, fillIn, settled, triggerEvent, visit } from '@ember/test-helpers';
 import { assert }  from '@ember/debug';
-import { findRadioForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
+import { findInputForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 
 const steps = {
 
@@ -64,12 +64,36 @@ const steps = {
     return triggerEvent(collection[0], 'mouseeleave');
   },
 
-  "When I select radio button \"(.+?)\" in $opinionatedElement"(text, [collection/* , label, selector */]) {
+  "When I (de)?select (?:the )?(?:radio button|checkbox) $opinionatedElement"(de, [collection/* , label, selector */]) {
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
     const [element] = collection;
-    const radioButton = findRadioForLabelWithText(element, text);
+    let input;
 
-    return click(radioButton);
+    if (element.type === 'checkbox' || element.type === 'radio') {
+      input = element;
+    } else {
+      const inputs = element.querySelectorAll('input[type="text"], input[type="checkbox"]');
+      assert(`Expected one checkbox/radio, but ${inputs.length} found`, inputs.length === 1);
+      [input] = inputs;
+    }
+
+    assert('A radio button cannot be deselected', !(de && (input.type === 'radio')));
+    assert(`Expected input ${de ? 'not ' : ''}to be selected`, de ? input.checked : !input.checked);
+
+    return click(input);
+  },
+
+  "When I (de)?select (?:the )?(?:radio button|checkbox) \"(.+?)\" in $opinionatedElement"(de, text, [collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
+    const [element] = collection;
+    const input = findInputForLabelWithText(text, element);
+
+    assert('Expected input to exist', input)
+    assert('Expected input to be a checkbox or radio button', input.type === 'checkbox' || input.type === 'radio');
+    assert('A radio button cannot be deselected', !(de && (input.type === 'radio')));
+    assert(`Expected input ${de ? 'not ' : ''}to be selected`, de ? input.checked : !input.checked);
+
+    return click(input);
   }
 
 };

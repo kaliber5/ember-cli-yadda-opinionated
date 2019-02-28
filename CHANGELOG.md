@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.7.0] - 2019-02-07
+
+### Added
+- `powerselectIsTriggerDisabled` helper.
+- Power Select step for checking the disabled state of the trigger.
+- Steps for manipulating and checking steps of checkboxes and radios.
+
+### Changed
+- `findRadioForLabelWithText` renamed to `findInputForLabelWithText`
+
+### Fixed
+- Added missing exports for integration test helpers.
+
+
+
 ## [0.6.1] - 2019-02-23
 
 ### Added
