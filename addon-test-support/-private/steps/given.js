@@ -152,6 +152,10 @@ const steps = {
     });
   },
 
+  "Given server.logging"() {
+    server.logging = true;
+  },
+
 };
 
 export default steps;

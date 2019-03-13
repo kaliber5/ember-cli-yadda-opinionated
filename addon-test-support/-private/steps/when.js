@@ -1,6 +1,6 @@
 import { click, doubleClick, fillIn, settled, triggerEvent, visit } from '@ember/test-helpers';
 import { assert }  from '@ember/debug';
-import { findInputForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
+import { findInputForLabelWithText, findEditable } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 
 const steps = {
 
@@ -34,24 +34,9 @@ const steps = {
   "When I fill \"$text\" into $opinionatedElement"(text, [collection/* , label, selector */]) {
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     const element = collection[0];
+    const target = findEditable(element);
 
-    const selectors = [
-      '[contenteditable]',
-      'textarea',
-      'input:not([hidden])',
-      'select',
-    ];
-
-    if (
-      element.isContentEditable
-      || selectors.some(selector => element.matches(selector))
-    ) {
-      return fillIn(element, text);
-    } else {
-      const children = element.querySelectorAll(selectors.join(', '));
-      assert(`Expected element to be fillable or have exactly one fillable child, but ${children.length} fillable children found`, children.length === 1);
-      return fillIn(children[0], text);
-    }
+    return fillIn(target, text);
   },
 
   "When I move the mouse pointer into $opinionatedElement"([collection/* , label, selector */]) {

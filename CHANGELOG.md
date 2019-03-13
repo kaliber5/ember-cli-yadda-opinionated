@@ -10,6 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+# [0.7.1] - 2019-03-13
+
+### Added
+- A "server.logging" step for Mirage which enables server logging for the current test.
+- The "Element text" looks into the `value` attribue when used on an input or textarea.
+- The `findEditable` helper will return the given element if its editable or will look up an editable element inside the given element.
+- The `fillInByLabel` DOM helper now looks up an editable element via `findEditable`.
+
+### Documentation
+- Fixed the examples of the "Select/deselect checkbox or radio button corresponding to the label with given text" step.
+
+
+
 ## [0.7.0] - 2019-02-07
 
 ### Added

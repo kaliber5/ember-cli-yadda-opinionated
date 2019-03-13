@@ -85,9 +85,17 @@ const steps = {
   "Then $opinionatedElement should (NOT |not )?(?:have text|say) \"$text\""([collection/* , label, selector */], not, text) {
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
 
-    not
-      ? expect(collection[0].textContent.trim()).not.equal(text)
-      : expect(collection[0].textContent.trim()).equal(text);
+    const [element] = collection;
+
+    if (element.matches("input, textarea")) {
+      not
+        ? expect(element).not.to.have.value(text)
+        : expect(element).to.have.value(text);
+    } else {
+      not
+        ? expect(element).not.to.have.trimmed.text(text)
+        : expect(element).to.have.trimmed.text(text);
+    }
   },
 
   "Then $opinionatedElement should (NOT |not )?have HTML class \"(.*)\""([collection/* , label, selector */], not, text) {

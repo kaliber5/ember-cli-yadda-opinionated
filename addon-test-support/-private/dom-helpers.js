@@ -101,7 +101,8 @@ export function doubleClickByLabel(label) {
 
 export function fillInByLabel(label, text) {
   const element = findSingleByLabel(label);
-  return fillIn(element, text);
+  const target = findEditable(element);
+  return fillIn(target, text);
 }
 
 
@@ -130,6 +131,25 @@ export function mouseLeaveByLabel(label) {
 export function triggerKeyByLabel(label, eventType, key, modifiers) {
   const element = findSingleByLabel(label);
   return triggerKeyEvent(element, eventType, key, modifiers);
+}
+
+
+
+export function findEditable(element) {
+  const selectors = [
+    '[contenteditable]',
+    'textarea',
+    'input:not([hidden])',
+    'select',
+  ];
+
+  if (selectors.some(selector => element.matches(selector))) {
+    return element;
+  } else {
+    const children = element.querySelectorAll(selectors.join(', '));
+    assert(`Expected element to be fillable or have exactly one fillable child, but ${children.length} fillable children found`, children.length === 1);
+    return children[0];
+  }
 }
 
 

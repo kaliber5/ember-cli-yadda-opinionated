@@ -43,6 +43,7 @@ Table of contents <!-- omit in toc -->
   - [Mapping labels to selectors](#mapping-labels-to-selectors)
   - [The steps library](#the-steps-library)
     - [Given steps](#given-steps)
+      - [Server logging](#server-logging)
       - [Seed record(s) with same properties/traits](#seed-records-with-same-propertiestraits)
       - [Seed records with a table](#seed-records-with-a-table)
     - [When steps](#when-steps)
@@ -53,8 +54,8 @@ Table of contents <!-- omit in toc -->
       - [Fill in](#fill-in)
       - [Mouse enter](#mouse-enter)
       - [Mouse leave](#mouse-leave)
-    - [Select/deselect checkbox or radio button](#selectdeselect-checkbox-or-radio-button)
-    - [Select/deselect checkbox or radio button corresponding to the label with given text](#selectdeselect-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
+      - [Select/deselect checkbox or radio button](#selectdeselect-checkbox-or-radio-button)
+      - [Select/deselect checkbox or radio button corresponding to the label with given text](#selectdeselect-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
     - [Then steps](#then-steps)
       - [Pause](#pause)
       - [Debugger](#debugger)
@@ -65,8 +66,8 @@ Table of contents <!-- omit in toc -->
       - [Element existence](#element-existence)
       - [Element visibility](#element-visibility)
       - [Element text](#element-text)
-    - [State of checkbox or radio button](#state-of-checkbox-or-radio-button)
-    - [State of checkbox or radio button corresponding to the label with given text](#state-of-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
+      - [State of checkbox or radio button](#state-of-checkbox-or-radio-button)
+      - [State of checkbox or radio button corresponding to the label with given text](#state-of-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
       - [Element HTML class](#element-html-class)
       - [Element HTML attr](#element-html-attr)
       - [Mirage attr value](#mirage-attr-value)
@@ -685,6 +686,14 @@ For advanced cases, we recommend to implement one custom seeding per each model 
 
 
 
+##### Server logging
+
+Sets `server.logging` to true in Mirage until end of test.
+
+Signature: `Given server.logging`
+
+
+
 ##### Seed record(s) with same properties/traits
 
 It will simply pass provided properties and traits as-is to Mirage's `server.createList()`, with the following nuances:
@@ -863,7 +872,7 @@ Example: `When I move the mouse pointer out of the Edit-Button`.
 
 
 
-#### Select/deselect checkbox or radio button
+##### Select/deselect checkbox or radio button
 
 Selects or deselects given checkbox/radio.
 
@@ -888,7 +897,7 @@ When I select the radio-button Prefer-Not-To-Tell
 
 
 
-#### Select/deselect checkbox or radio button corresponding to the label with given text
+##### Select/deselect checkbox or radio button corresponding to the label with given text
 
 First, a `<label>` containing given text is looked up inside the given element.
 
@@ -911,8 +920,8 @@ When I select checkbox "I am not a robot" in the Sign-Up-Form
 When I the select checkbox "I am not a robot" in the Sign-Up-Form
 When I deselect checkbox "I am not a robot" in the Sign-Up-Form
 When I deselect the checkbox "I am not a robot" in the Sign-Up-Form
-When I select radio-button "Prefer not to tell" in the Gender-Field
-When I select the radio-button "Prefer not to tell" in the Gender-Field
+When I select radio button "Prefer not to tell" in the Gender-Field
+When I select the radio button "Prefer not to tell" in the Gender-Field
 ```
 
 
@@ -1088,6 +1097,8 @@ Then I should see NO 5 Posts
 
 Checks if given element's trimmed text is equal to the given text.
 
+If an element is an input or a textarea, its `value` attribute will be checked instead.
+
 Will crash if no elements or more than one element matched.
 
 Signature: `Then $opinionatedElement should (NOT | not )?(?:have text|say) \"$text\"`.
@@ -1103,7 +1114,7 @@ Then the Title of 1st Post should NOT say "Hello, World!"
 
 
 
-#### State of checkbox or radio button
+##### State of checkbox or radio button
 
 Checks the state of a given checkbox/radio.
 
@@ -1126,7 +1137,7 @@ Then the radio button Prefer-Not-To-Tell should NOT be selected
 
 
 
-#### State of checkbox or radio button corresponding to the label with given text
+##### State of checkbox or radio button corresponding to the label with given text
 
 Checks the state of checkbox/radio that is associated with a label containing provided text.
 
@@ -1455,7 +1466,8 @@ import {
 * `findSingleByLabel(label)` -- eqauivalent of `find`. Returns an element. Will crash if found more than one element or no elements.
 * `clickByLabel(label)` -- equivalent of `click`. Will crash if found more than one element or no elements.
 * `doubleClickByLabel(label)` -- equivalent of `doubleClick`. Will crash if found more than one element or no elements.
-* `fillInByLabel(label, text)` -- equivalent of `fillIn`. Will crash if found more than one element or no elements.
+* `fillInByLabel(label, text)` --  looks up a fillable element via `findEditable`, then applies `fillIn` to it. Will crash if found more than one element or no elements.
+* `findEditable(element)` -- returns current element if it's editable (a non-hidden input, textarea, select or contenteditable). If not, will look up such an element inside the given element. Will crash if found more than one element or no elements.
 * `triggerByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements.
 * `triggerKeyByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements.
 * `mouseEnterByLabel(label)` -- triggers the `mouseenter` event on the element. Will crash if found more than one element or no elements.
