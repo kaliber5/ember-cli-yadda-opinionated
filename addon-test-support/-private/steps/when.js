@@ -76,7 +76,7 @@ const steps = {
     assert('Expected input to exist', input)
     assert('Expected input to be a checkbox or radio button', input.type === 'checkbox' || input.type === 'radio');
     assert('A radio button cannot be deselected', !(de && (input.type === 'radio')));
-    assert(`Expected input ${de ? 'not ' : ''}to be selected`, de ? input.checked : !input.checked);
+    assert(`Expected input ${de ? '' : 'not '}to be selected`, de ? input.checked : !input.checked);
 
     return click(input);
   }

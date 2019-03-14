@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fixed error message in the step for (de) selecting a radio button.
+
 
 
 # [0.7.1] - 2019-03-13
