@@ -4,7 +4,7 @@ import { findInputForLabelWithText, findEditable } from 'ember-cli-yadda-opinion
 
 const steps = {
 
-  async "When I (?:visit|am at|proceed to) URL $text"(url) {
+  async "When I (?:visit|am at|proceed to) URL (.*)"(url) {
     try {
       await visit(url);
     } catch (e) {
@@ -31,7 +31,7 @@ const steps = {
     return doubleClick(collection[0]);
   },
 
-  "When I fill \"$text\" into $opinionatedElement"(text, [collection/* , label, selector */]) {
+  "When I fill \"(.*)\" into $opinionatedElement"(text, [collection/* , label, selector */]) {
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     const element = collection[0];
     const target = findEditable(element);

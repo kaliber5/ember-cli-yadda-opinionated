@@ -6,11 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [Unreleased]
+## [0.7.2] - 2019-04-10
 
 ### Fixed
 - Fixed error message in the step for (de) selecting a radio button.
-
+- Relying on regex `(.*)` instead of an undefined macro `$text`: better compatibilty and allows for empty strings
 
 
 # [0.7.1] - 2019-03-13

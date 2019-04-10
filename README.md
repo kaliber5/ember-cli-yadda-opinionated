@@ -778,7 +778,7 @@ And there are records of type Post with the following properties:
 
 Implements [`visit()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#visit) from `@ember/test-helpers`.
 
-Signature: `When I (?:visit|am at|proceed to) URL $text`.
+Signature: `When I (?:visit|am at|proceed to) URL (.*)`.
 
 Examples:
 
@@ -842,7 +842,7 @@ Will crash if no elements or more than one element matched.
 
 If the referenced element is not fillable, a fillable element will be looked up inside the referenced element.
 
-Signature: `When I fill \"$text\" into $opinionatedElement`.
+Signature: `When I fill \"(.*)\" into $opinionatedElement`.
 
 Example: `When I fill "cheese" into the Username-Field`
 
@@ -966,7 +966,7 @@ Then debugger
 
 Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) to be an exact match of given URL.
 
-Signature: `Then I should (?:still )?be (?:at|on) URL $text`.
+Signature: `Then I should (?:still )?be (?:at|on) URL (.*)`.
 
 Example:
 
@@ -1101,7 +1101,7 @@ If an element is an input or a textarea, its `value` attribute will be checked i
 
 Will crash if no elements or more than one element matched.
 
-Signature: `Then $opinionatedElement should (NOT | not )?(?:have text|say) \"$text\"`.
+Signature: `Then $opinionatedElement should (NOT | not )?(?:have text|say) \"(.*)\"`.
 
 Example:
 
@@ -1172,7 +1172,7 @@ Checks if given element has given HTML class.
 
 Will crash if no elements or more than one element matched.
 
-Signature: `Then $opinionatedElement should have (NOT |not )?HTML class \"$text\"`.
+Signature: `Then $opinionatedElement should have (NOT |not )?HTML class \"(.*)\"`.
 
 Example:
 
@@ -1189,7 +1189,7 @@ Checks if given element has given HTML attr. Optionally checks the attr to match
 
 Will crash if no elements or more than one element matched.
 
-Signature: `Then $opinionatedElement should (NOT |not )?have HTML attr \"$text\"(?: with value \"(.+?)\")?`.
+Signature: `Then $opinionatedElement should (NOT |not )?have HTML attr \"(.*)\"(?: with value \"(.+?)\")?`.
 
 Example:
 
