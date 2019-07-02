@@ -684,6 +684,12 @@ You should consider scoping those selectors with a library's unique HTML class, 
 
 For advanced cases, we recommend to implement one custom seeding per each model (see below).
 
+Import:
+
+```js
+import { givenSteps } from 'ember-cli-yadda-opinionated/test-support';
+```
+
 
 
 ##### Server logging
@@ -773,6 +779,12 @@ And there are records of type Post with the following properties:
 
 
 #### When steps
+
+Import:
+
+```js
+import { whenSteps } from 'ember-cli-yadda-opinionated/test-support';
+```
 
 ##### Visit
 
@@ -927,6 +939,12 @@ When I select the radio button "Prefer not to tell" in the Gender-Field
 
 
 #### Then steps
+
+Import:
+
+```js
+import { thenSteps } from 'ember-cli-yadda-opinionated/test-support';
+```
 
 ##### Pause
 
@@ -1219,6 +1237,12 @@ Then record of type Post and id 1 should have attribute authorId with value "ali
 
 #### ember-power-select steps
 
+Import:
+
+```js
+import powerSelectSteps from 'ember-cli-yadda-opinionated/test-support/steps/power-select';
+```
+
 ##### Item count
 
 Checks if a `ember-power-select` contains the specified number of items.
@@ -1431,6 +1455,12 @@ Then the first selected item "Rex" in the dropdown Pet should be disabled
 
 
 #### ember-power-datepicker steps
+
+Import:
+
+```js
+import powerSelectSteps from 'ember-cli-yadda-opinionated/test-support/steps/power-date-picker';
+```
 
 ##### Select a date
 

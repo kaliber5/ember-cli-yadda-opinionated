@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.8.0] - 2019-07-02
+
+### Changed
+- Removed power select and power date picker steps from the index file. Those steps can be imported from distinct locations (resolves #20):
+  - `ember-cli-yadda-opinionated/test-support/steps/power-select`
+  - `ember-cli-yadda-opinionated/test-support/steps/power-date-picker`
+
+### Documentation
+- Mention import paths of steps modules.
+
+
 ## [0.7.2] - 2019-04-10
 
 ### Fixed
