@@ -37,8 +37,6 @@ import { labelMap, transformsMap } from 'ember-cli-yadda-opinionated/test-suppor
 import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/-private/selector-from-label';
 import setupDictionary from 'ember-cli-yadda-opinionated/test-support/-private/setup-dictionary';
 import givenSteps from 'ember-cli-yadda-opinionated/test-support/-private/steps/given';
-import powerDatePickerSteps from 'ember-cli-yadda-opinionated/test-support/-private/steps/power-date-picker';
-import powerSelectSteps from 'ember-cli-yadda-opinionated/test-support/-private/steps/power-select';
 import thenSteps from 'ember-cli-yadda-opinionated/test-support/-private/steps/then';
 import whenSteps from 'ember-cli-yadda-opinionated/test-support/-private/steps/when';
 
@@ -60,7 +58,6 @@ export {
   mouseLeaveByLabel,
   opinionatedSteps,
   powerDatePickerFindDropdown,
-  powerDatePickerSteps,
   powerSelectFindTrigger,
   powerSelectFindDropdown,
   powerSelectFindOptions,
@@ -74,7 +71,6 @@ export {
   powerSelectCollapse,
   powerSelectFindOptionByValueOrSelector,
   powerDatePickerFindTrigger,
-  powerSelectSteps,
   REGEX_LABEL,
   selectorFromLabel,
   setupDictionary,
