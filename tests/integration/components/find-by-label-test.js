@@ -50,7 +50,7 @@ module('Integration | Util | find-by-label', function(hooks) {
         </section>
       </article>
 
-      <article data-test-post="3rd" id="post_3">
+      <article data-test-post="Very Important" id="post_3">
         <section data-test-comment id="comment_3_1">
           <summary data-test-reply id="reply_3_1_1"></summary>
           <summary data-test-reply id="reply_3_1_2"></summary>
@@ -67,6 +67,14 @@ module('Integration | Util | find-by-label', function(hooks) {
           <summary data-test-reply id="reply_3_3_3"></summary>
         </section>
       </article>
+
+      <div data-test-element>
+        <div data-test-name id="parentname">Parent</div>
+
+        <div data-test-element>
+          <div data-test-name id="childname">Child</div>
+        </div>
+      </div>
     `);
 
     const [posts, label] = findByLabel('Post');
@@ -203,12 +211,17 @@ module('Integration | Util | find-by-label', function(hooks) {
     assert.equal(findByLabel('Foo')[0].length, 0, m);
 
     ///
-    m = "`a Post(3rd)`";
-    assert.equal(findByLabel('a Post(3rd)')[0][0].id, "post_3", m);
+    m = "`a Post(Very Important)`";
+    assert.equal(findByLabel('the Post(Very Important)')[0][0].id, "post_3", m);
 
     ///
     m = `Active+Comment`;
     assert.equal(findByLabel('Active+Comment')[0][0].id, "comment_3_2", m);
+
+    ///
+    m = `Name of Element in Element`;
+    assert.equal(findByLabel('Name of Element in Element')[0].length, 1, m);
+    assert.equal(findByLabel('Name of Element in Element')[0][0].id, 'childname', m);
 
 
   });

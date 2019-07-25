@@ -1,6 +1,6 @@
 import { assert } from '@ember/debug';
 import { find, findAll, settled } from "@ember/test-helpers";
-import { REGEX_SELECTOR_WITH_EQ } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
+import { REGEX_SELECTOR_MAYBE_WITH_EQ, REGEX_SELECTOR_WITH_EQ } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/-private/selector-from-label';
 import { click, doubleClick, fillIn, triggerEvent, triggerKeyEvent } from '@ember/test-helpers';
 
@@ -24,24 +24,32 @@ export function findSelfOrChild (elementOrSelector, htmlClass) {
 
 export function findByLabel(label) {
   const selectorCompound = selectorFromLabel(label);
-  const selectorsMaybeWithEq = selectorCompound.split(/\s+/);
 
-  const collection = selectorsMaybeWithEq.reduce((parentCollection, selectorMaybeWithEq) => {
-    return _findElements(parentCollection, selectorMaybeWithEq);
-  }, null);
+  const selectorsMaybeWithEq =
+    selectorCompound
+      .split(REGEX_SELECTOR_WITH_EQ)
+      .filter((substr) => substr && substr.length > 0);
+
+  const {collection} = selectorsMaybeWithEq.reduce(({collection, parentSelector}, childSelectorMaybeWithEq) => {
+    const [childSelectorWithoutEq, index] = _parseSelectorMaybeWithEq(childSelectorMaybeWithEq);
+    const childSelectorWithoutEqFull = `${parentSelector} ${childSelectorWithoutEq}`;
+
+    return {
+      collection: _findElements(collection, childSelectorWithoutEqFull, index),
+      parentSelector: childSelectorWithoutEqFull,
+    };
+  }, {collection: null, parentSelector: ''});
 
   const result = [collection, label, selectorCompound];
   result.__isLabelTuple__ = true;
   return result;
 }
 
-function _findElements(parentCollection, selectorMaybeWithEq) {
-  const [selector, index] = _parseSelectorMaybeWithEq(selectorMaybeWithEq);
-
+function _findElements(parentCollection, selector, index) {
   let resulingCollection =
     parentCollection
       ? parentCollection
-          .map(parent => _findElement(parent, selector))
+          .map(parent => _findElement(parent, selector, index))
           .reduce((a, b) => a.concat(b), []) // flatten
           .filter((a) => a) // compact
       : _findElement(null, selector, index);
@@ -52,7 +60,7 @@ function _findElements(parentCollection, selectorMaybeWithEq) {
 }
 
 function _parseSelectorMaybeWithEq(selectorMaybeWithEq) {
-  const matchResult = selectorMaybeWithEq.match(REGEX_SELECTOR_WITH_EQ);
+  const matchResult = selectorMaybeWithEq.match(REGEX_SELECTOR_MAYBE_WITH_EQ);
   assert(`findByLabel failed to parse a selector: "${selectorMaybeWithEq}"`, matchResult);
   const [, selector, indexRaw] = matchResult;
   const index = indexRaw && parseInt(indexRaw, 10);
@@ -205,7 +213,7 @@ export function powerSelectFindTrigger(elementOrSelector) {
 
 
 
-export function powerselectIsTriggerDisabled(trigger) {
+export function powerSelectIsTriggerDisabled(trigger) {
   assert('ember-power-select trigger expected', trigger);
   const attr = trigger.getAttribute('aria-disabled');
   return attr === '' || !!attr;
@@ -331,6 +339,120 @@ export function powerSelectFindOptionByValueOrSelector(trigger, valueOrSelector,
 }
 
 
+export function powerSelectFindTriggerByLabel(label) {
+  const element = findSingleByLabel(label);
+  return powerSelectFindTrigger(element);
+}
+
+
+export function powerSelectFindDropdownByLabel(label) {
+  const trigger = powerSelectFindTriggerByLabel(label);
+  return powerSelectFindDropdown(trigger);
+}
+
+
+export async function powerSelectFindOptionsByLabel(label) {
+  const trigger = powerSelectFindTriggerByLabel(label);
+  const isExpanded = powerSelectIsDropdownExpanded(trigger);
+
+  if (!isExpanded) {
+    await powerSelectExpand(trigger);
+  }
+
+  return powerSelectFindOptions(trigger);
+}
+
+
+export async function powerSelectSelectOptionByLabelAndIndex(label, index) {
+  const options = await powerSelectFindOptionsByLabel(label);
+
+  assert(`Expected number of options to be greater than index ${index}, was ${options.length}, label: ${label}`, options.length > index);
+
+  return click(options[index]);
+}
+
+
+export function powerSelectFindSelectedOptionsByLabel(label) {
+  const trigger = powerSelectFindTriggerByLabel(label);
+  return powerSelectFindSelectedOptions(trigger);
+}
+
+
+export function powerSelectFilterSelectedOptionsByLabelAndText(label, text) {
+  const selectedOptions = powerSelectFindSelectedOptionsByLabel(label);
+  return powerSelectFilterSelectedOptionsByText(selectedOptions, text);
+}
+
+
+export async function powerSelectIsSelectedOptionDisabledByLabelAndIndex(label, index) {
+  const selectedOptions = powerSelectFindSelectedOptionsByLabel(label);
+
+  assert(`Expected number of selected options to be greater than index ${index}, was ${selectedOptions.length}, label: ${label}`, selectedOptions.length > index);
+
+  const selectedOption = selectedOptions[index];
+
+  return powerSelectIsSelectedOptionDisabled(selectedOption);
+}
+
+
+export function powerSelectIsSelectedOptionDisabledByLabelAndText(label, text) {
+  const selectedOptions = powerSelectFilterSelectedOptionsByText(label, text);
+  assert(`Expected exactly 1 selected option to match text "${text}, was ${selectedOptions.length}, label: ${label}`, selectedOptions.length === 1);
+  const selectedOption = selectedOptions[0];
+  return powerSelectIsSelectedOptionDisabled(selectedOption);
+}
+
+
+export function powerSelectIsTriggerDisabledByLabel(label) {
+  const trigger = powerSelectFindTriggerByLabel(label);
+  return powerSelectIsTriggerDisabled(trigger);
+}
+
+
+export function powerSelectRemoveSelectedOptionByLabelAndIndex(label, index) {
+  const selectedOptions = powerSelectFindSelectedOptionsByLabel(label);
+
+  assert(`Expected number of selected options to be greater than index ${index}, was ${selectedOptions.length}, label: ${label}`, selectedOptions.length > index);
+
+  const selectedOption = selectedOptions[index];
+
+  return powerSelectRemoveSelectedOption(selectedOption);
+}
+
+
+export function powerSelectRemoveSelectedOptionByLabelAndText(label, text) {
+  const selectedOptions = powerSelectFilterSelectedOptionsByText(label);
+  assert(`Expected exactly 1 selected option to match text "${text}, was ${selectedOptions.length}, label: ${label}`, selectedOptions.length === 1);
+  const selectedOption = selectedOptions[0];
+  return powerSelectRemoveSelectedOption(selectedOption);
+}
+
+
+export function powerSelectIsDropdownExpandedByLabel(label) {
+  const trigger = powerSelectFindTriggerByLabel(label);
+  return powerSelectIsDropdownExpanded(trigger);
+}
+
+
+export function powerSelectExpandByLabel(label) {
+  const trigger = powerSelectFindTriggerByLabel(label);
+  return powerSelectExpand(trigger);
+}
+
+
+export function powerSelectCollapseByLabel(label) {
+  const trigger = powerSelectFindTriggerByLabel(label);
+  return powerSelectCollapse(trigger);
+}
+
+
+export function powerSelectFindOptionByLabelAndValue(label, valueOrSelector, optionIndex) {
+  const trigger = powerSelectFindTriggerByLabel(label);
+  return powerSelectFindOptionByValueOrSelector(trigger, valueOrSelector, optionIndex);
+}
+
+
+
 
 const POWER_DATE_PICKER_TRIGGER_CLASS = 'ember-power-datepicker-trigger';
 export const POWER_DATE_PICKER_DROPDOWN_SELECTOR = '.ember-power-datepicker-content';
@@ -349,3 +471,8 @@ export function powerDatePickerFindDropdown() {
   return find(POWER_DATE_PICKER_DROPDOWN_SELECTOR);
 }
 
+
+export function powerDatePickerFindTriggerByLabel(label) {
+  const element = findSingleByLabel(label);
+  return powerDatePickerFindTrigger(element);
+}

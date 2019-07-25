@@ -20,74 +20,79 @@ Table of contents <!-- omit in toc -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Roadmap](#Roadmap)
-- [Rationale](#Rationale)
-  - [Moving the truth to feature files](#Moving-the-truth-to-feature-files)
-    - [The problem](#The-problem)
-    - [The solution](#The-solution)
-    - [Pros and cons](#Pros-and-cons)
-  - [Using labels as direct references to elements with test selectors](#Using-labels-as-direct-references-to-elements-with-test-selectors)
-    - [Targeting nested elements](#Targeting-nested-elements)
-    - [Referencing Nth element](#Referencing-Nth-element)
-    - [Compound labels](#Compound-labels)
-  - [Composing Yadda step implementations](#Composing-Yadda-step-implementations)
-    - [The problem](#The-problem-1)
-    - [The solution](#The-solution-1)
-- [Installation](#Installation)
-- [Usage](#Usage)
-  - [Project structure](#Project-structure)
-  - [Composable step files](#Composable-step-files)
-  - [Composing steps](#Composing-steps)
-  - [Implementing steps with the $opinionatedElement converter](#Implementing-steps-with-the-opinionatedElement-converter)
-  - [Using step aliases](#Using-step-aliases)
-  - [Mapping labels to selectors](#Mapping-labels-to-selectors)
-  - [The steps library](#The-steps-library)
-    - [Given steps](#Given-steps)
-      - [Server logging](#Server-logging)
-      - [Seed record(s) with same properties/traits](#Seed-records-with-same-propertiestraits)
-      - [Seed records with a table](#Seed-records-with-a-table)
-    - [When steps](#When-steps)
-      - [Visit](#Visit)
-      - [Settled](#Settled)
-      - [Click](#Click)
-      - [Double click](#Double-click)
-      - [Fill in](#Fill-in)
-      - [Mouse enter](#Mouse-enter)
-      - [Mouse leave](#Mouse-leave)
-      - [Select/deselect checkbox or radio button](#Selectdeselect-checkbox-or-radio-button)
-      - [Select/deselect checkbox or radio button corresponding to the label with given text](#Selectdeselect-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
-    - [Then steps](#Then-steps)
-      - [Pause](#Pause)
-      - [Debugger](#Debugger)
-      - [Current URL](#Current-URL)
-      - [Current URL pathname](#Current-URL-pathname)
-      - [Query param presence](#Query-param-presence)
-      - [Query param presence value](#Query-param-presence-value)
-      - [Element existence](#Element-existence)
-      - [Element visibility](#Element-visibility)
-      - [Element text](#Element-text)
-      - [State of checkbox or radio button](#State-of-checkbox-or-radio-button)
-      - [State of checkbox or radio button corresponding to the label with given text](#State-of-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
-      - [Element HTML class](#Element-HTML-class)
-      - [Element HTML attr](#Element-HTML-attr)
-      - [Mirage attr value](#Mirage-attr-value)
+- [Roadmap](#roadmap)
+- [Rationale](#rationale)
+  - [Moving the truth to feature files](#moving-the-truth-to-feature-files)
+    - [The problem](#the-problem)
+    - [The solution](#the-solution)
+    - [Pros and cons](#pros-and-cons)
+  - [Using labels as direct references to elements with test selectors](#using-labels-as-direct-references-to-elements-with-test-selectors)
+    - [Targeting nested elements](#targeting-nested-elements)
+    - [Referencing Nth element](#referencing-nth-element)
+    - [Compound labels](#compound-labels)
+  - [Composing Yadda step implementations](#composing-yadda-step-implementations)
+    - [The problem](#the-problem-1)
+    - [The solution](#the-solution-1)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Project structure](#project-structure)
+  - [Composable step files](#composable-step-files)
+  - [Composing steps](#composing-steps)
+  - [Implementing steps with the $opinionatedElement converter](#implementing-steps-with-the-opinionatedelement-converter)
+  - [Using step aliases](#using-step-aliases)
+  - [Mapping labels to selectors](#mapping-labels-to-selectors)
+  - [The steps library](#the-steps-library)
+    - [Given steps](#given-steps)
+      - [Server logging](#server-logging)
+      - [Seed record(s) with same properties/traits](#seed-records-with-same-propertiestraits)
+      - [Seed records with a table](#seed-records-with-a-table)
+    - [When steps](#when-steps)
+      - [Visit](#visit)
+      - [Settled](#settled)
+      - [Click](#click)
+      - [Double click](#double-click)
+      - [Fill in](#fill-in)
+      - [Mouse enter](#mouse-enter)
+      - [Mouse leave](#mouse-leave)
+      - [Select/deselect checkbox or radio button](#selectdeselect-checkbox-or-radio-button)
+      - [Select/deselect checkbox or radio button corresponding to the label with given text](#selectdeselect-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
+    - [Then steps](#then-steps)
+      - [Pause](#pause)
+      - [Debugger](#debugger)
+      - [Current URL](#current-url)
+      - [Current URL pathname](#current-url-pathname)
+      - [Query param presence](#query-param-presence)
+      - [Query param presence value](#query-param-presence-value)
+      - [Element existence](#element-existence)
+      - [Element visibility](#element-visibility)
+      - [Element text](#element-text)
+      - [State of checkbox or radio button](#state-of-checkbox-or-radio-button)
+      - [State of checkbox or radio button corresponding to the label with given text](#state-of-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
+      - [Element HTML class](#element-html-class)
+      - [Element HTML attr](#element-html-attr)
+      - [Mirage attr value](#mirage-attr-value)
     - [ember-power-select steps](#ember-power-select-steps)
-      - [Item count](#Item-count)
-      - [Selected Item count](#Selected-Item-count)
-      - [Text of trigger](#Text-of-trigger)
-      - [Text of item by index](#Text-of-item-by-index)
-      - [Select item by index](#Select-item-by-index)
-      - [Select item by text](#Select-item-by-text)
-      - [Deselect selected item by index](#Deselect-selected-item-by-index)
-      - [Deselect selected item by text](#Deselect-selected-item-by-text)
-      - [Disabled status of selected item by index](#Disabled-status-of-selected-item-by-index)
-      - [Disabled status of selected item by text](#Disabled-status-of-selected-item-by-text)
+      - [Item count](#item-count)
+      - [Selected Item count](#selected-item-count)
+      - [Text of trigger](#text-of-trigger)
+      - [Text of item by index](#text-of-item-by-index)
+      - [Select item by index](#select-item-by-index)
+      - [Select item by text](#select-item-by-text)
+      - [Deselect selected item by index](#deselect-selected-item-by-index)
+      - [Deselect selected item by text](#deselect-selected-item-by-text)
+      - [Disabled status of selected item by index](#disabled-status-of-selected-item-by-index)
+      - [Disabled status of selected item by text](#disabled-status-of-selected-item-by-text)
     - [ember-power-datepicker steps](#ember-power-datepicker-steps)
-      - [Select a date](#Select-a-date)
-  - [In integration tests](#In-integration-tests)
-- [Development](#Development)
-- [Contributing](#Contributing)
-- [License](#License)
+      - [Select a date](#select-a-date)
+  - [In integration tests](#in-integration-tests)
+    - [Universal](#universal)
+    - [Power Select](#power-select)
+      - [By label](#by-label)
+      - [Low level](#low-level)
+    - [Power Date Picker](#power-date-picker)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -1488,36 +1493,69 @@ When I select "2018-01-01" in the date picker Release-Date-Field
 import {
   findByLabel,
   clickByLabel
-} from 'ember-cli-yadda-opinionated/test-support;
+} from 'ember-cli-yadda-opinionated/test-support/dom-helpers;
 ```
+
+#### Universal
 
 * `findByLabel(label)` -- eqauivalent of `findAll`, but returns a tuple `[collection, label, selector]`, where `collection` is an array of found elements. Useful for making meaningful assertion error messages.
 * `findAllByLabel(label)` -- eqauivalent of `findAll`. Returns an array of found elements.
 * `findSingleByLabel(label)` -- eqauivalent of `find`. Returns an element. Will crash if found more than one element or no elements.
-* `clickByLabel(label)` -- equivalent of `click`. Will crash if found more than one element or no elements.
-* `doubleClickByLabel(label)` -- equivalent of `doubleClick`. Will crash if found more than one element or no elements.
+* `await clickByLabel(label)` -- equivalent of `click`. Will crash if found more than one element or no elements. Is async.
+* `await doubleClickByLabel(label)` -- equivalent of `doubleClick`. Will crash if found more than one element or no elements. Is async.
 * `fillInByLabel(label, text)` --  looks up a fillable element via `findEditable`, then applies `fillIn` to it. Will crash if found more than one element or no elements.
 * `findEditable(element)` -- returns current element if it's editable (a non-hidden input, textarea, select or contenteditable). If not, will look up such an element inside the given element. Will crash if found more than one element or no elements.
-* `triggerByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements.
-* `triggerKeyByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements.
-* `mouseEnterByLabel(label)` -- triggers the `mouseenter` event on the element. Will crash if found more than one element or no elements.
-* `mouseLeaveByLabel(label)` -- triggers the `mouseleave` event on the element. Will crash if found more than one element or no elements.
+* `await triggerByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements. Is async.
+* `await triggerKeyByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements. Is async.
+* `await mouseEnterByLabel(label)` -- triggers the `mouseenter` event on the element. Will crash if found more than one element or no elements. Is async.
+* `await mouseLeaveByLabel(label)` -- triggers the `mouseleave` event on the element. Will crash if found more than one element or no elements. Is async.
 * `findInputForLabelWithText(text, parent)` -- finds an input on the page by searching for a label element with given text, then looking up an input that corresponds to the label. Parent is optional.
 * `findSelfOrChild(element, htmlClass)`: accepts a DOM element and an HTML class. Returns either the element or the first matching child.
+
+
+#### Power Select
+
+##### By label
+
+* `powerSelectFindTriggerByLabel(label)` - find a power select inside given element or selector (including self).
+* `powerSelectFindDropdownByLabel(label)` - find a dropdown containing a list of options options corresponding to a given trigger.
+* `await powerSelectFindOptionsByLabel(label)` - find a options inside a dropdown corresponding to a given trigger. Will expand the dropdown if not already. Is async.
+* `await powerSelectSelectOptionByLabelAndIndex(label, index)` - clicks on Nth option in a power select. Is async.
+* `powerSelectFindSelectedOptionsByLabel(label)` - find selected options inside a given trigger (for multi-select dropdown).
+* `powerSelectFilterSelectedOptionsByLabelAndText(label, text)` - filter selected options by text.
+* `powerSelectIsSelectedOptionDisabledByLabelAndIndex(label, index)` - checks if given selected option is disabled (locked).
+* `powerSelectIsSelectedOptionDisabledByLabelAndText(label, text)` - checks if given selected option is disabled (locked), expects only one selected option to match text.
+* `powerSelectIsTriggerDisabledByLabel(label)` - returns `true` when given trigger is disabled.
+* `await powerSelectRemoveSelectedOptionByLabelAndIndex(label, index)` - clicks on the remove button of the given selected option. Is async.
+* `await powerSelectRemoveSelectedOptionByLabelAndText(label, text)` - clicks on the remove button of the given selected option, expects only one selected option to match text. Is async.
+* `powerSelectIsDropdownExpandedByLabel(label)` - checks if a dropdown corresponding to given trigger is expanded.
+* `await powerSelectExpandByLabel(label)` - clicks on given trigger, unless its dropdown is already expanded. Is async.
+* `await powerSelectCollapseByLabel(label)` - clicks on given trigger, unless its dropdown is already collapsed. Is async.
+* `powerSelectFindOptionByLabelAndValue(label, valueOrSelector, optionIndex = 0)` - finds an option by text (and index, in case of multiple options with same text). Expects the dropdown to be expanded.
+
+##### Low level
+
+These helpers operate on selectors/elements rather than labels.
+
 * `powerSelectFindTrigger(triggerOrSelector)` - find a power select inside given element or selector (including self).
 * `powerSelectFindDropdown(trigger)` - find a dropdown containing a list of options options corresponding to a given trigger.
 * `powerSelectFindOptions(trigger)` - find a options inside a dropdown corresponding to a given trigger. Expects the dropdown to be expanded.
-* `powerSelectFindSelectedOptions(trigger)` - find selected options inside a given trigger (for multi-select dropdown);
-* `powerSelectFilterSelectedOptionsByText(selectedOptions, text)` - filter selected options by text;
-* `powerSelectIsSelectedOptionDisabled(option)` - checks if given selected option is disabled (locked);
-* `powerselectIsTriggerDisabled(trigger)` - returns `true` when given trigger is disabled;
-* `powerSelectRemoveSelectedOption(option)` - clicks on the remove button of the given selected option;
-* `powerSelectIsDropdownExpanded(trigger)` - checks if a dropdown corresponding to given trigger is expanded;
-* `powerSelectExpand(trigger)` - clicks on given trigger, unless its dropdown is already expanded;
-* `powerSelectCollapse(trigger)` - clicks on given trigger, unless its dropdown is already collapsed;
-* `powerSelectFindOptionByValueOrSelector(trigger, valueOrSelector, optionIndex = 0)` - finds an option by text (and index, in case of multiple options with same text). Expects the dropdown to be expanded.
+* `powerSelectFindSelectedOptions(trigger)` - find selected options inside a given trigger (for multi-select dropdown).
+* `powerSelectFilterSelectedOptionsByText(selectedOptions, text)` - filter selected options by text.
+* `powerSelectIsSelectedOptionDisabled(option)` - checks if given selected option is disabled (locked).
+* `powerSelectIsTriggerDisabled(trigger)` - returns `true` when given trigger is disabled.
+* `powerSelectRemoveSelectedOption(option)` - clicks on the remove button of the given selected option.
+* `powerSelectIsDropdownExpanded(trigger)` - checks if a dropdown corresponding to given trigger is expanded.
+* `await powerSelectExpand(trigger)` - clicks on given trigger, unless its dropdown is already expanded. Is async.
+* `await powerSelectCollapse(trigger)` - clicks on given trigger, unless its dropdown is already collapsed. Is async.
+* `powerSelectFindOptionByValueOrSelector(trigger, valueOrSelector, optionIndex = 0)` - finds an option by text (and index, in case of multiple options with same text). Expects the dropdown to be expanded.'
+
+
+#### Power Date Picker
+
 * `powerDatePickerFindTrigger(triggerOrSelector)` - finds a power date picker inside given element (including self).
-* `powerDatePickerFindDropdown()` - finds a power date picker dropdown (globally).
+* `powerDatePickerFindTriggerByLabel(label)` - finds a power date picker inside given element (including self).
+* `powerDatePickerFindDropdown()` - finds a power date picker dropdown (globally, does not require a selector/label).
 
 
 

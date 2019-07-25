@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.9.0] - 2019-07-25
+
+### Changed
+- :warning: Fixed typo in helper name: `powerselectIsTriggerDisabled` → `powerSelectIsTriggerDisabled`.
+- :warning: DOM helpers must now be imported from `ember-cli-yadda-opinionated/test-support/dom-helpers`.
+
+## Fixed
+- Support spaces in `data-test-` attribute values.
+- Correctly work with nested components.
+
+### Documentation
+- Mention which DOM helpers are async.
+
+
+
 ## [0.8.0] - 2019-07-02
 
 ### Changed
@@ -40,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.0] - 2019-02-07
 
 ### Added
-- `powerselectIsTriggerDisabled` helper.
+- `powerSelectIsTriggerDisabled` helper.
 - Power Select step for checking the disabled state of the trigger.
 - Steps for manipulating and checking steps of checkboxes and radios.
 
