@@ -1,6 +1,6 @@
 import { click, doubleClick, fillIn, settled, triggerEvent, visit } from '@ember/test-helpers';
 import { assert }  from '@ember/debug';
-import { findInputForLabelWithText, findEditable } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
+import { findEditable, findInputForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 
 const steps = {
 

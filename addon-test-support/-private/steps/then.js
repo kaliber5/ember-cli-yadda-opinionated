@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { assert }  from '@ember/debug';
 import { currentURL, pauseTest, settled } from '@ember/test-helpers';
 import { isVisible, pause } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';
-import { findInputForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
+import { findEditable, findInputForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 import { camelize }  from '@ember/string';
 import { pluralize } from 'ember-inflector';
 
@@ -96,6 +96,16 @@ const steps = {
         ? expect(element).not.to.have.trimmed.text(text)
         : expect(element).to.have.trimmed.text(text);
     }
+  },
+
+  "Then $opinionatedElement should (NOT |not )?have value \"(.*)\""([collection/* , label, selector */], not, value) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
+    const element = collection[0];
+    const target = findEditable(element, false);
+
+    not
+      ? expect(target).not.to.have.value(value)
+      : expect(target).to.have.value(value);
   },
 
   "Then $opinionatedElement should (NOT |not )?have HTML class \"(.*)\""([collection/* , label, selector */], not, text) {

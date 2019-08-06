@@ -66,6 +66,7 @@ Table of contents <!-- omit in toc -->
       - [Element existence](#element-existence)
       - [Element visibility](#element-visibility)
       - [Element text](#element-text)
+      - [Element value](#element-value)
       - [State of checkbox or radio button](#state-of-checkbox-or-radio-button)
       - [State of checkbox or radio button corresponding to the label with given text](#state-of-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
       - [Element HTML class](#element-html-class)
@@ -1118,11 +1119,11 @@ Then I should see NO 5 Posts
 
 ##### Element text
 
-Checks if given element's trimmed text is equal to the given text.
-
-If an element is an input or a textarea, its `value` attribute will be checked instead.
+Checks if given element's trimmed text is or is not equal to the given text.
 
 Will crash if no elements or more than one element matched.
+
+If an element is an input or a textarea, its `value` attribute will be checked instead. It will not be trimmed. 
 
 Signature: `Then $opinionatedElement should (NOT | not )?(?:have text|say) \"(.*)\"`.
 
@@ -1133,6 +1134,25 @@ Then the Error-Message should have text "Something went wrong!"
 Then the Error-Message should NOT have text "Something went wrong!"
 Then the Title of 1st Post should say "Hello, World!"
 Then the Title of 1st Post should NOT say "Hello, World!"
+```
+
+
+
+##### Element value
+
+Checks if given element's value is equal to the given text.
+
+Will crash if no elements or more than one element matched.
+
+If the referenced element is not editable, then an editable element will be looked up inside the referenced element. Exactly one input/textarea/select is expected to be found inside the given element.
+
+Signature: `Then $opinionatedElement should (NOT |not )?have value \"(.*)\"`.
+
+Example:
+
+```feature
+Then the Description-Field should say "Hello, World!"
+Then the Description-Field should NOT say "Hello, World!"
 ```
 
 
@@ -1504,7 +1524,7 @@ import {
 * `await clickByLabel(label)` -- equivalent of `click`. Will crash if found more than one element or no elements. Is async.
 * `await doubleClickByLabel(label)` -- equivalent of `doubleClick`. Will crash if found more than one element or no elements. Is async.
 * `fillInByLabel(label, text)` --  looks up a fillable element via `findEditable`, then applies `fillIn` to it. Will crash if found more than one element or no elements.
-* `findEditable(element)` -- returns current element if it's editable (a non-hidden input, textarea, select or contenteditable). If not, will look up such an element inside the given element. Will crash if found more than one element or no elements.
+* `findEditable(element, shouldIncludeContentEditable)` -- returns current element if it's editable (a non-hidden input, textarea, select or contenteditable). If not, will look up such an element inside the given element. Will crash if found more than one element or no elements. Set `shouldIncludeContentEditable` to `false` to exclude contenteditable.
 * `await triggerByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements. Is async.
 * `await triggerKeyByLabel(label, eventName, options)` -- equivalent of `triggerEvent`. Will crash if found more than one element or no elements. Is async.
 * `await mouseEnterByLabel(label)` -- triggers the `mouseenter` event on the element. Will crash if found more than one element or no elements. Is async.

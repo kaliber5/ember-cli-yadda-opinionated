@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.9.1] - 2019-08-06
+
+### Added
+- Step for checking a value of an input/textarea/select inside given element.
+- The `findEditable` DOM helper now accepts an option to exclude `contenteditable`.
+
+
+
 ## [0.9.0] - 2019-07-25
 
 ### Changed
