@@ -1342,6 +1342,7 @@ Example:
 
 ```feature
 Then the first item in the dropdown Pet should say "Tom"
+Then the first item in the dropdown Pet should be "Tom"
 
 # Checks against the first item. Does not assert the amount of items.
 Then the item in the dropdown Pet should have text "Rex"
