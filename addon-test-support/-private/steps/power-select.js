@@ -71,7 +71,7 @@ const steps = {
     expect(selectedOptions).to.have.length(count);
   },
 
-  async "Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (NOT |not )?(?:have text|say) \"(.*)\""(indexOneStr, ordinal, [collection], not, text) {
+  async "Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (NOT |not )?(?:have text|say|be) \"(.*)\""(indexOneStr, ordinal, [collection], not, text) {
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
 
     const trigger = powerSelectFindTrigger(collection[0]);

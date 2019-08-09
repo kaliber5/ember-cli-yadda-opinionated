@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.9.1] - 2019-08-07
+
+### Added
+- The item text step can now use "be" in its phrasing.
+
+
+
 ## [0.9.1] - 2019-08-06
 
 ### Added

@@ -82,7 +82,7 @@ const steps = {
     return steps["Then (?:(\\d+) )?$opinionatedElement should (NOT |not )?be visible"](countRaw, [collection, label, selector], no);
   },
 
-  "Then $opinionatedElement should (NOT |not )?(?:have text|say) \"(.*)\""([collection/* , label, selector */], not, text) {
+  "Then $opinionatedElement should (NOT |not )?(?:have text|say|be) \"(.*)\""([collection/* , label, selector */], not, text) {
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
 
     const [element] = collection;

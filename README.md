@@ -1125,7 +1125,7 @@ Will crash if no elements or more than one element matched.
 
 If an element is an input or a textarea, its `value` attribute will be checked instead. It will not be trimmed. 
 
-Signature: `Then $opinionatedElement should (NOT | not )?(?:have text|say) \"(.*)\"`.
+Signature: `Then $opinionatedElement should (NOT | not )?(?:have text|say|be) \"(.*)\"`.
 
 Example:
 
@@ -1134,6 +1134,8 @@ Then the Error-Message should have text "Something went wrong!"
 Then the Error-Message should NOT have text "Something went wrong!"
 Then the Title of 1st Post should say "Hello, World!"
 Then the Title of 1st Post should NOT say "Hello, World!"
+Then the Quantity of the Cart should be "2"
+Then the Quantity of the Cart should NOT be "2"
 ```
 
 
@@ -1334,7 +1336,7 @@ Will crash if no elements or more than one element matched the power select.
 
 If the referenced element is not a power select, a power select will be looked up inside the referenced element.
 
-Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (NOT |not )?(?:have text|say) \"(.*)\"`.
+Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (NOT |not )?(?:have text|say|be) \"(.*)\"`.
 
 Example:
 
