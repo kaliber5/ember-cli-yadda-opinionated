@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.9.2] - 2019-08-21
+## [0.9.3] - 2019-08-21
 
 ### Added
 - Focus in/out steps.
@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.9.1] - 2019-08-09
+## [0.9.2] - 2019-08-09
 
 ### Added
 - The item text step can now use "be" in its phrasing.
