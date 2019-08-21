@@ -1,4 +1,4 @@
-import { click, doubleClick, fillIn, settled, triggerEvent, visit } from '@ember/test-helpers';
+import { blur, click, doubleClick, fillIn, focus, settled, triggerEvent, visit } from '@ember/test-helpers';
 import { assert }  from '@ember/debug';
 import { findEditable, findInputForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 
@@ -47,6 +47,16 @@ const steps = {
   "When I move the mouse pointer out of $opinionatedElement"([collection/* , label, selector */]) {
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     return triggerEvent(collection[0], 'mouseeleave');
+  },
+
+  "When I focus into $opinionatedElement"([collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
+    return focus(collection[0]);
+  },
+
+  "When I focus out of $opinionatedElement"([collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
+    return blur(collection[0]);
   },
 
   "When I (de)?select (?:the )?(?:radio button|checkbox) $opinionatedElement"(de, [collection/* , label, selector */]) {

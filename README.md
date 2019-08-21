@@ -1028,7 +1028,7 @@ Then current URL's pathname should be /products?expand=true
 
 Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) contains or does not contain the specified query param.
 
-Signature: `Then current URL should (NOT |not )?have query param \"(\\w+)\"`.
+Signature: `Then current URL should (not|NOT)? ?have query param \"(\\w+)\"`.
 
 Example:
 
@@ -1045,7 +1045,7 @@ Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/m
 
 Note: produces positive result when a query param is not present and the step is used with `NOT`.
 
-Signature: `Then current URL should (NOT |not )?have query param \"(\\w+)\" with value \"(.*)\"`.
+Signature: `Then current URL should (not|NOT)? ?have query param \"(\\w+)\" with value \"(.*)\"`.
 
 Example:
 
@@ -1094,7 +1094,7 @@ If `NOT` is provided, the number is set to `0`.
 
 Signatures:
 
-* `Then (?:(\\d+) )?$opinionatedElement should (NOT |not )?be visible`
+* `Then (?:(\\d+) )?$opinionatedElement should (not|NOT)? ?be visible`
 * `Then I should see (NO |no )?(?:(\\d+) )?$opinionatedElementke`
 
 Example:
@@ -1144,11 +1144,11 @@ Then the Quantity of the Cart should NOT be "2"
 
 Checks if given element's value is equal to the given text.
 
-Will crash if no elements or more than one element matched.
+Will crash if no elements or more than one element matched, except when NOT is passed.
 
 If the referenced element is not editable, then an editable element will be looked up inside the referenced element. Exactly one input/textarea/select is expected to be found inside the given element.
 
-Signature: `Then $opinionatedElement should (NOT |not )?have value \"(.*)\"`.
+Signature: `Then $opinionatedElement should (not|NOT)? ?have value \"(.*)\"`.
 
 Example:
 
@@ -1165,7 +1165,9 @@ Checks the state of a given checkbox/radio.
 
 The referenced element can be either an input or contain exactly one input.
 
-Signature: `Then (?:the )?(?:radio button|checkbox) $opinionatedElement should (NOT |not )?be selected`
+Will crash if no elements or more than one element matched, except when NOT is passed.
+
+Signature: `Then (?:the )?(?:radio button|checkbox) $opinionatedElement should (not|NOT)? ?be selected`
 
 Expamples:
 
@@ -1192,9 +1194,11 @@ Then a checkbox/radio is found that is associated with the label.
 
 The checkbox/radio must either be inside the label or be refernced via the `for` attribute.
 
+Will crash if no elements or more than one element matched, except when NOT is passed.
+
 Will crash if more than one input exists inside the label.
 
-Signature: `Then (?:the )?(?:radio button|checkbox) \"(.+?)\" should (NOT |not )?be selected in $opinionatedElement`
+Signature: `Then (?:the )?(?:radio button|checkbox) \"(.+?)\" should (not|NOT)? ?be selected in $opinionatedElement`
 
 Expamples:
 
@@ -1215,9 +1219,9 @@ Then the radio-button "Prefer not to tell" in the Gender-Field should NOT be sel
 
 Checks if given element has given HTML class.
 
-Will crash if no elements or more than one element matched.
+Will crash if no elements or more than one element matched, except when NOT is passed.
 
-Signature: `Then $opinionatedElement should have (NOT |not )?HTML class \"(.*)\"`.
+Signature: `Then $opinionatedElement should have (not|NOT)? ?HTML class \"(.*)\"`.
 
 Example:
 
@@ -1232,9 +1236,9 @@ Then the second Menu-Item should NOT have HTML class "active"
 
 Checks if given element has given HTML attr. Optionally checks the attr to match given value.
 
-Will crash if no elements or more than one element matched.
+Will crash if no elements or more than one element matched, except when NOT is passed.
 
-Signature: `Then $opinionatedElement should (NOT |not )?have HTML attr \"(.*)\"(?: with value \"(.+?)\")?`.
+Signature: `Then $opinionatedElement should (not|NOT)? ?have HTML attr \"(.*)\"(?: with value \"(.+?)\")?`.
 
 Example:
 
@@ -1336,7 +1340,7 @@ Will crash if no elements or more than one element matched the power select.
 
 If the referenced element is not a power select, a power select will be looked up inside the referenced element.
 
-Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (NOT |not )?(?:have text|say|be) \"(.*)\"`.
+Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (not|NOT)? ?(?:have text|say|be) \"(.*)\"`.
 
 Example:
 
@@ -1447,7 +1451,7 @@ Will crash if the number provided is larger than the number of selected items.
 
 If the referenced element is not a power select, a power select will be looked up inside the referenced element.
 
-Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item in the dropdown $opinionatedElement should (NOT|not )?be disabled`.
+Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item in the dropdown $opinionatedElement should (not|NOT)? ?be disabled`.
 
 Example:
 
@@ -1470,7 +1474,7 @@ Will crash if the number provided is larger than the number of selected items ha
 
 If the referenced element is not a power select, a power select will be looked up inside the referenced element.
 
-Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item \"(.+)\" in the dropdown $opinionatedElement should (NOT|not )?be disabled`.
+Signature: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item \"(.+)\" in the dropdown $opinionatedElement should (not|NOT)? ?be disabled`.
 
 Example:
 

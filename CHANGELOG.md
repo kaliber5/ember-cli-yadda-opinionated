@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.9.2] - 2019-08-21
+
+### Added
+- Focus in/out steps.
+- The usage of NOT in steps is more flexible, allowing to use placeholders like this: `Then the Price should [Not] be "[Value]"`.
+- Allow NOT steps to pass when no element is found.
+
+
+
 ## [0.9.1] - 2019-08-09
 
 ### Added

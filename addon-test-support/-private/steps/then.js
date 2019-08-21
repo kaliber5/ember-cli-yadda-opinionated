@@ -34,13 +34,13 @@ const steps = {
     expect(url.pathname).to.equal(pathname);
   },
 
-  async "Then current URL should (NOT |not )?have query param \"(\\w+)\""(not, key) {
+  async "Then current URL should (not|NOT)? ?have query param \"(\\w+)\""(not, key) {
     await settled();
     const url = new URL(currentURL(), location.origin);
     expect(url.searchParams.has(key)).to.equal(!!not);
   },
 
-  async "Then current URL should (NOT |not )?have query param \"(\\w+)\" with value \"(.*)\""(not, key, expectedValue) {
+  async "Then current URL should (not|NOT)? ?have query param \"(\\w+)\" with value \"(.*)\""(not, key, expectedValue) {
     await settled();
     const url = new URL(currentURL(), location.origin);
     const actualValue = url.searchParams.get(key);
@@ -61,7 +61,7 @@ const steps = {
     expect(collection).to.have.length(count);
   },
 
-  "Then (?:(\\d+) )?$opinionatedElement should (NOT |not )?be visible"(countRaw, [collection/* , label, selector */], no) {
+  "Then (?:(\\d+) )?$opinionatedElement should (not|NOT)? ?be visible"(countRaw, [collection/* , label, selector */], no) {
     assert(`Don't use NOT and number at the same time`, !(no && countRaw));
 
     let count =
@@ -79,10 +79,14 @@ const steps = {
   },
 
   "Then I should see (NO |no )?(?:(\\d+) )?$opinionatedElement"(no, countRaw, [collection, label, selector]) {
-    return steps["Then (?:(\\d+) )?$opinionatedElement should (NOT |not )?be visible"](countRaw, [collection, label, selector], no);
+    return steps["Then (?:(\\d+) )?$opinionatedElement should (not|NOT)? ?be visible"](countRaw, [collection, label, selector], no);
   },
 
-  "Then $opinionatedElement should (NOT |not )?(?:have text|say|be) \"(.*)\""([collection/* , label, selector */], not, text) {
+  "Then $opinionatedElement should (not|NOT)? ?(?:have text|say|be) \"(.*)\""([collection/* , label, selector */], not, text) {
+    if (not && !collection.length) {
+      return;
+    }
+
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
 
     const [element] = collection;
@@ -98,7 +102,11 @@ const steps = {
     }
   },
 
-  "Then $opinionatedElement should (NOT |not )?have value \"(.*)\""([collection/* , label, selector */], not, value) {
+  "Then $opinionatedElement should (not|NOT)? ?have value \"(.*)\""([collection/* , label, selector */], not, value) {
+    if (not && !collection.length) {
+      return;
+    }
+
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
     const element = collection[0];
     const target = findEditable(element, false);
@@ -108,7 +116,11 @@ const steps = {
       : expect(target).to.have.value(value);
   },
 
-  "Then $opinionatedElement should (NOT |not )?have HTML class \"(.*)\""([collection/* , label, selector */], not, text) {
+  "Then $opinionatedElement should (not|NOT)? ?have HTML class \"(.*)\""([collection/* , label, selector */], not, text) {
+    if (not && !collection.length) {
+      return;
+    }
+
     assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
 
     not
@@ -116,7 +128,11 @@ const steps = {
       : expect(collection[0]).to.have.class(text);
   },
 
-  "Then $opinionatedElement should (NOT |not )?have HTML attr \"(.+?)\"(?: with value \"(.+?)\")?"([collection/* , label, selector */], not, attrName, attrValue) {
+  "Then $opinionatedElement should (not|NOT)? ?have HTML attr \"(.+?)\"(?: with value \"(.+?)\")?"([collection/* , label, selector */], not, attrName, attrValue) {
+    if (not && !collection.length) {
+      return;
+    }
+
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
 
     not
@@ -144,7 +160,11 @@ const steps = {
     expect(record[key]).deep.equal(value);
   },
 
-  "Then (?:the )?(?:radio button|checkbox) $opinionatedElement should (NOT |not )?be selected"([collection/* , label, selector */], not) {
+  "Then (?:the )?(?:radio button|checkbox) $opinionatedElement should (not|NOT)? ?be selected"([collection/* , label, selector */], not) {
+    if (not && !collection.length) {
+      return;
+    }
+
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
     const [element] = collection;
     let input;
@@ -162,7 +182,11 @@ const steps = {
       : expect(input.checked).to.be.true;
   },
 
-  "Then (?:the )?(?:radio button|checkbox) \"(.+?)\" should (NOT |not )?be selected in $opinionatedElement"(text, not, [collection/* , label, selector */]) {
+  "Then (?:the )?(?:radio button|checkbox) \"(.+?)\" should (not|NOT)? ?be selected in $opinionatedElement"(text, not, [collection/* , label, selector */]) {
+    if (not && !collection.length) {
+      return;
+    }
+
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
     const [element] = collection;
     const input = findInputForLabelWithText(text, element);
