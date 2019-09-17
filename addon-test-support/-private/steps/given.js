@@ -5,24 +5,67 @@ import { camelize, dasherize }  from '@ember/string';
 import { pluralize, singularize } from 'ember-inflector';
 import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 import HasMany from 'ember-cli-mirage/orm/associations/has-many';
+import { REGEX_ID_AND_TYPE, REGEX_REL_NAME } from '../regex';
 
-function findRelationship(type, relationshipName) {
+function findRelationship(server, type, relationshipName) {
   try {
     const Model = server.schema.modelClassFor(type);
     return Model.associationFor(relationshipName);
-  } catch (e) {} // eslint-disable-line no-empty
+  } catch (e) {
+    return null;
+  } // eslint-disable-line no-empty
 }
 
-function findRelatedRecords(type, relationshipName, idOrIdsRaw) {
-  idOrIdsRaw = idOrIdsRaw.trim();
-  let result;
-  const relationship = findRelationship(type, relationshipName);
-  assert(`No such relationship "${relationshipName} on Mirage model ${type}`, relationship);
+function findRelatedRecord(server, idRaw, relatedTypeFromRelationship) {
+  const result = REGEX_ID_AND_TYPE.exec(idRaw);
 
-  const relatedType = relationship.modelName;
+  if (!result || !result[1]) {
+    throw new Error(`Invalid id: ${idRaw}`);
+  }
+
+  const [, id, typeFromId] = result;
+
+  const relatedType = typeFromId || relatedTypeFromRelationship;
+
   const relatedTypePlural = pluralize(camelize(relatedType));
   const relatedCollection = server.schema[relatedTypePlural];
-  assert(`Collection ${relatedTypePlural} does not exist in Mirage Schema`, relatedCollection);
+
+  if (!relatedCollection) {
+    throw new Error(`Collection ${relatedTypePlural} does not exist in Mirage Schema`);
+  }
+
+  const relatedRecord = relatedCollection.find(id);
+
+  if (!relatedRecord) {
+    throw new Error(`Record of type ${relatedType} with id ${id} not found in Mirage Schema`);
+  }
+
+  return relatedRecord;
+}
+
+function findRelatedRecords(server, type, relationshipName, idOrIdsRaw) {
+  idOrIdsRaw = idOrIdsRaw.trim();
+
+  let result;
+  let relationship;
+  let relatedType;
+
+  if (REGEX_REL_NAME.test(relationshipName)) {
+    const result = REGEX_REL_NAME.exec(relationshipName);
+
+    if (!result) {
+      throw new Error(`Regex parse error for realtionship name '${relationshipName}'`);
+    }
+
+    relationshipName = result[1];
+    relationship = findRelationship(server, type, relationshipName);
+    assert(`No such relationship "${relationshipName}" on Mirage model ${type}`, relationship);
+    relatedType = dasherize(result[2]);
+  } else {
+    relationship = findRelationship(server, type, relationshipName);
+    assert(`No such relationship "${relationshipName} on Mirage model ${type}`, relationship);
+    relatedType = relationship.modelName;
+  }
 
   // HasMany
   if (relationship instanceof HasMany) {
@@ -30,19 +73,12 @@ function findRelatedRecords(type, relationshipName, idOrIdsRaw) {
       idOrIdsRaw
         .split(REGEX_COMMA_AND_SEPARATOR)
         .filter(str => str.length)
-        .map(str => str.trim().slice(1))
-        .map(id => {
-          const relatedRecord = relatedCollection.find(id);
-          assert(`Record of type ${relatedType} with id ${id} not found in Mirage Schema`, relatedRecord);
-          return relatedRecord;
-        });
+        .map(idRaw => findRelatedRecord(server, idRaw, relatedType));
   }
 
   // BelongsTo non-empty
   else if (idOrIdsRaw.length) {
-    const id = idOrIdsRaw.slice(1);
-    result = relatedCollection.find(id);
-    assert(`Record of type ${relatedType} with id ${id} not found in Mirage Schema`, result);
+    result = findRelatedRecord(server, idOrIdsRaw, relatedType);
   }
 
   // BelongsTo empty
@@ -50,7 +86,7 @@ function findRelatedRecords(type, relationshipName, idOrIdsRaw) {
     result = null;
   }
 
-  return result;
+  return [result, relationshipName];
 }
 
 const steps = {
@@ -73,15 +109,14 @@ const steps = {
 
     properties = Object.entries(properties).reduce((result, [key, value]) => {
       key = key.trim();
-      const relationship = findRelationship(type, key);
 
       if (value.trim) {
         value = value.trim()
       }
 
       // Relationship
-      if (relationship) {
-        value = findRelatedRecords(type, key, value);
+        if (REGEX_REL_NAME.test(key) || findRelationship(server, type, key)) {
+        [value, key] = findRelatedRecords(server, type, key, value);
       }
 
       // Booleans, Arrays, Objects and Null
@@ -115,11 +150,10 @@ const steps = {
       const properties = Object.entries(row).reduce((result, [key, value]) => {
         key = key.trim();
         value = value.trim();
-        const relationship = findRelationship(type, key);
 
         // Relationship
-        if (relationship) {
-          value = findRelatedRecords(type, key, value);
+        if (REGEX_REL_NAME.test(key) || findRelationship(server, type, key)) {
+          [value, key] = findRelatedRecords(server, type, key, value);
         }
 
         // Traits

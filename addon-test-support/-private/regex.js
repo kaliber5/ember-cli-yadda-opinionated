@@ -6,6 +6,8 @@ export const REGEX_SEPARATOR = new RegExp(STR_SEPARATOR);
 export const REGEX_SELECTOR_WITH_EQ = /(.+?(?::eq\(\d+\)))/;
 export const REGEX_SELECTOR_MAYBE_WITH_EQ = /(.+?)(?::eq\((\d+)\)$|$)/;
 export const STR_ITEM_NON_MATCHING = `(?:(?:a|an|the) )?(?:\\d+(?:st|nd|rd|th) |(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?[\\w-+]+s?(?:\\(.+?\\))?`;
+export const REGEX_REL_NAME = /(.+?)\((.+?)\)/;
+export const REGEX_ID_AND_TYPE = /@([^()]+)(?:\((.+?)\))?/;
 
 export function generateLabelRegexString(depth = 5) {
   let result = STR_ITEM_NON_MATCHING;

@@ -712,11 +712,15 @@ It will simply pass provided properties and traits as-is to Mirage's `server.cre
 
 * The model name will be camelCased.
 * Property names and values are used as-is.
-* If a value starts with `@`, it is treated as a relationship id. The key will be camelCased and used to look up a related record and associated with the new record. For a to-many relationship, use plural key and delimit ids with commas.
+* Relationships will be automatically recognized by inspecting property types on the corresponding Mirage model.
+
+    Values must be ids, without quotes, prefixed with `@`, e. g. `@1` or `@foo`.
   
-    This way you can populate one-to-one and one-to-many relationships (from the one side).
+    For a to-many relationship, use plural key and delimit ids with commas. This way you can populate one-to-one and one-to-many relationships (from the one side).
 
     Alternatively, you can use Mirage's default behavior and pass ids, e. g. `{"comment_ids": [1, 2]}`.
+
+    For polymorphic relationships, you can optionally provide a type of each related record next to the id in parens: `@1(User), @2(Bot)`. You can also provide the default type in the key, e. g. `"authors(User)": "@1, @3)`. Both approaches can be mixed, the per-id type has priority. If the type is provided neither in key nor in id, then the base type of the polymorphic relationship will be used to create the related record.
 
 Signature: `Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type (\\w+)(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))?`
 
@@ -726,8 +730,11 @@ Examples:
 Given there is a record of type Post
 Given there's a record of type Post
 Given there is a record of type Post with property {"id": "1"}
-Given there is a record of type Post with properties {"id": "1", "title": "Foo", author: "@mike"}
-Given there is a record of type Post with properties {"id": "1", "title": "Foo", authors: "@mike, @bob"}
+Given there is a record of type Post with properties {"id": "1", "title": "Foo", "author": "@mike"}
+Given there is a record of type Post with properties {"id": "1", "title": "Foo", "author(User)": "@mike"}
+Given there is a record of type Post with properties {"id": "1", "title": "Foo", "author": "@mike(User)"}
+Given there is a record of type Post with properties {"id": "1", "title": "Foo", "authors": "@mike(User), @bob(Bot)"}
+Given there is a record of type Post with properties {"id": "1", "title": "Foo", "authors(User)": "@mike, @bob(Bot)"}
 Given there are 2 records of type Post with trait published
 Given there is a record of type Post with traits published, pinned and commented
 Given there is a record of type Post with traits published and commented and properties {"id": "1", "title": "Foo"}
@@ -749,13 +756,15 @@ Though this step is similar to the above, it has slightly different behavior:
 * The model name will be camelCased.
 * Keys (column headers) and values are trimmed.
 * Property names are used as-is, except for names `trait` and `traits`, which are used for traits.
-* If a value starts with `@`, it is treated as a relationship id or ids. The key will be camelCased and used to look up a related record and associated with the new record. For a to-many relationship, use plural key and delimit ids with commas.
+* Relationships will be automatically recognized by inspecting property types on the corresponding Mirage model.
+
+    Values must be ids, without quotes, prefixed with `@`, e. g. `@1` or `@foo`.
   
-    This way you can populate one-to-one and one-to-many relationships (from the one side).
+    For a to-many relationship, use plural key and delimit ids with commas. This way you can populate one-to-one and one-to-many relationships (from the one side).
 
     Alternatively, you can use Mirage's default behavior and pass ids, e. g. `{"comment_ids": [1, 2]}`.
 
-    If you need a non-id string that starts with `@`, wrap it with quotes.
+    For polymorphic relationships, you can optionally provide a type of each related record next to the id in parens: `@1(User), @2(Bot)`. You can also provide the default type in the key, e. g. `"authors(User)": "@1, @3)`. Both approaches can be mixed, the per-id type has priority. If the type is provided neither in key nor in id, then the base type of the polymorphic relationship will be used to create the related record.
 
 * Empty cells are treated as `null`.
 
@@ -780,6 +789,13 @@ And there are records of type Post with the following properties:
   | 1  | "Hello, World!" | @bloo  |
   | 2  | "Foo Bar Baz"   | @wilt  |
   ---------------------------------
+And there are records of type Post with the following properties:
+  ---------------------------------------
+  | id | title           | author(User) |
+  | 1  | "Hello, World!" | @bloo        |
+  | 2  | "Foo Bar Baz"   | @wilt        |
+  | 3  | "Zomg Lol Quux" | @cheese(Bot) |
+  ---------------------------------------
 ```
 
 

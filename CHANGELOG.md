@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.10.0] - 2019-09-17
+
+### Added
+- Support for polymorphic relationships in the Mirage seeding steps.
+
+
+
 ## [0.9.3] - 2019-08-21
 
 ### Added
