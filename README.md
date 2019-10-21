@@ -66,6 +66,7 @@ Table of contents <!-- omit in toc -->
       - [Element existence](#element-existence)
       - [Element visibility](#element-visibility)
       - [Element text](#element-text)
+      - [Element text (multiline)](#element-text-multiline)
       - [Element value](#element-value)
       - [State of checkbox or radio button](#state-of-checkbox-or-radio-button)
       - [State of checkbox or radio button corresponding to the label with given text](#state-of-checkbox-or-radio-button-corresponding-to-the-label-with-given-text)
@@ -1152,6 +1153,34 @@ Then the Title of 1st Post should say "Hello, World!"
 Then the Title of 1st Post should NOT say "Hello, World!"
 Then the Quantity of the Cart should be "2"
 Then the Quantity of the Cart should NOT be "2"
+```
+
+
+
+##### Element text (multiline)
+
+Checks if given element's trimmed text is or is not equal to the given multiline text.
+
+Will crash if no elements or more than one element matched.
+
+If an element is an input or a textarea, its `value` attribute will be checked instead. It will not be trimmed. 
+
+Signature: `Then $opinionatedElement should (not|NOT)? ?have the following text:\n$opinionatedText`.
+
+Example:
+
+```feature
+Then the Error-Message should have the following text:
+  ---------
+  System Error
+  Networ down
+  ---------
+
+Then the Error-Message should NOT have the following text:
+  ---------
+  System Error
+  Networ down
+  ---------
 ```
 
 

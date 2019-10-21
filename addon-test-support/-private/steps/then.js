@@ -102,6 +102,10 @@ const steps = {
     }
   },
 
+  "Then $opinionatedElement should (not|NOT)? ?have the following text:\n$opinionatedText"() {
+    return steps["Then $opinionatedElement should (not|NOT)? ?(?:have text|say|be) \"(.*)\""](...arguments);
+  },
+
   "Then $opinionatedElement should (not|NOT)? ?have value \"(.*)\""([collection/* , label, selector */], not, value) {
     if (not && !collection.length) {
       return;
