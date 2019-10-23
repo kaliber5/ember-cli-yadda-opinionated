@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-yadda-opinionated",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
     "ember-addon"
