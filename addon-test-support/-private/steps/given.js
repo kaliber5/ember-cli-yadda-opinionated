@@ -190,6 +190,14 @@ const steps = {
     server.logging = true;
   },
 
+  'Given there is a $opinionatedInteger error for the API (.+) call to "(.+)"'(
+    status,
+    methodName,
+    url
+  ) {
+    this.server[methodName.toLowerCase()](url, { message: 'There was an error' }, status);
+  },
+
 };
 
 export default steps;

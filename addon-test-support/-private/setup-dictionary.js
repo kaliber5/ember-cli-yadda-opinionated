@@ -5,6 +5,7 @@ import { REGEX_LABEL } from 'ember-cli-yadda-opinionated/test-support/-private/r
 
 export default function setupDictionary(dictionary) {
   return dictionary
+    .define('opinionatedInteger', /(\d+)/, yadda.converters.integer)
     .define('opinionatedText', /([^\u0000]*)/)
     .define('opinionatedTable', /([^\u0000]*)/, yadda.converters.table) // eslint-disable-line no-control-regex
     .define('opinionatedElement', REGEX_LABEL, element)

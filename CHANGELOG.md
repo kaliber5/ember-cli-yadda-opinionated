@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.11.2] - 2019-10-23
+
+### Added
+- Mirage failure step.
+
+
+
 ## [0.11.1] - 2019-10-21
 
 ### Added

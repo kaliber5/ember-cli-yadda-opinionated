@@ -46,6 +46,7 @@ Table of contents <!-- omit in toc -->
       - [Server logging](#server-logging)
       - [Seed record(s) with same properties/traits](#seed-records-with-same-propertiestraits)
       - [Seed records with a table](#seed-records-with-a-table)
+      - [Make a Mirage endpoint fail with an error](#make-a-mirage-endpoint-fail-with-an-error)
     - [When steps](#when-steps)
       - [Visit](#visit)
       - [Settled](#settled)
@@ -797,6 +798,20 @@ And there are records of type Post with the following properties:
   | 2  | "Foo Bar Baz"   | @wilt        |
   | 3  | "Zomg Lol Quux" | @cheese(Bot) |
   ---------------------------------------
+```
+
+
+
+##### Make a Mirage endpoint fail with an error
+
+Useful for testing error states.
+
+Signature: `Given there is a $opinionatedInteger error for the API (.+) call to "(.+)"`
+
+Examples:
+
+```
+Given there is a 500 error for the API POST call to "/posts"
 ```
 
 
