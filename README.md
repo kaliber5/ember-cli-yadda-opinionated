@@ -437,9 +437,36 @@ Installation
         ember install ember-cli-chai
         npm install -D chai-dom  # or: yarn add -D chai-dom
 
+3. Add the hooks.
+
+    In your app's `tests/helpers/yadda-annotations.js` file, import the setup helper:
+
+    ```js
+    import { setupYaddaOpinionated } from 'ember-cli-yadda-opinionated/test-support';
+    ```
+
+    Find this fragment:
+
+    ```js
+    if (annotations.setupapplicationtest) {
+      return setupApplicationTest;
+    }
+    ```
+
+    And replace it with this:
+
+    ```js
+    if (annotations.setupapplicationtest) {
+      return function() {
+        const hooks = setupApplicationTest();
+        setupYaddaOpinionated(hooks);
+      };
+    }
+    ```
+
 3. Extend your dictionary.
 
-    In your app's `tests/acceptance/steps/steps.js` file, you should have this:
+    In your app's `tests/acceptance/steps/steps.js` file, you should have something like this:
 
     ```js
     new yadda.Dictionary()
@@ -816,6 +843,20 @@ Given there is a 500 error for the API POST call to "/posts"
 
 
 
+##### Adjust a config/environment param
+
+Helps testing the app in different build modes.
+
+Signature: `Given configuration property "(.+?)" is set to $opinionatedJSON`
+
+Examples:
+
+```
+Given configuration property "theme" is set to "dark"
+```
+
+
+
 #### When steps
 
 Import:
@@ -856,7 +897,7 @@ Implements [`click()`](https://github.com/emberjs/ember-test-helpers/blob/master
 
 Will crash if no elements or more than one element matched.
 
-Signature: `When I click (?:on )?$opinionatedElement`.
+Signature: `When I click (?:on )?$opinionated$opinionatedElement`.
 
 Examples:
 

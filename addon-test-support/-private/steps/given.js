@@ -4,6 +4,7 @@ import { assert }  from '@ember/debug';
 import { camelize, dasherize }  from '@ember/string';
 import { pluralize, singularize } from 'ember-inflector';
 import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
+import { overrideConfig } from 'ember-cli-yadda-opinionated/test-support/-private/config';
 import HasMany from 'ember-cli-mirage/orm/associations/has-many';
 import { REGEX_ID_AND_TYPE, REGEX_REL_NAME } from '../regex';
 
@@ -197,6 +198,10 @@ const steps = {
   ) {
     this.server[methodName.toLowerCase()](url, { message: 'There was an error' }, status);
   },
+
+  'Given configuration property "(.+?)" is set to $opinionatedJSON'(key, value) {
+    overrideConfig(key, value);
+  }
 
 };
 

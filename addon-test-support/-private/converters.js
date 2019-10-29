@@ -5,3 +5,9 @@ export function element(label, next) {
 
   next(null, collectionOrElement);
 }
+
+export function json(jsonString, next) {
+  const result = JSON.parse(jsonString);
+
+  next(null, result);
+}

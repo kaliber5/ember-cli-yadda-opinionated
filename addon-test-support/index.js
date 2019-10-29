@@ -7,6 +7,7 @@ import {
 
 import { labelMap, transformsMap } from 'ember-cli-yadda-opinionated/test-support/-private/maps';
 import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/-private/selector-from-label';
+import setupYaddaOpinionated from 'ember-cli-yadda-opinionated/test-support/-private/setup';
 import setupDictionary from 'ember-cli-yadda-opinionated/test-support/-private/setup-dictionary';
 import givenSteps from 'ember-cli-yadda-opinionated/test-support/-private/steps/given';
 import thenSteps from 'ember-cli-yadda-opinionated/test-support/-private/steps/then';
@@ -23,6 +24,7 @@ export {
   REGEX_LABEL,
   selectorFromLabel,
   setupDictionary,
+  setupYaddaOpinionated,
   thenSteps,
   transformsMap,
   whenSteps
