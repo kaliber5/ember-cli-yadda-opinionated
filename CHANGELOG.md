@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.12.0] - 2019-10-29
+## [0.11.0] - 2019-10-29
 
 ### Added
 - config/environment step.
@@ -16,14 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.11.2] - 2019-10-23
+## [0.10.2] - 2019-10-23
 
 ### Added
 - Mirage failure step.
 
 
 
-## [0.11.1] - 2019-10-21
+## [0.10.1] - 2019-10-21
 
 ### Added
 - Multilne element text step.
