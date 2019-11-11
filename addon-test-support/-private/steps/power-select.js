@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+// import { expect } from 'chai';
 import { assert }  from '@ember/debug';
 import { click } from '@ember/test-helpers';
 import { getIndexZero } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';

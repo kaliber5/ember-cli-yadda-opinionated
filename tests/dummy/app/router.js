@@ -7,6 +7,9 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  this.route('test-lab', function () {
+    this.route('then-steps');
+  });
 });
 
 export default Router;

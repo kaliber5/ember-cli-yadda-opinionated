@@ -20,7 +20,7 @@ Table of contents <!-- omit in toc -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Roadmap](#roadmap)
+- [Status & compatibility](#status--compatibility)
 - [Rationale](#rationale)
   - [Moving the truth to feature files](#moving-the-truth-to-feature-files)
     - [The problem](#the-problem)
@@ -41,12 +41,14 @@ Table of contents <!-- omit in toc -->
   - [Implementing steps with the $opinionatedElement converter](#implementing-steps-with-the-opinionatedelement-converter)
   - [Using step aliases](#using-step-aliases)
   - [Mapping labels to selectors](#mapping-labels-to-selectors)
+  - [Making assertions](#making-assertions)
   - [The steps library](#the-steps-library)
     - [Given steps](#given-steps)
       - [Server logging](#server-logging)
       - [Seed record(s) with same properties/traits](#seed-records-with-same-propertiestraits)
       - [Seed records with a table](#seed-records-with-a-table)
       - [Make a Mirage endpoint fail with an error](#make-a-mirage-endpoint-fail-with-an-error)
+      - [Adjust a config/environment param](#adjust-a-configenvironment-param)
     - [When steps](#when-steps)
       - [Visit](#visit)
       - [Settled](#settled)
@@ -101,12 +103,12 @@ Table of contents <!-- omit in toc -->
 
 
 
-Roadmap
+Status & compatibility
 ------------------------------------------------------------------------------
 
-This addon is in early development. See [the first release milestone](https://github.com/kaliber5/ember-cli-yadda-opinionated/milestone/1) to track progress.
+As of 2019, this addon is in active development. See [the first release milestone](https://github.com/kaliber5/ember-cli-yadda-opinionated/milestone/1) to track progress.
 
-:warning: It is currently coupled with Mocha. QUnit support is planned but not in active development. If you want to use `ember-cli-yadda-opinionated` with QUnit, please let us know in [#3](https://github.com/kaliber5/ember-cli-yadda-opinionated/issues/3).
+The addon works well with QUnit. Mocha is also supported, but individual steps will not be logged to the reporter output. [This issue](https://github.com/emberjs/ember-mocha/pull/196) in `ember-mocha` is blocking it. If you want to see individual steps in your Mocha output, please report to that issue.
 
 
 
@@ -464,7 +466,7 @@ Installation
     }
     ```
 
-3. Extend your dictionary.
+4. Extend your dictionary.
 
     In your app's `tests/acceptance/steps/steps.js` file, you should have something like this:
 
@@ -488,7 +490,7 @@ Installation
 
     Note that the default table converter from Yadda is required, named `table`.
 
-4. Extend you steps. See below.
+5. Extend you steps. See below.
 
 
 
@@ -704,6 +706,22 @@ labelMap.set('Bootstrap-Textarea',   'textarea.form-control');
 These labels will be automatically converted to selectors (case-sensitive).
 
 You should consider scoping those selectors with a library's unique HTML class, if available.
+
+
+
+### Making assertions
+
+Steps use Mocha-style assertions: if no error has been thrown, the step is assumed to be successful. If your app is using QUnit, a successful assertion will be logged with the step name.
+
+When an error is thrown, its message will be used as an assertion error.
+
+This enables using assertion libraries like [Chai](https://www.chaijs.com/).
+
+Assertion/error messages are enriched with additional details:
+  * 👟 Step name
+  * ⚙ The name of the step implementation used (useful to make sure Yadda picked the correct implementation)
+  * ⚠ Assertion or error message thrown
+  * 🛠 List of arguments passed into the step
 
 
 
