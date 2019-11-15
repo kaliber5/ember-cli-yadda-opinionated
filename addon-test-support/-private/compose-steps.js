@@ -77,7 +77,7 @@ async function runAndLogOrThrow({ assert, callback, stepName, stepImplName, args
         isSuccessful = false;
 
         // Stop scenario execution without spamming into the report output
-        throw new Error();
+        throw new Error("Terminating further scenario execution after a previous error");
       }
 
       /* Mocha and everything else*/

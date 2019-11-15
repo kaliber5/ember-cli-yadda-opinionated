@@ -6,7 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.12.0] - 2015
+## [0.12.1] - 2019-11-15
+
+### Changed
+- Improved error message that terminates scenario execution after another error.
+
+
+
+## [0.12.0] - 2019-11-15
 
 ### Added
 - QUnit support, fixes #3. 🎉
