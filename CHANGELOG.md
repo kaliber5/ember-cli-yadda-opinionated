@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.12.0] - 2019-11-12
+
+### Added
+- QUnit support, fixes #3. 🎉
+
+### Dependencies
+- Upgraded Ember CLI to 3.13.1, upgraded dependencies.
+
+
+
 ## [0.11.0] - 2019-10-29
 
 ### Added
