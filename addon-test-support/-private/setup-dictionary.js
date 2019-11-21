@@ -10,4 +10,10 @@ export default function setupDictionary(dictionary) {
     .define('opinionatedTable', /([^\u0000]*)/, yadda.converters.table) // eslint-disable-line no-control-regex
     .define('opinionatedElement', REGEX_LABEL, element)
     .define('opinionatedJSON', REGEX_LABEL, json)
+
+    // Allows escaping double qoutes: `"foo \\"bar\\" baz"`.
+    .define('opinionatedString', /"((?:[^"\\]|\\.)*)"/, (unescapedString, next) => {
+      next(null, unescapedString.replace(/\\"/g, "\""));
+    })
+    ;
 }

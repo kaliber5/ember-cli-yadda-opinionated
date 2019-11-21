@@ -27,7 +27,8 @@
     "ember-cli-htmlbars": "^4.0.0",
     "ember-get-config": "^0.2.4",
     "ember-inflector": "^3.0.1",
-    "ember-require-module": "^0.3.0"
+    "ember-require-module": "^0.3.0",
+    "is-subset": "^0.1.1"
   },
   "devDependencies": {
     "@ember/optional-features": "^1.0.0",

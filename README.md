@@ -49,6 +49,10 @@ Table of contents <!-- omit in toc -->
       - [Seed records with a table](#seed-records-with-a-table)
       - [Make a Mirage endpoint fail with an error](#make-a-mirage-endpoint-fail-with-an-error)
       - [Adjust a config/environment param](#adjust-a-configenvironment-param)
+      - [Set a local storage value (single line)](#set-a-local-storage-value-single-line)
+      - [Set a local storage value (multiline)](#set-a-local-storage-value-multiline)
+      - [Remove a local storage value](#remove-a-local-storage-value)
+      - [Clear local storage](#clear-local-storage)
     - [When steps](#when-steps)
       - [Visit](#visit)
       - [Settled](#settled)
@@ -76,6 +80,13 @@ Table of contents <!-- omit in toc -->
       - [Element HTML class](#element-html-class)
       - [Element HTML attr](#element-html-attr)
       - [Mirage attr value](#mirage-attr-value)
+      - [Compare local storage value to a string (single line)](#compare-local-storage-value-to-a-string-single-line)
+      - [Compare local storage value to a string (multiline)](#compare-local-storage-value-to-a-string-multiline)
+      - [Assert local storage value is deeply equal to a JSON](#assert-local-storage-value-is-deeply-equal-to-a-json)
+      - [Assert local storage value is a subset of a JSON](#assert-local-storage-value-is-a-subset-of-a-json)
+      - [Assert local storage value is a superset of a JSON](#assert-local-storage-value-is-a-superset-of-a-json)
+      - [Local storage key existence](#local-storage-key-existence)
+      - [Local storage emptiness](#local-storage-emptiness)
     - [ember-power-select steps](#ember-power-select-steps)
       - [Item count](#item-count)
       - [Selected Item count](#selected-item-count)
@@ -875,6 +886,69 @@ Given configuration property "theme" is set to "dark"
 
 
 
+##### Set a local storage value (single line)
+
+Signature: `Given local storage key $opinionatedString is set to $opinionatedString`
+
+Value is a string which can contain JSON or anything else.
+
+Allows escaping double quotes.
+
+Example:
+
+```
+Given local storage key "my-app-config" is set to "foo"
+Given local storage key "my-app-config" is set to "{\\"id\\": \\"foo\\"}"
+```
+
+
+
+##### Set a local storage value (multiline)
+
+Signature: `Given local storage key $opinionatedString is set to the following value:\n$opinionatedText`
+
+Value is a string which can contain JSON or anything else.
+
+Example:
+
+```
+Given local storage key "my-app-config" is set to the following value:
+  -----------------------------------------
+  {
+    "id": "foo",
+    "createdAt": "2019-11-21T08:28:59.973Z"
+  }
+  -----------------------------------------
+```
+
+
+
+##### Remove a local storage value
+
+Signature: `Given local storage key $opinionatedString does not exist`
+
+Value is a string which can contain JSON or anything else.
+
+Example:
+
+```
+Given local storage key "my-app-config" does not exist
+```
+
+
+
+##### Clear local storage
+
+Signature: `Given local storage is empty`
+
+Example:
+
+```
+Given local storage is empty
+```
+
+
+
 #### When steps
 
 Import:
@@ -1245,16 +1319,16 @@ Example:
 
 ```feature
 Then the Error-Message should have the following text:
-  ---------
+  ------------
   System Error
   Networ down
-  ---------
+  ------------
 
 Then the Error-Message should NOT have the following text:
-  ---------
+  ------------
   System Error
   Networ down
-  ---------
+  ------------
 ```
 
 
@@ -1381,6 +1455,114 @@ Example:
 
 ```feature
 Then record of type Post and id 1 should have attribute authorId with value "alice1"
+```
+
+
+
+##### Compare local storage value to a string (single line)
+
+Signature: `Then local storage value for $opinionatedString should (not |NOT )be equal to $opinionatedString`
+
+Value is a string which can contain JSON or anything else.
+
+Allows escaping double quotes.
+
+Example:
+
+```
+Given local storage key "my-app-config" is set to "foo"
+Given local storage key "my-app-config" is set to "{\\"id\\": \\"foo\\"}"
+```
+
+
+##### Compare local storage value to a string (multiline)
+
+Signature: `Then local storage value for $opinionatedString should (not |NOT )be equal to the following value:\n$opinionatedText`
+
+Example:
+
+```
+Then local storage value for "my-app-config" should NOT be equal to the following text:
+  -----------
+  Hello world
+  -----------
+```
+
+
+##### Assert local storage value is deeply equal to a JSON
+
+Signature: `Then local storage value for $opinionatedString should (not |NOT )be deeply equal to the following JSON:\n$opinionatedJSON`
+
+Example:
+
+```
+Then local storage value for "my-app-config" should be deeply equal to the following JSON:
+  -----------------------------------------
+  {
+    "id": "foo",
+    "createdAt": "2019-11-21T08:28:59.973Z"
+  }
+  -----------------------------------------
+```
+
+
+##### Assert local storage value is a subset of a JSON
+
+Signature: `Then local storage value for $opinionatedString should (not |NOT )be a subset of the following JSON:\n$opinionatedText`
+
+Example:
+
+```
+Then local storage value for "my-app-config" should be a subset of the following JSON:
+  -----------------------------------------
+  {
+    "id": "foo",
+    "createdAt": "2019-11-21T08:28:59.973Z"
+  }
+  -----------------------------------------
+```
+
+
+##### Assert local storage value is a superset of a JSON
+
+Signature: `Then local storage value for $opinionatedString should (not |NOT )be a superset of the following JSON:\n$opinionatedText`
+
+Example:
+
+```
+Then local storage value for "my-app-config" should be a superset of the following JSON:
+  -----------------------------------------
+  {
+    "id": "foo",
+    "createdAt": "2019-11-21T08:28:59.973Z"
+  }
+  -----------------------------------------
+```
+
+
+##### Local storage key existence
+
+Signature: `Then local storage key $opinionatedString should (not |NOT )?exist`
+
+Examples:
+
+```
+Then local storage key "my-app-config" should exist
+Then local storage key "my-app-config" should not exist
+Then local storage key "my-app-config" should NOT exist
+```
+
+
+##### Local storage emptiness
+
+Signature: `Then local storage should (not |NOT )?be empty`
+
+Examples:
+
+```
+Then local storage should be empty
+Then local storage should not be empty
+Then local storage should NOT be empty
 ```
 
 

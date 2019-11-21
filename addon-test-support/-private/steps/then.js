@@ -7,6 +7,7 @@ import { isVisible, pause } from 'ember-cli-yadda-opinionated/test-support/-priv
 import { findEditable, findInputForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 import { camelize }  from '@ember/string';
 import { pluralize } from 'ember-inflector';
+import isSubset from 'is-subset/module';
 
 const steps = {
 
@@ -201,6 +202,59 @@ const steps = {
     not
       ? expect(input.checked).to.be.false
       : expect(input.checked).to.be.true;
+  },
+
+  "Then local storage value for $opinionatedString should (not |NOT )be equal to $opinionatedString"(key, not, expectedValue) {
+    const actualValue = window.localStorage.getItem(key);
+
+    not
+      ? expect(actualValue).not.to.be.equal.to(expectedValue)
+      : expect(actualValue).to.be.equal.to(expectedValue);
+  },
+
+  "Then local storage value for $opinionatedString should (not |NOT )be equal to the following value:\n$opinionatedText":
+    "Then local storage value for $opinionatedString should (not |NOT )be equal to $opinionatedString",
+
+  "Then local storage value for $opinionatedString should (not |NOT )be deeply equal to the following JSON:\n$opinionatedJSON"(key, not, expectedJSON) {
+    const actualJSON = JSON.parse(window.localStorage.getItem(key));
+
+    not
+      ? expect(actualJSON).not.to.deep.equal.to(expectedJSON)
+      : expect(actualJSON).to.deep.equal.to(expectedJSON);
+  },
+
+  "Then local storage value for $opinionatedString should (not |NOT )be a subset of the following JSON:\n$opinionatedJSON"(key, not, superset) {
+    const subset = JSON.parse(window.localStorage.getItem(key));
+    const result = isSubset(superset, subset);
+
+    not
+      ? expect(result).to.be.false
+      : expect(result).to.be.true;
+  },
+
+  "Then local storage value for $opinionatedString should (not |NOT )be a superset of the following JSON:\n$opinionatedJSON"(key, not, subset) {
+    const superset = JSON.parse(window.localStorage.getItem(key));
+    const result = isSubset(superset, subset);
+
+    not
+      ? expect(result).to.be.false
+      : expect(result).to.be.true;
+  },
+
+  "Then local storage key $opinionatedString should (not |NOT )?exist"(key, not) {
+    const result = window.localStorage.getItem(key);
+
+    not
+      ? expect(result).to.be.null
+      : expect(result).not.to.be.null;
+  },
+
+  "Then local storage should (not |NOT )?be empty"(not) {
+    const result = window.localStorage.key(0);
+
+    not
+      ? expect(result).not.to.be.null
+      : expect(result).to.be.null;
   },
 };
 
