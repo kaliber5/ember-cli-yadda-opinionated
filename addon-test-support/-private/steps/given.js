@@ -201,7 +201,22 @@ const steps = {
 
   'Given configuration property "(.+?)" is set to $opinionatedJSON'(key, value) {
     overrideConfig(key, value);
-  }
+  },
+
+  'Given local storage key $opinionatedString is set to $opinionatedString'(key, value) {
+    window.localStorage.setItem(key, value);
+  },
+
+  'Given local storage key $opinionatedString is set to the following value:\n$opinionatedText':
+    'Given local storage key $opinionatedString is set to $opinionatedString',
+
+  'Given local storage key $opinionatedString does not exist'(key) {
+    window.localStorage.removeItem(key);
+  },
+
+  'Given local storage is empty'() {
+    window.localStorage.clear();
+  },
 
 };
 
