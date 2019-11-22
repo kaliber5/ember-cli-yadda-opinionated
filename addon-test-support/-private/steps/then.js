@@ -8,6 +8,9 @@ import { findEditable, findInputForLabelWithText } from 'ember-cli-yadda-opinion
 import { camelize }  from '@ember/string';
 import { pluralize } from 'ember-inflector';
 import isSubset from 'is-subset/module';
+import { getWindow } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';
+
+
 
 const steps = {
 
@@ -205,7 +208,7 @@ const steps = {
   },
 
   "Then local storage value for $opinionatedString should (not |NOT )be equal to $opinionatedString"(key, not, expectedValue) {
-    const actualValue = window.localStorage.getItem(key);
+    const actualValue = getWindow().localStorage.getItem(key);
 
     not
       ? expect(actualValue).not.to.be.equal.to(expectedValue)
@@ -216,7 +219,7 @@ const steps = {
     "Then local storage value for $opinionatedString should (not |NOT )be equal to $opinionatedString",
 
   "Then local storage value for $opinionatedString should (not |NOT )be deeply equal to the following JSON:\n$opinionatedJSON"(key, not, expectedJSON) {
-    const actualJSON = JSON.parse(window.localStorage.getItem(key));
+    const actualJSON = JSON.parse(getWindow().localStorage.getItem(key));
 
     not
       ? expect(actualJSON).not.to.deep.equal.to(expectedJSON)
@@ -224,7 +227,7 @@ const steps = {
   },
 
   "Then local storage value for $opinionatedString should (not |NOT )be a subset of the following JSON:\n$opinionatedJSON"(key, not, superset) {
-    const subset = JSON.parse(window.localStorage.getItem(key));
+    const subset = JSON.parse(getWindow().localStorage.getItem(key));
     const result = isSubset(superset, subset);
 
     not
@@ -233,7 +236,7 @@ const steps = {
   },
 
   "Then local storage value for $opinionatedString should (not |NOT )be a superset of the following JSON:\n$opinionatedJSON"(key, not, subset) {
-    const superset = JSON.parse(window.localStorage.getItem(key));
+    const superset = JSON.parse(getWindow().localStorage.getItem(key));
     const result = isSubset(superset, subset);
 
     not
@@ -242,7 +245,7 @@ const steps = {
   },
 
   "Then local storage key $opinionatedString should (not |NOT )?exist"(key, not) {
-    const result = window.localStorage.getItem(key);
+    const result = getWindow().localStorage.getItem(key);
 
     not
       ? expect(result).to.be.null
@@ -250,7 +253,7 @@ const steps = {
   },
 
   "Then local storage should (not |NOT )?be empty"(not) {
-    const result = window.localStorage.key(0);
+    const result = getWindow().localStorage.key(0);
 
     not
       ? expect(result).not.to.be.null

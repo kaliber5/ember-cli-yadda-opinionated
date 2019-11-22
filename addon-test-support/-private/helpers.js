@@ -1,3 +1,5 @@
+/* global require, window */
+
 import { settled } from '@ember/test-helpers';
 
 export function isVisible(elem) {
@@ -25,4 +27,10 @@ export function getIndexZero(ordinal, indexOneStr, defaultValue) {
     indexOneStr           ? parseInt(indexOneStr, 10) - 1 :
                             defaultValue
   );
+}
+
+export function getWindow() {
+  return require.has('ember-window-mock')
+    ? require('ember-window-mock').default
+    : window;
 }

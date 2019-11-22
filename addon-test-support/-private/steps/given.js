@@ -6,7 +6,11 @@ import { pluralize, singularize } from 'ember-inflector';
 import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 import { overrideConfig } from 'ember-cli-yadda-opinionated/test-support/-private/config';
 import HasMany from 'ember-cli-mirage/orm/associations/has-many';
-import { REGEX_ID_AND_TYPE, REGEX_REL_NAME } from '../regex';
+import { REGEX_ID_AND_TYPE, REGEX_REL_NAME } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
+import { getWindow } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';
+
+
+
 
 function findRelationship(server, type, relationshipName) {
   try {
@@ -204,18 +208,18 @@ const steps = {
   },
 
   'Given local storage key $opinionatedString is set to $opinionatedString'(key, value) {
-    window.localStorage.setItem(key, value);
+    getWindow().localStorage.setItem(key, value);
   },
 
   'Given local storage key $opinionatedString is set to the following value:\n$opinionatedText':
     'Given local storage key $opinionatedString is set to $opinionatedString',
 
   'Given local storage key $opinionatedString does not exist'(key) {
-    window.localStorage.removeItem(key);
+    getWindow().localStorage.removeItem(key);
   },
 
   'Given local storage is empty'() {
-    window.localStorage.clear();
+    getWindow().localStorage.clear();
   },
 
 };
