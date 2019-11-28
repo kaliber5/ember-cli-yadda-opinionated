@@ -92,7 +92,7 @@ function findRelatedRecords(server, type, relationshipName, idOrIdsRaw) {
 
 const steps = {
 
-  "Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type (\\w+)(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))?"(countRaw = "1", typeRaw, traitsRaw = "", propertiesRaw = "{}") {
+  "Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type $opinionatedString(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))?"(countRaw = "1", typeRaw, traitsRaw = "", propertiesRaw = "{}") {
     const count = parseInt(countRaw, 10);
     const type = singularize(dasherize(typeRaw));
     const typePlural = pluralize(camelize(typeRaw));
@@ -140,7 +140,7 @@ const steps = {
     server.createList(type, count, ...traits, properties);
   },
 
-  "Given there are records of type (\\w+) with the following properties:\n$opinionatedTable"(typeRaw, rows) {
+  "Given there are records of type $opinionatedString with the following properties:\n$opinionatedTable"(typeRaw, rows) {
     const type = dasherize(typeRaw);
     const typePlural = pluralize(camelize(typeRaw));
 

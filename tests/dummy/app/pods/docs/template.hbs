@@ -1,0 +1,41 @@
+<DocsHeader />
+
+<DocsViewer as |viewer|>
+  <viewer.nav as |nav|>
+    {{nav.section "Introduction"}}
+    {{nav.item "Why Cucumber" "docs.index"}}
+    {{nav.item "Moving the truth to feature files" "docs.truth"}}
+    {{nav.item "Using labels with test selectors" "docs.labels"}}
+    {{nav.item "Composing step implementations" "docs.composing"}}
+    {{nav.item "Debugging" "docs.debugging"}}
+
+    {{nav.section "Usage"}}
+    {{nav.item "What this addon is" "docs.about"}}
+    {{nav.item "Installation" "docs.installation"}}
+    {{#nav.subnav as |nav|}}
+      {{nav.item "Clean steps setup" "docs.setup-steps-clean"}}
+      {{nav.item "Mixed steps setup" "docs.setup-steps-mixed"}}
+    {{/nav.subnav}}
+    {{nav.item "Implementing steps" "docs.custom-steps"}}
+    {{nav.item "Using labels in step implementations" "docs.opinionated-element"}}
+    {{nav.item "Using step aliases" "docs.step-aliases"}}
+    {{nav.item "Mapping labels to selectors" "docs.label-map"}}
+    {{nav.item "Making assertions" "docs.assertions"}}
+
+    {{nav.section "Steps library"}}
+    {{nav.item "Given steps" "docs.steps-given"}}
+    {{nav.item "When steps" "docs.steps-when"}}
+    {{nav.item "Then steps" "docs.steps-then"}}
+    {{nav.item "Power Select steps" "docs.steps-power-select"}}
+    {{nav.item "Power Date Picekr steps" "docs.steps-power-date-picker"}}
+
+    {{nav.section "Misc"}}
+    {{nav.item "Integration test helpers" "docs.integration-test-helpers"}}
+  </viewer.nav>
+
+  <viewer.main>
+    {{outlet}}
+  </viewer.main>
+</DocsViewer>
+
+<DocsKeyboardShortcuts />
