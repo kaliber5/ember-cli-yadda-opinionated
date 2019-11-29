@@ -107,7 +107,7 @@ Let's start with **cons**.
 
 The suggested approach:
 
-* Makes feature files more explicit and more techinical.
+* Makes feature files more explicit and more technical.
 * As a result, features become somewhat harder to read, especially for non-developers.
 
 This is an inevitable price you have to pay for the compromise. The other side of the coin.
