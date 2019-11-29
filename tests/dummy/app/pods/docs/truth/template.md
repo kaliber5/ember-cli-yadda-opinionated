@@ -127,6 +127,6 @@ By paying this price, you get the following **pros**:
     * Writing new tests is fast and enjoyable.
     * You can expand existing features with more cases by simply copying the first case and adjusting the options. Not that you weren't able to do this before, but now it's even easier.
 * The truth is no longer hidden inside the black box of step implementations:
-    * It is now possible to reliable validate features: by reading them, ensure they are making correct assertions in correct connditions.
+    * It is now possible to reliable validate features: by reading them, ensure they are making correct assertions in correct conditions.
     * No false positives caused by black-boxed logic.
     * Steps can cross-reference records with ids. As a result, they no longer need to rely on context (`this.ctx`), making the implementation less tangled.
