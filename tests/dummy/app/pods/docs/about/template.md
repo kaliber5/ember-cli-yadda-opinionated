@@ -13,7 +13,7 @@ An approach to coding which adds a second loop to the TDD cycle: you are suppose
 #### BDD, in a broad sense
 
 
-A methodology of software devleopment, which involves all the team, not only developers. When a feature is conceieved, it is specced out in form of human-readable user stories. These user stories serve as a spec and are used to guide and validate development from planning to deployment.
+A methodology of software development, which involves all the team, not only developers. When a feature is conceived, it is specced out in form of human-readable user stories. These user stories serve as a spec and are used to guide and validate development from planning to deployment.
 
 
 
