@@ -19,7 +19,7 @@ Router.map(function() {
     this.route('debugging');
 
     // Usage
-    this.route('about');
+    this.route('project-structure');
     this.route('installation');
     this.route('setup-steps-clean');
     this.route('setup-steps-mixed');
