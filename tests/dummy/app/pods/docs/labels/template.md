@@ -8,7 +8,7 @@ To learn about test selectors, please see the [ember-test-selectors](https://git
 
 In its simplest form, a label can look like: `Menu-Item`, `MenuItem` or `menu-item`. Any of these lables translates to `[data-test-menu-item]`.
 
-You can also use article. They will be ignored by the addon, but will contribute to readability: `a Menu-Item` and `the Menu-Item` behave identically to `Menu-Item`.
+You can also use articles. They will be ignored by the addon, but will contribute to readability: `a Menu-Item` and `the Menu-Item` behave identically to `Menu-Item`.
 
 Resulting steps could looks like this:
 
