@@ -1,13 +1,20 @@
 {
   "name": "ember-cli-yadda-opinionated",
   "version": "0.12.2",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "A radical take on Cucumber to solve your test maintenance woes.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "cucumber",
+    "bdd",
+    "yadda",
+    "testing",
+    "acceptance testing",
+    "user stories"
   ],
-  "repository": "",
+  "repository": "https://github.com/kaliber5/ember-cli-yadda-opinionated",
+  "bugs": "https://github.com/kaliber5/ember-cli-yadda-opinionated/issues",
   "license": "MIT",
-  "author": "",
+  "author": "Andrey Mikhaylov <lolmaus@gmail.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -70,6 +77,10 @@
     "node": "8.* || >= 10.*"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "demoURL": "https://kaliber5.github.io/ember-cli-yadda-opinionated",
+    "versionCompatibility": {
+      "ember": ">=3.0.0"
+    }
   }
 }
