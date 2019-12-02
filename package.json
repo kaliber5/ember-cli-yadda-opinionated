@@ -80,7 +80,7 @@
     "configPath": "tests/dummy/config",
     "demoURL": "https://kaliber5.github.io/ember-cli-yadda-opinionated",
     "versionCompatibility": {
-      "ember": ">=3.0.0"
+      "ember": ">=3.8.0"
     }
   }
 }
