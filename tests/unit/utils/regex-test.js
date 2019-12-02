@@ -57,12 +57,14 @@ const cases = [
   { name: 'REGEX_LABEL_CONSTRAINED', str: 'a Foo(Bar) in Zomg+Lol',  matches: [] },
   { name: 'REGEX_LABEL_CONSTRAINED', str: 'the 1st Foo(Bar) in 2nd Zomg(Lol) of Baz',  matches: [] },
 
-  { name: 'REGEX_COMMA_AND_SEPARATOR', str: 'foo,bar,    baz and    quux ,fooandbar', matches: [',', ',    ', ' and    ', ' ,']},
+  { name: 'REGEX_COMMA_AND_SEPARATOR', str: 'foo,bar,    baz and    quux ,fooandbar', matches: [',', ',    ', ' and    ', ' ,'] },
+
+  { regex: new RegExp(regexes.STR_STRING_WITH_ESCAPE, 'g'), str: 'foo "bar" "baz \\"quux\\"" zomg "lol"', matches: ['"bar"', '"baz \\"quux\\""', '"lol"'] },
 ];
 
 module('Unit | Utility | regex', function(/* hooks */) {
-  cases.forEach(({name, str, matches}) => {
-    const regex = regexes[name];
+  cases.forEach(({name, regex, str, matches}) => {
+    regex = regex || regexes[name];
 
     test(`${name}: "${str}".match(${regex})`, function(assert) {
       let m;

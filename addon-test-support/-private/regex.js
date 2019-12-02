@@ -23,3 +23,6 @@ export const STR_LABEL = generateLabelRegexString();
 export const REGEX_LABEL = new RegExp(STR_LABEL);
 export const REGEX_LABEL_CONSTRAINED = new RegExp(`^${STR_LABEL}$`);
 export const REGEX_COMMA_AND_SEPARATOR = /\s*,\s*|\s+and\s+/g;
+
+export const STR_STRING_WITH_ESCAPE = '"((?:[^"\\\\]|\\\\.)*)"';
+export const REGEX_STRING_WITH_ESCAPE = new RegExp(STR_STRING_WITH_ESCAPE);

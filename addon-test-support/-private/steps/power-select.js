@@ -118,7 +118,7 @@ const steps = {
     }
   },
 
-  async "Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item \"(.+)\" in the dropdown $opinionatedElement should be disabeld"(indexOneStr, ordinal, text, [collection]) {
+  async "Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item $opinionatedString in the dropdown $opinionatedElement should be disabeld"(indexOneStr, ordinal, text, [collection]) {
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
 
     const trigger = powerSelectFindTrigger(collection[0]);
@@ -155,7 +155,7 @@ const steps = {
     return click(options[indexZero]);
   },
 
-  async "When I select (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item \"(.+)\" in the dropdown $opinionatedElement"(indexOneStr, ordinal, text, [collection]) {
+  async "When I select (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item $opinionatedString in the dropdown $opinionatedElement"(indexOneStr, ordinal, text, [collection]) {
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
 
     const trigger = powerSelectFindTrigger(collection[0]);
@@ -182,7 +182,7 @@ const steps = {
     return powerSelectRemoveSelectedOption(selectedOptions[indexZero]);
   },
 
-  async "When I deselect (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item \"(.+)\" in the dropdown $opinionatedElement"(indexOneStr, ordinal, text, [collection]) {
+  async "When I deselect (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item $opinionatedString in the dropdown $opinionatedElement"(indexOneStr, ordinal, text, [collection]) {
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
 
     const trigger = powerSelectFindTrigger(collection[0]);
@@ -210,7 +210,7 @@ const steps = {
     return not ? !result : result;
   },
 
-  async "Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item \"(.+)\" in the dropdown $opinionatedElement should (not|NOT)? ?be disabled"(indexOneStr, ordinal, text, [collection], not) {
+  async "Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item $opinionatedString in the dropdown $opinionatedElement should (not|NOT)? ?be disabled"(indexOneStr, ordinal, text, [collection], not) {
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
 
     const trigger = powerSelectFindTrigger(collection[0]);

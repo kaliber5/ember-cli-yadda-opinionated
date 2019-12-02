@@ -16,7 +16,7 @@ const { calendarSelect } = powerCalendarTestSupport;
 
 const steps = {
 
-  async "When I select date \"(.+)\" in the date picker $opinionatedElement"(dateString, [collection]) {
+  async "When I select date $opinionatedString in the date picker $opinionatedElement"(dateString, [collection]) {
     assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
     const [element] = collection;
 

@@ -12,14 +12,14 @@ import { whenSteps } from 'ember-cli-yadda-opinionated/test-support';
 
 Implements [`visit()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#visit) from `@ember/test-helpers`.
 
-**Signature**: `When I (?:visit|am at|proceed to) URL (.*)`.
+**Signature**: `When I (?:visit|am at|proceed to) URL $opinionatedString`.
 
 **Examples**:
 
 ```feature
-When I visit URL /login
-When I am at URL /products/1
-When I proceed to URL /
+When I visit URL "/login"
+When I am at URL "/products/1"
+When I proceed to URL "/"
 ```
 
 
@@ -145,7 +145,7 @@ Will crash if the input is already in the desired state.
 
 A radio button cannot be deselected.
 
-**Signature**: `When I (de)?select (?:the )?(?:radio button|checkbox) \"(.+?)\" in $opinionatedElement`
+**Signature**: `When I (de)?select (?:the )?(?:radio button|checkbox) $opinionatedString in $opinionatedElement`
 
 Expamples:
 

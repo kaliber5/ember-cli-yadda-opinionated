@@ -36,29 +36,31 @@ It will simply pass provided properties and traits as-is to Mirage's `server.cre
 
     For polymorphic relationships, you can optionally provide a type of each related record next to the id in parens: `@1(User), @2(Bot)`. You can also provide the default type in the key, e. g. `"authors(User)": "@1, @3)`. Both approaches can be mixed, the per-id type has priority. If the type is provided neither in key nor in id, then the base type of the polymorphic relationship will be used to create the related record.
 
-**Signature**: `Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type (\\w+)(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))?`
+**Signature**:
+
+    `Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type $opinionatedString(?: with)?(?: traits? ${opinonatedString})?(?: and)?(?: propert(?:y|ies) ({.+?}))?`
 
 **Examples**:
 
 ```feature
-Given there is a record of type Post
-Given there's a record of type Post
-Given there is a record of type Post with property {"id": "1"}
-Given there is a record of type Post with properties {"id": "1", "title": "Foo", "author": "@mike"}
-Given there is a record of type Post with properties {"id": "1", "title": "Foo", "author(User)": "@mike"}
-Given there is a record of type Post with properties {"id": "1", "title": "Foo", "author": "@mike(User)"}
-Given there is a record of type Post with properties {"id": "1", "title": "Foo", "authors": "@mike(User), @bob(Bot)"}
-Given there is a record of type Post with properties {"id": "1", "title": "Foo", "authors(User)": "@mike, @bob(Bot)"}
-Given there are 2 records of type Post with trait published
-Given there is a record of type Post with traits published, pinned and commented
-Given there is a record of type Post with traits published and commented and properties {"id": "1", "title": "Foo"}
+Given there is a record of type "Post"
+Given there's a record of type "Post"
+Given there is a record of type "Post" with property {"id": "1"}
+Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "author": "@mike"}
+Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "author(User)": "@mike"}
+Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "author": "@mike(User)"}
+Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "authors": "@mike(User), @bob(Bot)"}
+Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "authors(User)": "@mike, @bob(Bot)"}
+Given there are 2 records of type "Post" with trait published
+Given there is a record of type "Post" with traits published, pinned and commented
+Given there is a record of type "Post" with traits published and commented and properties {"id": "1", "title": "Foo"}
 ```
 
 Invalid example:
 
 ```feature
 # Two records of the same type can't have the same id
-Given there are 2 records of type Post with properties {"id": "1", "title": "Foo", author: "@mike"}
+Given there are 2 records of type "Post" with properties {"id": "1", "title": "Foo", author: "@mike"}
 ```
 
 
@@ -118,12 +120,12 @@ And there are records of type Post with the following properties:
 
 Useful for testing error states.
 
-**Signature**: `Given there is a $opinionatedInteger error for the API (.+) call to "(.+)"`
+**Signature**: `Given there is a $opinionatedInteger error for the API $opinionatedString call to $opinionatedString'`
 
 **Examples**:
 
 ```
-Given there is a 500 error for the API POST call to "/posts"
+Given there is a 500 error for the API "POST" call to "/posts"
 ```
 
 
@@ -132,7 +134,7 @@ Given there is a 500 error for the API POST call to "/posts"
 
 Helps testing the app in different build modes.
 
-**Signature**: `Given configuration property "(.+?)" is set to $opinionatedJSON`
+**Signature**: `Given configuration property $opinionatedString is set to $opinionatedJSON`
 
 **Examples**:
 
