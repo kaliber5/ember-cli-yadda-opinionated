@@ -3,6 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { findByLabel } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
+import { labelMap } from 'ember-cli-yadda-opinionated/test-support/-private/maps';
 
 module('Integration | Util | find-by-label', function(hooks) {
   setupRenderingTest(hooks);
@@ -222,7 +223,13 @@ module('Integration | Util | find-by-label', function(hooks) {
     m = `Name of Element in Element`;
     assert.equal(findByLabel('Name of Element in Element')[0].length, 1, m);
     assert.equal(findByLabel('Name of Element in Element')[0][0].id, 'childname', m);
-
-
   });
+
+  test('Complex selector with spaces', function (assert) {
+    labelMap.set('The-Selector', '.foo bar[baz="quux zomg"] lol');
+
+    const [,,selector] = findByLabel('the first One-Two in second The-Selector of a third Three-Four');
+
+    assert.equal(selector, '[data-test-three-four]:eq(2) .foo bar[baz="quux zomg"] lol:eq(1) [data-test-one-two]:eq(0)');
+  })
 });
