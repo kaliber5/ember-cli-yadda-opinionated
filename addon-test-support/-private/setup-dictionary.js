@@ -1,6 +1,6 @@
 /* eslint-disable no-control-regex */
 import yadda from 'yadda';
-import { element, json } from 'ember-cli-yadda-opinionated/test-support/-private/converters';
+import { element, json, string } from 'ember-cli-yadda-opinionated/test-support/-private/converters';
 import { REGEX_LABEL } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 
 export default function setupDictionary(dictionary) {
@@ -12,8 +12,6 @@ export default function setupDictionary(dictionary) {
     .define('opinionatedJSON', REGEX_LABEL, json)
 
     // Allows escaping double qoutes: `"foo \\"bar\\" baz"`.
-    .define('opinionatedString', /"((?:[^"\\]|\\.)*)"/, (unescapedString, next) => {
-      next(null, unescapedString.replace(/\\"/g, "\""));
-    })
+    .define('opinionatedString', /"((?:[^"\\]|\\.)*)"/, string)
     ;
 }

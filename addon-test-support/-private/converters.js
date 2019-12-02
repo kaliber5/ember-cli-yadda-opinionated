@@ -11,3 +11,7 @@ export function json(jsonString, next) {
 
   next(null, result);
 }
+
+export function string(unescapedString, next) {
+  next(null, unescapedString.replace(/\\"/g, "\""));
+}
