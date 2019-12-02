@@ -8,6 +8,7 @@ import { findEditable, findInputForLabelWithText } from 'ember-cli-yadda-opinion
 import { camelize }  from '@ember/string';
 import { pluralize } from 'ember-inflector';
 import isSubset from 'is-subset/module';
+import { STR_STRING_WITH_ESCAPE as opinonatedString } from '../regex';
 
 const steps = {
 
@@ -24,24 +25,24 @@ const steps = {
     debugger; // eslint-disable-line no-debugger
   },
 
-  async "Then I should (?:still )?be (?:at|on) URL (.+)"(url) {
+  async "Then I should (?:still )?be (?:at|on) URL $opinionatedString"(url) {
     await settled();
     expect(currentURL()).to.equal(url);
   },
 
-  async "Then current URL's pathname should be (.+)"(pathname) {
+  async "Then current URL's pathname should be $opinionatedString"(pathname) {
     await settled();
     const url = new URL(currentURL(), location.origin);
     expect(url.pathname).to.equal(pathname);
   },
 
-  async "Then current URL should (not|NOT)? ?have query param \"(\\w+)\""(not, key) {
+  async "Then current URL should (not|NOT)? ?have query param $opinionatedString"(not, key) {
     await settled();
     const url = new URL(currentURL(), location.origin);
     expect(url.searchParams.has(key)).to.equal(!!not);
   },
 
-  async "Then current URL should (not|NOT)? ?have query param \"(\\w+)\" with value \"(.*)\""(not, key, expectedValue) {
+  async "Then current URL should (not|NOT)? ?have query param $opinionatedString with value $opinionatedString"(not, key, expectedValue) {
     await settled();
     const url = new URL(currentURL(), location.origin);
     const actualValue = url.searchParams.get(key);
@@ -133,7 +134,7 @@ const steps = {
       : expect(collection[0]).to.have.class(text);
   },
 
-  "Then $opinionatedElement should (not|NOT)? ?have HTML attr \"(.+?)\"(?: with value \"(.+?)\")?"([collection/* , label, selector */], not, attrName, attrValue) {
+  [`Then $opinionatedElement should (not|NOT)? ?have HTML attr $opinionatedString(?: with value ${opinonatedString})?`]([collection/* , label, selector */], not, attrName, attrValue) {
     if (not && !collection.length) {
       return;
     }
@@ -145,7 +146,7 @@ const steps = {
       : expect(collection[0]).to.have.attr(attrName, attrValue);
   },
 
-  "Then record of type (\\w+) and id (\\w+) should have attribute (\\w+) with value (.+)"(typeRaw, idStr, key, valueRaw) {
+  "Then record of type $opinionatedString and id $opinionatedString should have attribute $opinionatedString with value $opinionatedString"(typeRaw, idStr, key, valueRaw) {
     const typePlural = pluralize(camelize(typeRaw));
 
     const collection = server.db[typePlural];
@@ -187,7 +188,7 @@ const steps = {
       : expect(input.checked).to.be.true;
   },
 
-  "Then (?:the )?(?:radio button|checkbox) \"(.+?)\" should (not|NOT)? ?be selected in $opinionatedElement"(text, not, [collection/* , label, selector */]) {
+  "Then (?:the )?(?:radio button|checkbox) $opinionatedString should (not|NOT)? ?be selected in $opinionatedElement"(text, not, [collection/* , label, selector */]) {
     if (not && !collection.length) {
       return;
     }

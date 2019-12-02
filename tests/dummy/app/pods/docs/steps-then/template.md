@@ -44,15 +44,15 @@ Then debugger
 
 Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) to be an exact match of given URL.
 
-**Signature**: `Then I should (?:still )?be (?:at|on) URL (.*)`.
+**Signature**: `Then I should (?:still )?be (?:at|on) URL $opinionatedString`.
 
 **Example**:
 
 ```feature
-Then I should be at URL /about
-Then I should be on URL /products?expand=true
-Then I still should be at URL /products/1
-Then I still should be on URL /
+Then I should be at URL "/about"
+Then I should be on URL "/products?expand=true"
+Then I still should be at URL "/products/1"
+Then I still should be on URL "/"
 ```
 
 
@@ -61,13 +61,13 @@ Then I still should be on URL /
 
 Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) pathname (without query params and hash) to be an exact match of given URL.
 
-**Signature**: `Then current URL's pathname should be (.+)`.
+**Signature**: `Then current URL's pathname should be $opinionatedString`.
 
 **Example**:
 
 ```feature
-Then current URL's pathname should be /about
-Then current URL's pathname should be /
+Then current URL's pathname should be "/about"
+Then current URL's pathname should be "/"
 ```
 
 Incorret usage:
@@ -82,7 +82,7 @@ Then current URL's pathname should be /products?expand=true
 
 Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) contains or does not contain the specified query param.
 
-**Signature**: `Then current URL should (not|NOT)? ?have query param \"(\\w+)\"`.
+**Signature**: `Then current URL should (not|NOT)? ?have query param $opinionatedString`.
 
 **Example**:
 
@@ -99,7 +99,7 @@ Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/m
 
 Note: produces positive result when a query param is not present and the step is used with `NOT`.
 
-**Signature**: `Then current URL should (not|NOT)? ?have query param \"(\\w+)\" with value \"(.*)\"`.
+**Signature**: `Then current URL should (not|NOT)? ?have query param $opinionatedString with value $opinionatedString`.
 
 **Example**:
 
@@ -280,19 +280,19 @@ Will crash if no elements or more than one element matched, except when NOT is p
 
 Will crash if more than one input exists inside the label.
 
-**Signature**: `Then (?:the )?(?:radio button|checkbox) \"(.+?)\" should (not|NOT)? ?be selected in $opinionatedElement`
+**Signature**: `Then (?:the )?(?:radio button|checkbox) $opinionatedString should (not|NOT)? ?be selected in $opinionatedElement`
 
 Expamples:
 
 ```feature
-Then checkbox "I am not a robot" in the Sign-Up-Form should be selected
-Then the checkbox "I am not a robot" in the Sign-Up-Form should be selected
-Then checkbox "I am not a robot" in the Sign-Up-Form should NOT be selected
-Then the checkbox "I am not a robot" in the Sign-Up-Form should NOT be selected
-Then radio-button "Prefer not to tell" in the Gender-Field should be selected
-Then the radio-button "Prefer not to tell" in the Gender-Field should be selected
-Then radio-button "Prefer not to tell" in the Gender-Field should NOT be selected
-Then the radio-button "Prefer not to tell" in the Gender-Field should NOT be selected
+Then checkbox "I am not a robot" should be selected in the Sign-Up-Form
+Then the checkbox "I am not a robot" should be selected in the Sign-Up-Form
+Then checkbox "I am not a robot" should NOT be selected in the Sign-Up-Form
+Then the checkbox "I am not a robot" should NOT be selected in the Sign-Up-Form
+Then radio-button "Prefer not to tell" should be selected in the Gender-Field
+Then the radio-button "Prefer not to tell" should be selected in the Gender-Field
+Then radio-button "Prefer not to tell" should NOT be selected in the Gender-Field
+Then the radio-button "Prefer not to tell" should NOT be selected in the Gender-Field
 ```
 
 
@@ -320,7 +320,9 @@ Checks if given element has given HTML attr. Optionally checks the attr to match
 
 Will crash if no elements or more than one element matched, except when NOT is passed.
 
-**Signature**: `Then $opinionatedElement should (not|NOT)? ?have HTML attr \"(.*)\"(?: with value \"(.+?)\")?`.
+**Signature**:
+
+    `Then $opinionatedElement should (not|NOT)? ?have HTML attr $opinionatedString(?: with value ${opinonatedString})?`
 
 **Example**:
 
@@ -338,12 +340,12 @@ Checks if given attr of a record of given type and id has given value.
 
 Value is expected to be JSON (including string, number and `null`).
 
-**Signature**: `Then record of type (\\w+) and id (\\w+) should have attribute (\\w+) with value (.+)`.
+**Signature**: `Then record of type $opinionatedString and id $opinionatedString should have attribute $opinionatedString with value $opinionatedString`.
 
 **Example**:
 
 ```feature
-Then record of type Post and id 1 should have attribute authorId with value "alice1"
+Then record of type "Post" and id "1" should have attribute "authorId" with value "alice1"
 ```
 
 

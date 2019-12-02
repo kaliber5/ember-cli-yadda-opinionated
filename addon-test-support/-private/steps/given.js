@@ -6,7 +6,7 @@ import { pluralize, singularize } from 'ember-inflector';
 import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 import { overrideConfig } from 'ember-cli-yadda-opinionated/test-support/-private/config';
 import HasMany from 'ember-cli-mirage/orm/associations/has-many';
-import { REGEX_ID_AND_TYPE, REGEX_REL_NAME } from '../regex';
+import { REGEX_ID_AND_TYPE, REGEX_REL_NAME, STR_STRING_WITH_ESCAPE as opinonatedString } from '../regex';
 
 function findRelationship(server, type, relationshipName) {
   try {
@@ -92,7 +92,7 @@ function findRelatedRecords(server, type, relationshipName, idOrIdsRaw) {
 
 const steps = {
 
-  "Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type $opinionatedString(?: with)?(?: traits? (.+?))?(?: and)?(?: propert(?:y|ies) ({.+?}))?"(countRaw = "1", typeRaw, traitsRaw = "", propertiesRaw = "{}") {
+  [`Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type $opinionatedString(?: with)?(?: traits? ${opinonatedString})?(?: and)?(?: propert(?:y|ies) ({.+?}))?`](countRaw = "1", typeRaw, traitsRaw = "", propertiesRaw = "{}") {
     const count = parseInt(countRaw, 10);
     const type = singularize(dasherize(typeRaw));
     const typePlural = pluralize(camelize(typeRaw));
@@ -191,7 +191,7 @@ const steps = {
     server.logging = true;
   },
 
-  'Given there is a $opinionatedInteger error for the API (.+) call to "(.+)"'(
+  'Given there is a $opinionatedInteger error for the API $opinionatedString call to $opinionatedString'(
     status,
     methodName,
     url
@@ -199,7 +199,7 @@ const steps = {
     this.server[methodName.toLowerCase()](url, { message: 'There was an error' }, status);
   },
 
-  'Given configuration property "(.+?)" is set to $opinionatedJSON'(key, value) {
+  'Given configuration property $opinionatedString is set to $opinionatedJSON'(key, value) {
     overrideConfig(key, value);
   },
 
