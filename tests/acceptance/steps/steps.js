@@ -1,9 +1,7 @@
 // @ts-ignore
 import yadda from 'yadda';
 
-// @ts-ignore
 import { composeSteps, setLabel, opinionatedSteps, setupDictionary } from 'ember-cli-yadda-opinionated/test-support';
-// @ts-ignore
 import powerSelectSteps from 'ember-cli-yadda-opinionated/test-support/steps/power-select';
 // import powerDatePickerSteps from 'ember-cli-yadda-opinionated/test-support/steps/power-date-picker';
 
