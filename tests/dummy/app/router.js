@@ -28,6 +28,7 @@ Router.map(function() {
     this.route('step-aliases');
     this.route('label-map');
     this.route('assertions');
+    this.route('converters');
 
     // Steps
     this.route('steps-given');
