@@ -6,7 +6,7 @@ import {
   REGEX_SEPARATOR,
 } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 
-import { labelMap } from 'ember-cli-yadda-opinionated/test-support/-private/maps';
+import { getLabel, hasLabel } from 'ember-cli-yadda-opinionated/test-support/-private/label-map';
 import { getIndexZero } from 'ember-cli-yadda-opinionated/test-support/-private/helpers';
 
 export default function selectorFromLabel(label) {
@@ -21,8 +21,8 @@ export default function selectorFromLabel(label) {
       const [,, indexOneStr, ordinal, subAttrRaw, valueRaw] = matchResult;
 
       let result;
-      if (labelMap.has(subAttrRaw)) {
-        result = labelMap.get(subAttrRaw);
+      if (hasLabel(subAttrRaw)) {
+        result = getLabel(subAttrRaw);
       } else {
         const subAttr = dasherize(subAttrRaw);
 

@@ -6,11 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.13.0] - 2019-12-02
+## [0.13.0] - 2019-12-03
 
 ### Changed
 - ⚠ Min supported version of Ember CLI raised to 3.8.
 - ⚠ The signature of many steps has changed, it now requires quotes for dynamic parts.
+- ⚠ Label map is now accessible only through helper functions. Please update import paths.
 
 
 

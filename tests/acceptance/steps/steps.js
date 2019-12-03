@@ -2,16 +2,12 @@
 import yadda from 'yadda';
 
 // @ts-ignore
-import { composeSteps, labelMap, opinionatedSteps, setupDictionary } from 'ember-cli-yadda-opinionated/test-support';
-// import composeSteps from 'ember-cli-yadda-opinionated/test-support/-private/compose-steps';
-// import { labelMap } from 'ember-cli-yadda-opinionated/test-support/-private/maps';
-// import setupDictionary from 'ember-cli-yadda-opinionated/test-support/-private/setup-dictionary';
-// import thenSteps from 'ember-cli-yadda-opinionated/test-support/-private/steps/then';
+import { composeSteps, setLabel, opinionatedSteps, setupDictionary } from 'ember-cli-yadda-opinionated/test-support';
 // @ts-ignore
 import powerSelectSteps from 'ember-cli-yadda-opinionated/test-support/steps/power-select';
 // import powerDatePickerSteps from 'ember-cli-yadda-opinionated/test-support/steps/power-date-picker';
 
-labelMap.set('Bootstrap-Field-Error', '.help-block');
+setLabel('Bootstrap-Field-Error', '.help-block');
 
 export const dictionary = new yadda.Dictionary().define('number', /(\d+)/, yadda.converters.integer);
 

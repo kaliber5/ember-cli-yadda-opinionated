@@ -10,7 +10,7 @@ Put this into `tests/acceptance/steps/steps.js`:
 
 ```js
 import yadda from 'yadda';
-import { composeSteps/* , labelMap */, opinionatedSteps, setupDictionary } from 'ember-cli-yadda-opinionated/test-support';
+import { composeSteps/* , setLabel */, opinionatedSteps, setupDictionary } from 'ember-cli-yadda-opinionated/test-support';
 
 /* Import optional steps */
 // import powerSelectSteps from 'ember-cli-yadda-opinionated/test-support/steps/power-select';
@@ -20,8 +20,8 @@ import { composeSteps/* , labelMap */, opinionatedSteps, setupDictionary } from 
 // import meainingfulStepsCollectionName from './_meaningful-steps-collection-name';
 
 /* Declare custom labels like this */
-// labelMap.set('Bootstrap-Field-Error', '.help-block');
-// labelMap.set('Bootstrap-Primary-Button', '.btn-primary');
+// setLabel('Bootstrap-Field-Error', '.help-block');
+// setLabel('Bootstrap-Primary-Button', '.btn-primary');
 
 /*
   Set up custom converters (aka macros)

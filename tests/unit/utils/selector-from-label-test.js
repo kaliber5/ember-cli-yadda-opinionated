@@ -1,5 +1,5 @@
 import selectorFromLabel from 'ember-cli-yadda-opinionated/test-support/-private/selector-from-label';
-import { labelMap } from 'ember-cli-yadda-opinionated/test-support/-private/maps';
+import { clearLabels, setLabel } from 'ember-cli-yadda-opinionated/test-support/-private/label-map';
 import { module, test } from 'qunit';
 
 const cases = [
@@ -40,7 +40,7 @@ const cases = [
 
 module('Unit | Utility | selector-from-label', function(hooks) {
   hooks.beforeEach(() => {
-    labelMap.clear();
+    clearLabels();
   });
 
   cases.forEach(({input, expected}) => {
@@ -50,14 +50,24 @@ module('Unit | Utility | selector-from-label', function(hooks) {
     });
   });
 
-  test('Working with labelMap', function (assert) {
-    let m;
-    labelMap.set("Boo", "Bar");
+  module('Label map', function () {
+    test('Normal', function (assert) {
+      let m;
+      setLabel("Boo", "Bar");
 
-    m = "Foo in Boo of Baz";
-    assert.equal(selectorFromLabel(m, m), "[data-test-baz] Bar [data-test-foo]");
+      m = "Foo in Boo of Baz";
+      assert.equal(selectorFromLabel(m, m), "[data-test-baz] Bar [data-test-foo]");
 
-    m = "a Foo in 1st Boo of 2nd Baz";
-    assert.equal(selectorFromLabel(m, m), "[data-test-baz]:eq(1) Bar:eq(0) [data-test-foo]");
+      m = "a Foo in 1st Boo of 2nd Baz";
+      assert.equal(selectorFromLabel(m, m), "[data-test-baz]:eq(1) Bar:eq(0) [data-test-foo]");
+    });
+
+    test('Non-matching case', function (assert) {
+      let m;
+      setLabel("One-TwoThree", ".result");
+
+      m = "Foo in OneTwo-Three of Baz";
+      assert.equal(selectorFromLabel(m, m), "[data-test-baz] .result [data-test-foo]");
+    });
   });
 });
