@@ -85,7 +85,7 @@ An Ember addon that adds Yadda into Ember apps. Includes necessary boilerplate a
 
 This addon.
 
-⚠ To use this addon, you should be familiar `ember-cli-yadda` in order to avoid frustration.
+⚠ To use this addon, you should be familiar with `ember-cli-yadda` in order to avoid frustration.
 
 
 
