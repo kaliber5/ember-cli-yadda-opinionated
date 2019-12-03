@@ -48,10 +48,10 @@ setupDictionary(dictionary)
 If needed, you can also add custom labels in the same file:
 
 ```js
-import { composeSteps, labelMap, opinionatedSteps, setupDictionary } from 'ember-cli-yadda-opinionated/test-support';
+import { composeSteps, setLabel, opinionatedSteps, setupDictionary } from 'ember-cli-yadda-opinionated/test-support';
 
-labelMap.set('Bootstrap-Field-Error', '.help-block');
-labelMap.set('Bootstrap-Primary-Button', '.btn-primary');
+setLabel('Bootstrap-Field-Error', '.help-block');
+setLabel('Bootstrap-Primary-Button', '.btn-primary');
 ```
 
 

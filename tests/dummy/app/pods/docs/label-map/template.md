@@ -5,10 +5,10 @@ Sometimes you want your tests to operate on page elements produced by a third-pa
 To resolve the issue, you can provide a mapping of labels to selectors. Do this in `tests/acceptanse/steps/steps.js` or `tests/test-helper.js`:
 
 ```js
-import { labelMap } from 'ember-cli-yadda-opinionated';
+import { setLabel } from 'ember-cli-yadda-opinionated';
 
-labelMap.set('Bootstrap-Text-Input', 'input.form-control[type="text"]');
-labelMap.set('Bootstrap-Textarea',   'textarea.form-control');
+setLabel('Bootstrap-Text-Input', 'input.form-control[type="text"]');
+setLabel('Bootstrap-Textarea',   'textarea.form-control');
 ```
 
 These labels will be automatically converted to selectors.
