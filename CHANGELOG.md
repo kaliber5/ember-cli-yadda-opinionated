@@ -6,7 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.13.0] - 2019-12-03
+## [1.0.0-beta.1] - 2020-01-14
+
+### Fixed
+- Made `chai-as-promised` a prod dependency.
+
+
+
+## [1.0.0-beta.0] - 2019-12-03
 
 ### Changed
 - ⚠ Min supported version of Ember CLI raised to 3.8.
