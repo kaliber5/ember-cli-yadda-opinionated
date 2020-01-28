@@ -146,6 +146,20 @@ const steps = {
       : expect(collection[0]).to.have.attr(attrName, attrValue);
   },
 
+  "Then $opinionatedElement should (not|NOT)? ?have CSS property $opinionatedString with value $opinionatedString"([collection/* , label, selector */], not, propName, expectedValue) {
+    if (not && !collection.length) {
+      return;
+    }
+
+    assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
+
+    const actualValue = collection[0].style[camelize(propName)];
+
+    not
+      ? expect(actualValue).not.equal(expectedValue)
+      : expect(actualValue).equal(expectedValue);
+  },
+
   "Then record of type $opinionatedString and id $opinionatedString should have attribute $opinionatedString with value $opinionatedString"(typeRaw, idStr, key, valueRaw) {
     const typePlural = pluralize(camelize(typeRaw));
 

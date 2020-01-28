@@ -334,6 +334,25 @@ Then the second Menu-Item should NOT have HTML attr "href" with value "/products
 ```
 
 
+
+## Element CSS property value
+
+Checks if given element has (or does not have) a CSS property with a given value (non-computed).
+
+Will crash if no elements or more than one element matched, except when NOT is passed.
+
+**Signature**:
+
+    Then $opinionatedElement should (not|NOT)? ?have CSS property $opinionatedString with value $opinonatedString
+
+**Example**:
+
+```feature
+Then the second Menu-Item should have CSS property "min-height" with value "12px"
+Then the second Menu-Item should NOT have CSS property "position" with value "absolute"
+```
+
+
 ## Mirage attr value
 
 Checks if given attr of a record of given type and id has given value.
