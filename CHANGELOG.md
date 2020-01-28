@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.0.0-beta.3] - 2020-01-28
+
+### Added
+- Added a Then step to check a CSS property with a value on an element.
+
+
 ## [1.0.0-beta.2] - 2020-01-28
 
 ### Fixed
