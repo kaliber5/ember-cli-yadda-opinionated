@@ -20,25 +20,19 @@ Sets `server.logging` to true in Mirage until end of test.
 
 
 
-## Seed record(s) with same properties/traits
+## Seed record(s) with same properties/traits — single-line
 
 It will simply pass provided properties and traits as-is to Mirage's `server.createList()`, with the following nuances:
 
 * The model name will be camelCased.
-* Property names and values are used as-is.
-* Relationships will be automatically recognized by inspecting property types on the corresponding Mirage model.
-
-    Values must be ids, without quotes, prefixed with `@`, e. g. `@1` or `@foo`.
-  
-    For a to-many relationship, use plural key and delimit ids with commas. This way you can populate one-to-one and one-to-many relationships (from the one side).
-
-    Alternatively, you can use Mirage's default behavior and pass ids, e. g. `{"comment_ids": [1, 2]}`.
-
-    For polymorphic relationships, you can optionally provide a type of each related record next to the id in parens: `@1(User), @2(Bot)`. You can also provide the default type in the key, e. g. `"authors(User)": "@1, @3)`. Both approaches can be mixed, the per-id type has priority. If the type is provided neither in key nor in id, then the base type of the polymorphic relationship will be used to create the related record.
+* Attribute keys and values are used as-is.
+  * For belongs-to relationship, use e. g. `"productId": "1"` form.
+  * For has-many relationship, use e. g. `"productIds": ["1", "2"]` form.
+  * For polymorphic relationships, replace string ids `"1"` with identities: `{"id": "1", "type": "product-variant"}`.
 
 **Signature**:
 
-    `Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type $opinionatedString(?: with)?(?: traits? ${opinonatedString})?(?: and)?(?: propert(?:y|ies) ({.+?}))?`
+    Given there(?: is a|'s a| are|'re) (?:(\d+) )?records? of type $opinionatedModelName(?: with)?(?: traits? "((?:[^"\\]|\\.)*)")?(?: and)?(?: propert(?:y|ies) ({.+?}))?
 
 **Examples**:
 
@@ -46,11 +40,9 @@ It will simply pass provided properties and traits as-is to Mirage's `server.cre
 Given there is a record of type "Post"
 Given there's a record of type "Post"
 Given there is a record of type "Post" with property {"id": "1"}
-Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "author": "@mike"}
-Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "author(User)": "@mike"}
-Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "author": "@mike(User)"}
-Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "authors": "@mike(User), @bob(Bot)"}
-Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "authors(User)": "@mike, @bob(Bot)"}
+Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "authorId": "mike"}
+Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "authorId": {"id": "mike", "type: "user"}}
+Given there is a record of type "Post" with properties {"id": "1", "title": "Foo", "authorIds": [{"id": "mike", "type: "user"}}, {"id": "siri", "type: "bot"}]}
 Given there are 2 records of type "Post" with trait published
 Given there is a record of type "Post" with traits published, pinned and commented
 Given there is a record of type "Post" with traits published and commented and properties {"id": "1", "title": "Foo"}
@@ -65,54 +57,122 @@ Given there are 2 records of type "Post" with properties {"id": "1", "title": "F
 
 
 
-## Seed records with a table
+## Seed record(s) with same properties/traits — multi-line
 
-Though this step is similar to the above, it has slightly different behavior:
+Same as the single-line equivalent, but lets you expand JSON to multiple lines. Useful for nested attributes.
+
+This step will simply pass provided properties and traits as-is to Mirage's `server.createList()`, with the following nuances:
 
 * The model name will be camelCased.
-* Keys (column headers) and values are trimmed.
-* Property names are used as-is, except for names `trait` and `traits`, which are used for traits.
-* Relationships will be automatically recognized by inspecting property types on the corresponding Mirage model.
+* Attribute keys and values are used as-is.
+  * For belongs-to relationship, use e. g. `"productId": "1"` form.
+  * For has-many relationship, use e. g. `"productIds": ["1", "2"]` form.
+  * For polymorphic relationships, replace string ids `"1"` with identities: `{"id": "1", "type": "product-variant"}`.
 
-    Values must be ids, without quotes, prefixed with `@`, e. g. `@1` or `@foo`.
-  
-    For a to-many relationship, use plural key and delimit ids with commas. This way you can populate one-to-one and one-to-many relationships (from the one side).
+**Signature**:
 
-    Alternatively, you can use Mirage's default behavior and pass ids, e. g. `{"comment_ids": [1, 2]}`.
+    Given there(?: is a|'s a| are|'re) (?:(\d+) )?records? of type $opinionatedModelName with(?: traits? "((?:[^"\\]|\\.)*)")?(?: and)? the following properties:\n$opinionatedJSONObject
 
-    For polymorphic relationships, you can optionally provide a type of each related record next to the id in parens: `@1(User), @2(Bot)`. You can also provide the default type in the key, e. g. `"authors(User)": "@1, @3)`. Both approaches can be mixed, the per-id type has priority. If the type is provided neither in key nor in id, then the base type of the polymorphic relationship will be used to create the related record.
+**Example**:
 
-* Empty cells are treated as `null`.
+```feature
+Given there is a record of type "Post" with traits published and commented and the following properties:
+  ---
+  {
+    "id": "1",
+    "title": "Foo",
+    "authorId": "marina",
+    "rewiewerIds": [
+      {"id": "joe", "type": "user"},
+      {"id": "graham", "type": "bot"}
+    ]
+  }
+```
 
-* Other values are parsed as JSON. Note that strings, numbers, booleans and `null` are JSON entries in their full right. :)
 
-    This means that you must wrap strings in double quotes.
 
-**Signature**: `Given there are records of type (\\w+) with the following properties:\n$opinionatedTable`
+## Seed a single record with a table
+
+A more readable way of seeding a single record over a JSON.
+
+Use this step if you don't have nested attributes, otherwise use the JSON step.
+
+* The model name will be camelCased.
+* Accepts a table with exactly two columns.
+* The first row must have items `key` and `value` — this is the header.
+* Keys are used as is, trimmed. Write them without quotes.
+* Values are parsed as JSON. Some hints:
+  * Don't forget to quote the strings.
+  * For belongs-to relationship, use e. g. `productId` as a column header and `"1"` as a value.
+  * For has-many relationship, use e. g. `productIds` as a column header and `["1", "2"]` as a value.
+  * For polymorphic relationships, replace string ids `"1"` with identities: `{"id": "1", "type": "product-variant"}`.
+  * Empty values are treated as `null`. ⚠ For empty has-many relationships, specify an empty array: `[]`.
+
+**Signature:**
+
+    Given there is a record of type $opinionatedModelName with the following properties:\n$opinionatedTable
+
+Example:
+
+```
+Given there is a record of type  with the following properties:
+  ----------------------------------------------------------------------------------
+  | key         | value                                                            |
+  | id          | "1"                                                              |
+  | title       | "Foo"                                                            |
+  | authorId    | "marina"                                                         |
+  | reviewerIds | [{"id": "joe", "type": "user"}, {"id": "graham", "type": "bot"}] |
+  ----------------------------------------------------------------------------------
+```
+
+
+
+## Seed multiple records with a table
+
+A more readable way of seeding multiple records over a JSON.
+
+Use this step if you don't have nested attributes, otherwise use the JSON step.
+
+* The model name will be camelCased.
+* Accepts a table.
+* The first row is a header, each item represents a key. Write them without quotes.
+* Values are parsed as JSON. Some hints:
+  * Don't forget to quote the strings.
+  * For belongs-to relationship, use e. g. `productId` as a column header and `"1"` as a value.
+  * For has-many relationship, use e. g. `productIds` as a column header and `["1", "2"]` as a value.
+  * For polymorphic relationships, replace string ids `"1"` with identities: `{"id": "1", "type": "product-variant"}`.
+  * Empty values are treated as `null`. ⚠ For empty has-many relationships, specify an empty array: `[]`.
+  * Keys `trait` and `traits` are reserved for Mirage traits. Value should be a list of traits, comma-separated with optional space, no quotes.
+
+**Signature**: `Given there are records of type $opinionatedModelName with the following properties:\n$opinionatedTable`
 
 **Examples**:
 
 ```feature
 Given there are records of type User with the following properties:
-  ----------------------------------------
+  ------------------------------------------
   | id     | name                  | trait |
   | "bloo" | "Blooregard Q. Kazoo" | admin |
   | "wilt" | "Wilt"                | user  |
-  --------------------------------------
+  ------------------------------------------
+
 And there are records of type Post with the following properties:
-  ---------------------------------
-  | id | title           | author |
-  | 1  | "Hello, World!" | @bloo  |
-  | 2  | "Foo Bar Baz"   | @wilt  |
-  ---------------------------------
+  -----------------------------------
+  | id | title           | authorId |
+  | 1  | "Hello, World!" | "bloo"   |
+  | 2  | "Foo Bar Baz"   | "wilt"   |
+  -----------------------------------
+
 And there are records of type Post with the following properties:
-  ---------------------------------------
-  | id | title           | author(User) |
-  | 1  | "Hello, World!" | @bloo        |
-  | 2  | "Foo Bar Baz"   | @wilt        |
-  | 3  | "Zomg Lol Quux" | @cheese(Bot) |
-  ---------------------------------------
+  -----------------------------------------------------------
+  | id  | title           | authorId                        |
+  | 1   | "Hello, World!" | {"id": "bloo", "type": "user"}  |
+  | 2   | "Foo Bar Baz"   | {"id": "wilt", "type": "user"}  |
+  | "3" | "Zomg Lol Quux" | {"id": "cheese", "type": "bot"} |
+  -----------------------------------------------------------
 ```
+
+Note: Mirage automatically converts numeric ids to strings.
 
 
 
