@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.0.0-beta.2] - 2020-01-28
+
+### Fixed
+- The `opinionatedJSON` converter was incorrectly scoped with the label regex.
+
+### Changed
+- ⚠ Refactored the seeding steps in the Given section. Removed special id handling and relationship lookup, added explicit single- and multi-line versions of JSON and table steps.
+
+### Added
+- `$opinionatedModelName` converter converts a model name to singular, camel-cased form and ensures it exists in Mirage (throws otherwise).
+- `$opionionatedJSONObject` converter is the same as `$opinionatedJSON`, but the regex limits it to objects, so that it can be distinguished from `$opinionatedTable`.
+- The `$opionionatedJSON` and `$opinionatedJSONObject` converters now throw a more meaningful error when JSON parsing fails.
+
+
+
 ## [1.0.0-beta.1] - 2020-01-14
 
 ### Fixed

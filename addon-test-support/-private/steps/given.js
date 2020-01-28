@@ -1,104 +1,15 @@
 /* global server */
 
-import { assert }  from '@ember/debug';
-import { camelize, dasherize }  from '@ember/string';
-import { pluralize, singularize } from 'ember-inflector';
 import { REGEX_COMMA_AND_SEPARATOR } from 'ember-cli-yadda-opinionated/test-support/-private/regex';
 import { overrideConfig } from 'ember-cli-yadda-opinionated/test-support/-private/config';
-import HasMany from 'ember-cli-mirage/orm/associations/has-many';
-import { REGEX_ID_AND_TYPE, REGEX_REL_NAME, STR_STRING_WITH_ESCAPE as opinonatedString } from '../regex';
+import { STR_STRING_WITH_ESCAPE as opinonatedString } from '../regex';
 
-function findRelationship(server, type, relationshipName) {
-  try {
-    const Model = server.schema.modelClassFor(type);
-    return Model.associationFor(relationshipName);
-  } catch (e) {
-    return null;
-  } // eslint-disable-line no-empty
-}
 
-function findRelatedRecord(server, idRaw, relatedTypeFromRelationship) {
-  const result = REGEX_ID_AND_TYPE.exec(idRaw);
-
-  if (!result || !result[1]) {
-    throw new Error(`Invalid id: ${idRaw}`);
-  }
-
-  const [, id, typeFromId] = result;
-
-  const relatedType = typeFromId || relatedTypeFromRelationship;
-
-  const relatedTypePlural = pluralize(camelize(relatedType));
-  const relatedCollection = server.schema[relatedTypePlural];
-
-  if (!relatedCollection) {
-    throw new Error(`Collection ${relatedTypePlural} does not exist in Mirage Schema`);
-  }
-
-  const relatedRecord = relatedCollection.find(id);
-
-  if (!relatedRecord) {
-    throw new Error(`Record of type ${relatedType} with id ${id} not found in Mirage Schema`);
-  }
-
-  return relatedRecord;
-}
-
-function findRelatedRecords(server, type, relationshipName, idOrIdsRaw) {
-  idOrIdsRaw = idOrIdsRaw.trim();
-
-  let result;
-  let relationship;
-  let relatedType;
-
-  if (REGEX_REL_NAME.test(relationshipName)) {
-    const result = REGEX_REL_NAME.exec(relationshipName);
-
-    if (!result) {
-      throw new Error(`Regex parse error for realtionship name '${relationshipName}'`);
-    }
-
-    relationshipName = result[1];
-    relationship = findRelationship(server, type, relationshipName);
-    assert(`No such relationship "${relationshipName}" on Mirage model ${type}`, relationship);
-    relatedType = dasherize(result[2]);
-  } else {
-    relationship = findRelationship(server, type, relationshipName);
-    assert(`No such relationship "${relationshipName} on Mirage model ${type}`, relationship);
-    relatedType = relationship.modelName;
-  }
-
-  // HasMany
-  if (relationship instanceof HasMany) {
-    result =
-      idOrIdsRaw
-        .split(REGEX_COMMA_AND_SEPARATOR)
-        .filter(str => str.length)
-        .map(idRaw => findRelatedRecord(server, idRaw, relatedType));
-  }
-
-  // BelongsTo non-empty
-  else if (idOrIdsRaw.length) {
-    result = findRelatedRecord(server, idOrIdsRaw, relatedType);
-  }
-
-  // BelongsTo empty
-  else {
-    result = null;
-  }
-
-  return [result, relationshipName];
-}
 
 const steps = {
 
-  [`Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type $opinionatedString(?: with)?(?: traits? ${opinonatedString})?(?: and)?(?: propert(?:y|ies) ({.+?}))?`](countRaw = "1", typeRaw, traitsRaw = "", propertiesRaw = "{}") {
+  [`Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type $opinionatedModelName(?: with)?(?: traits? ${opinonatedString})?(?: and)?(?: propert(?:y|ies) ({.+?}))?`](countRaw = "1", type, traitsRaw = "", propertiesRaw = "{}") {
     const count = parseInt(countRaw, 10);
-    const type = singularize(dasherize(typeRaw));
-    const typePlural = pluralize(camelize(typeRaw));
-
-    assert(`Collection ${typePlural} does not exist in Mirage`, server.db[typePlural]);
-
     const traits = traitsRaw.split(REGEX_COMMA_AND_SEPARATOR).filter(str => str.length);
     let properties;
 
@@ -108,43 +19,52 @@ const steps = {
       throw new Error(`Invalid JSON passed as "properties"`);
     }
 
-    properties = Object.entries(properties).reduce((result, [key, value]) => {
+    server.createList(type, count, ...traits, properties);
+  },
+
+  [`Given there(?: is a|'s a| are|'re) (?:(\\d+) )?records? of type $opinionatedModelName with(?: traits? ${opinonatedString})?(?: and)? the following properties:\n$opinionatedJSONObject`](countRaw = "1", type, traitsRaw = "", properties) {
+    const count = parseInt(countRaw, 10);
+    const traits = traitsRaw.split(REGEX_COMMA_AND_SEPARATOR).filter(str => str.length);
+    server.createList(type, count, ...traits, properties);
+  },
+
+  "Given there is a record of type $opinionatedModelName with the following properties:\n$opinionatedTable"(type, rows) {
+    let traits = [];
+
+    const properties = rows.reduce((result, {key, value}) => {
       key = key.trim();
+      value = value.trim();
 
-      if (value.trim) {
-        value = value.trim()
+      // Traits
+      if (key === 'trait' || key === 'traits') {
+        traits = value.split(REGEX_COMMA_AND_SEPARATOR).filter(str => str.length)
       }
 
-      // Relationship
-        if (REGEX_REL_NAME.test(key) || findRelationship(server, type, key)) {
-        [value, key] = findRelatedRecords(server, type, key, value);
+      // Empty cell
+      else if (value.length === 0) {
+        value = null;
       }
 
-      // Booleans, Arrays, Objects and Null
-      else if (/^{.+}$/.test(value) || /^\[.+]$/.test(value) || value === "true" || value === "false" || value === "null") {
-        try {
-          value = JSON.parse(value)
-        } catch (e) {
-          throw new Error(`Invalid JSON passed as "${key}"`);
-        }
-      }
-
+      // Numbers, Strings, Booleans, Arrays and Objects
       else {
-        throw new Error(`Unexpected value passed as ${key}: \`${value}\``);
+        try {
+          value = JSON.parse(value);
+        } catch (e) {
+          throw new Error(`Invalid JSON passed as "${key}":\n${value}`);
+        }
       }
 
       result[key] = value;
       return result;
-    }, {});
+    });
 
-    server.createList(type, count, ...traits, properties);
+    delete properties.trait;
+    delete properties.traits;
+
+    server.create(type, ...traits, properties);
   },
 
-  "Given there are records of type $opinionatedString with the following properties:\n$opinionatedTable"(typeRaw, rows) {
-    const type = dasherize(typeRaw);
-    const typePlural = pluralize(camelize(typeRaw));
-
-    assert(`Collection ${typePlural} does not exist in Mirage`, server.db[typePlural]);
+  "Given there are records of type $opinionatedModelName with the following properties:\n$opinionatedTable"(type, rows) {
     rows.forEach(row => {
       let traits = [];
 
@@ -152,13 +72,8 @@ const steps = {
         key = key.trim();
         value = value.trim();
 
-        // Relationship
-        if (REGEX_REL_NAME.test(key) || findRelationship(server, type, key)) {
-          [value, key] = findRelatedRecords(server, type, key, value);
-        }
-
         // Traits
-        else if (key === 'trait' || key === 'traits') {
+        if (key === 'trait' || key === 'traits') {
           traits = value.split(REGEX_COMMA_AND_SEPARATOR).filter(str => str.length)
         }
 
