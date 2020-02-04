@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.0.0-beta.4] - 2020-02-04
+
+### Added
+- Added a When step for keypresses.
+
+
+
 ## [1.0.0-beta.3] - 2020-01-28
 
 ### Added

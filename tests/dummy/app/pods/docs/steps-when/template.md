@@ -82,6 +82,27 @@ If the referenced element is not fillable, a fillable element will be looked up 
 
 
 
+## Keypress
+
+Triggers a `keydown`, `keypress` or `keyup` event on the element.
+
+Will crash if no elements or more than one element matched.
+
+**Signature**: `When I (press|press down|release) the $opinionatedString key in $opinionatedElement`.
+
+**Examples**:
+
+    # keydown
+    When I press down the "Tab" key in the Username-Input
+
+    # keypress
+    When I press the "Tab" key in the Username-Input
+
+    # keyup
+    When I release the "Tab" key in the Username-Input
+
+
+
 ## Mouse enter
 
 Triggers the `mouseenter` event on the element.

@@ -1,4 +1,4 @@
-import { blur, click, doubleClick, fillIn, focus, settled, triggerEvent, visit } from '@ember/test-helpers';
+import { blur, click, doubleClick, fillIn, focus, settled, triggerEvent, visit, triggerKeyEvent } from '@ember/test-helpers';
 import { assert }  from '@ember/debug';
 import { findEditable, findInputForLabelWithText } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
 
@@ -89,7 +89,51 @@ const steps = {
     assert(`Expected input ${de ? '' : 'not '}to be selected`, de ? input.checked : !input.checked);
 
     return click(input);
-  }
+  },
+
+  "When I (press|press down|release) the $opinionatedString key in $opinionatedElement"(eventRaw, key, [collection/* , label, selector */]) {
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
+
+    const events = {
+      press: 'keypress',
+      'press down': 'keydown',
+      release: 'keyup',
+    };
+
+    const event = events[eventRaw];
+
+    const keys = key.split('+');
+
+    const {modifiers, remainingKeys} = keys.reduce(({modifiers, remainingKeys}, key) => {
+      if (key.toLowerCase() === 'ctrl') {
+        modifiers.ctrlKey = true;
+      }
+      else if (key.toLowerCase() === 'alt') {
+        modifiers.ctrlKey = true;
+      }
+      else if (key.toLowerCase() === 'shift') {
+        modifiers.shiftKey = true;
+      }
+      else if (key.toLowerCase() === 'meta') {
+        modifiers.ctrlKey = true;
+      }
+      else {
+        remainingKeys.push(key);
+      }
+
+      return {modifiers, remainingKeys};
+    }, {modifiers: {}, remainingKeys: []});
+
+    if (remainingKeys.length > 1) {
+      throw new Error(`Can press only one non-modifier key at once, but tried to press ${remainingKeys.join('+')}`);
+    }
+
+    if (remainingKeys.length === 0) {
+      throw new Error('A non-modifier key is required to press.');
+    }
+
+    triggerKeyEvent(collection[0], event, remainingKeys[0], modifiers);
+  },
 
 };
 
