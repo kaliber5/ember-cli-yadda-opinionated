@@ -14,5 +14,3 @@ setLabel('Bootstrap-Textarea',   'textarea.form-control');
 These labels will be automatically converted to selectors.
 
 You should consider scoping those selectors with a library's unique HTML class, if available.
-
-⚠ Note: unlike normal labels, mapped labels are case-sensitive. `BootstrapTextarea` will not match `Bootstrap-Textarea` from the example above.
