@@ -380,8 +380,9 @@ Allows escaping double quotes.
 **Example**:
 
 ```
-Given local storage key "my-app-config" is set to "foo"
-Given local storage key "my-app-config" is set to "{\\"id\\": \\"foo\\"}"
+Then local storage value for "my-app-config" should be equal to "foo"
+Then local storage value for "my-app-config" should not be equal to "foo"
+Then local storage value for "my-app-config" should NOT be equal to "foo"
 ```
 
 

@@ -219,7 +219,7 @@ const steps = {
       : expect(input.checked).to.be.true;
   },
 
-  "Then local storage value for $opinionatedString should (not |NOT )be equal to $opinionatedString"(key, not, expectedValue) {
+  "Then local storage value for $opinionatedString should (not |NOT )?be equal to $opinionatedString"(key, not, expectedValue) {
     const actualValue = window.localStorage.getItem(key);
 
     not
@@ -228,7 +228,7 @@ const steps = {
   },
 
   "Then local storage value for $opinionatedString should (not |NOT )be equal to the following value:\n$opinionatedText":
-    "Then local storage value for $opinionatedString should (not |NOT )be equal to $opinionatedString",
+    "Then local storage value for $opinionatedString should (not |NOT )?be equal to $opinionatedString",
 
   "Then local storage value for $opinionatedString should (not |NOT )be deeply equal to the following JSON:\n$opinionatedJSON"(key, not, expectedJSON) {
     const actualJSON = JSON.parse(window.localStorage.getItem(key));
