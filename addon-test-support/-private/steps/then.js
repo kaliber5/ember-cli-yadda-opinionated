@@ -223,8 +223,8 @@ const steps = {
     const actualValue = window.localStorage.getItem(key);
 
     not
-      ? expect(actualValue).not.to.be.equal.to(expectedValue)
-      : expect(actualValue).to.be.equal.to(expectedValue);
+      ? expect(actualValue).not.to.equal(expectedValue)
+      : expect(actualValue).to.equal(expectedValue);
   },
 
   "Then local storage value for $opinionatedString should (not |NOT )be equal to the following value:\n$opinionatedText":
@@ -234,8 +234,8 @@ const steps = {
     const actualJSON = JSON.parse(window.localStorage.getItem(key));
 
     not
-      ? expect(actualJSON).not.to.deep.equal.to(expectedJSON)
-      : expect(actualJSON).to.deep.equal.to(expectedJSON);
+      ? expect(actualJSON).not.to.deep.equal(expectedJSON)
+      : expect(actualJSON).to.deep.equal(expectedJSON);
   },
 
   "Then local storage value for $opinionatedString should (not |NOT )be a subset of the following JSON:\n$opinionatedJSON"(key, not, superset) {

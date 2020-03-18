@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.0.0-beta.6] - 2020-03-18
+
+### Fixed
+- Fixed chai `equal` assertions.
+
+
+
 ## [1.0.0-beta.5] - 2020-03-18
 
 ### Fixed

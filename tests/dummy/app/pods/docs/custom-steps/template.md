@@ -111,7 +111,7 @@ This addon lets you organize your steps grouped into files by function, rather t
     'Then record of type $recordNamePlural and id (.+?) should have the following body:\n$text'(recordNamePlural, id, expectedBody) {
       const actualBody = server[recordNamePlural].find(id).body;
   
-      expect(actualBody).to.be.equal.to(expectedBody);
+      expect(actualBody).to.equal(expectedBody);
     },
     ```
 
