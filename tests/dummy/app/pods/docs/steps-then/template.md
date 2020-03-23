@@ -222,6 +222,27 @@ Then the Error-Message should NOT have the following text:
 
 
 
+## Element text (regex match)
+
+Checks if given element's trimmed text matches a given regex.
+
+Will crash if no elements or more than one element matched.
+
+If an element is an input or a textarea, its `value` attribute will be checked instead. It will not be trimmed.
+
+**Signature**: `Then $opinionatedElement should (not|NOT)? ?(?:match|have text matching) /(.*)/`.
+
+**Example**:
+
+```feature
+Then the Error-Message should match /^Something went wrong!$/
+Then the Error-Message should have text matching /^Something went wrong!$/
+Then the Error-Message should have text matching /went/
+Then the Error-Message should have text matching /no/need/to/escape/forward/slashes/
+```
+
+
+
 ## Element value
 
 Checks if given element's value is equal to the given text.

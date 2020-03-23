@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.0.0-beta.7] - 2020-03-23
+
+### Added
+- Then step to assert HTML element text/value matching a regex.
+
+
+
 ## [1.0.0-beta.6] - 2020-03-18
 
 ### Fixed
