@@ -87,6 +87,7 @@ Given there is a record of type "Post" with traits published and commented and t
       {"id": "graham", "type": "bot"}
     ]
   }
+  ---
 ```
 
 
