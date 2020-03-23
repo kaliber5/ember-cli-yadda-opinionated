@@ -104,6 +104,24 @@ const steps = {
     }
   },
 
+  "Then $opinionatedElement should (not|NOT)? ?(?:match|have text matching) /(.*)/"([collection/* , label, selector */], not, regexString) {
+    if (not && !collection.length) {
+      return;
+    }
+
+    assert(`Expected a single element, but ${collection.length} found`, collection.length === 1);
+
+    const regex = new RegExp(regexString);
+    const [element] = collection;
+
+    const text =
+      element.matches("input, textarea")
+        ? element.value
+        : element.textContent.trim();
+
+    expect(regex.test(text)).true;
+  },
+
   "Then $opinionatedElement should (not|NOT)? ?have the following text:\n$opinionatedText"() {
     return steps["Then $opinionatedElement should (not|NOT)? ?(?:have text|say|be) \"(.*)\""](...arguments);
   },
