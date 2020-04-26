@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0-beta.8] - 2020-03-26
 
 ### Added
-- Collapsed text steps.
+- Collapsed whitespace text steps.
 
 
 
