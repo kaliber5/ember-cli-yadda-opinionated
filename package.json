@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-yadda-opinionated",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0-beta.8",
   "description": "A radical take on Cucumber to solve your test maintenance woes.",
   "keywords": [
     "ember-addon",
