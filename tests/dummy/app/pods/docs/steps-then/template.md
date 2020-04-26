@@ -82,7 +82,7 @@ Then current URL's pathname should be /products?expand=true
 
 Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/master/API.md#fillIn) contains or does not contain the specified query param.
 
-**Signature**: `Then current URL should (not|NOT)? ?have query param $opinionatedString`.
+**Signature**: `Then current URL should (not |NOT )?have query param $opinionatedString`.
 
 **Example**:
 
@@ -99,7 +99,7 @@ Checks the [`currentURL()`](https://github.com/emberjs/ember-test-helpers/blob/m
 
 Note: produces positive result when a query param is not present and the step is used with `NOT`.
 
-**Signature**: `Then current URL should (not|NOT)? ?have query param $opinionatedString with value $opinionatedString`.
+**Signature**: `Then current URL should (not |NOT )?have query param $opinionatedString with value $opinionatedString`.
 
 **Example**:
 
@@ -148,7 +148,7 @@ If `NOT` is provided, the number is set to `0`.
 
 Signatures:
 
-* `Then (?:(\\d+) )?$opinionatedElement should (not|NOT)? ?be visible`
+* `Then (?:(\\d+) )?$opinionatedElement should (not |NOT )?be visible`
 * `Then I should see (NO |no )?(?:(\\d+) )?$opinionatedElementke`
 
 **Example**:
@@ -202,7 +202,7 @@ Will crash if no elements or more than one element matched.
 
 If an element is an input or a textarea, its `value` attribute will be checked instead. It will not be trimmed. 
 
-**Signature**: `Then $opinionatedElement should (not|NOT)? ?have the following text:\n$opinionatedText`.
+**Signature**: `Then $opinionatedElement should (not |NOT )?have the following text:\n$opinionatedText`.
 
 **Example**:
 
@@ -210,13 +210,13 @@ If an element is an input or a textarea, its `value` attribute will be checked i
 Then the Error-Message should have the following text:
   ------------
   System Error
-  Networ down
+  Network down
   ------------
 
 Then the Error-Message should NOT have the following text:
   ------------
   System Error
-  Networ down
+  Network down
   ------------
 ```
 
@@ -230,7 +230,7 @@ Will crash if no elements or more than one element matched.
 
 If an element is an input or a textarea, its `value` attribute will be checked instead. It will not be trimmed.
 
-**Signature**: `Then $opinionatedElement should (not|NOT)? ?(?:match|have text matching) /(.*)/`.
+**Signature**: `Then $opinionatedElement should (not |NOT )?(?:match|have text matching) /(.*)/`.
 
 **Example**:
 
@@ -243,6 +243,61 @@ Then the Error-Message should have text matching /no/need/to/escape/forward/slas
 
 
 
+### Element text (with collapsed whitespace)
+
+Checks if given element's text is or is not equal to the given text.
+
+Will crash if no elements or more than one element matched.
+
+Element text is trimmed, and its whitespace is collapsed: all cosequetive instnaces of spaces, linebreaks and tabs are replaced with single space.
+
+This is useful to test elements containing mutliple HTML elements such as `<p>`.
+
+Note that the expected text is not collapsed or trimmed.
+
+**Signature**: `Then $opinionatedElement should (not |NOT )?have the following text with collapsed whitespace: $opinionatedString`.
+
+**Example**:
+
+```feature
+Then the Error-Message should have text with collapsed whitespace "Something went wrong!"
+Then the Error-Message should NOT have text with collapsed whitespace "Something went wrong!"
+```
+
+
+
+### Element text (with collapsed whitespace)
+
+Checks if given element's text is or is not equal to the given text.
+
+Will crash if no elements or more than one element matched.
+
+Element text is trimmed, and its whitespace is collapsed: all cosequetive instnaces of spaces, linebreaks and tabs are replaced with single space.
+
+This is useful to test elements containing mutliple HTML elements such as `<p>`.
+
+Note that the expected text is also collapsed and trimmed. Thus, it is equivalent to the previous step, but lets you break the text into multiple lines in order to improve the readability of the feature file.
+
+**Signature**: `Then $opinionatedElement should (not |NOT )?have the following text with collapsed whitespace:\n$opinionatedText`.
+
+**Example**:
+
+```feature
+Then the Error-Message should have the following text with collapsed whitespace:
+  ------------
+  System Error
+  Network down
+  ------------
+
+Then the Error-Message should NOT have the following text with collapsed whitespace:
+  ------------
+  System Error
+  Network down
+  ------------
+```
+
+
+
 ## Element value
 
 Checks if given element's value is equal to the given text.
@@ -251,7 +306,7 @@ Will crash if no elements or more than one element matched, except when NOT is p
 
 If the referenced element is not editable, then an editable element will be looked up inside the referenced element. Exactly one input/textarea/select is expected to be found inside the given element.
 
-**Signature**: `Then $opinionatedElement should (not|NOT)? ?have value \"(.*)\"`.
+**Signature**: `Then $opinionatedElement should (not |NOT )?have value \"(.*)\"`.
 
 **Example**:
 
@@ -270,7 +325,7 @@ The referenced element can be either an input or contain exactly one input.
 
 Will crash if no elements or more than one element matched, except when NOT is passed.
 
-**Signature**: `Then (?:the )?(?:radio button|checkbox) $opinionatedElement should (not|NOT)? ?be selected`
+**Signature**: `Then (?:the )?(?:radio button|checkbox) $opinionatedElement should (not |NOT )?be selected`
 
 Expamples:
 
@@ -301,7 +356,7 @@ Will crash if no elements or more than one element matched, except when NOT is p
 
 Will crash if more than one input exists inside the label.
 
-**Signature**: `Then (?:the )?(?:radio button|checkbox) $opinionatedString should (not|NOT)? ?be selected in $opinionatedElement`
+**Signature**: `Then (?:the )?(?:radio button|checkbox) $opinionatedString should (not |NOT )?be selected in $opinionatedElement`
 
 Expamples:
 
@@ -324,7 +379,7 @@ Checks if given element has given HTML class.
 
 Will crash if no elements or more than one element matched, except when NOT is passed.
 
-**Signature**: `Then $opinionatedElement should have (not|NOT)? ?HTML class \"(.*)\"`.
+**Signature**: `Then $opinionatedElement should have (not |NOT )?HTML class \"(.*)\"`.
 
 **Example**:
 
@@ -343,7 +398,7 @@ Will crash if no elements or more than one element matched, except when NOT is p
 
 **Signature**:
 
-    `Then $opinionatedElement should (not|NOT)? ?have HTML attr $opinionatedString(?: with value ${opinonatedString})?`
+    `Then $opinionatedElement should (not |NOT )?have HTML attr $opinionatedString(?: with value ${opinonatedString})?`
 
 **Example**:
 
@@ -364,7 +419,7 @@ Will crash if no elements or more than one element matched, except when NOT is p
 
 **Signature**:
 
-    Then $opinionatedElement should (not|NOT)? ?have CSS property $opinionatedString with value $opinonatedString
+    Then $opinionatedElement should (not |NOT )?have CSS property $opinionatedString with value $opinonatedString
 
 **Example**:
 
