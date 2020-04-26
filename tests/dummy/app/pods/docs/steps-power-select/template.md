@@ -72,7 +72,7 @@ Will crash if no elements or more than one element matched the power select.
 
 If the referenced element is not a power select, a power select will be looked up inside the referenced element.
 
-**Signature**: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (not|NOT)? ?(?:have text|say|be) \"(.*)\"`.
+**Signature**: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?item in the dropdown $opinionatedElement should (not |NOT )?(?:have text|say|be) \"(.*)\"`.
 
 **Example**:
 
@@ -183,7 +183,7 @@ Will crash if the number provided is larger than the number of selected items.
 
 If the referenced element is not a power select, a power select will be looked up inside the referenced element.
 
-**Signature**: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item in the dropdown $opinionatedElement should (not|NOT)? ?be disabled`.
+**Signature**: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item in the dropdown $opinionatedElement should (not |NOT )?be disabled`.
 
 **Example**:
 
@@ -206,7 +206,7 @@ Will crash if the number provided is larger than the number of selected items ha
 
 If the referenced element is not a power select, a power select will be looked up inside the referenced element.
 
-**Signature**: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item \"(.+)\" in the dropdown $opinionatedElement should (not|NOT)? ?be disabled`.
+**Signature**: `Then (?:(?:a|an|the) )?(?:(\\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?selected item \"(.+)\" in the dropdown $opinionatedElement should (not |NOT )?be disabled`.
 
 **Example**:
 
