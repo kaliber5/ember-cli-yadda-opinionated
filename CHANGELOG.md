@@ -6,7 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [1.0.0-beta.8] - 2020-03-26
+## [1.0.0-beta.9] - 2020-05-03
+
+### Fixed
+- ⚠ Fixed the footprint of the Mirage record attribute Then step, in now uses JSON.
+
+
+
+## [1.0.0-beta.8] - 2020-04-26
 
 ### Added
 - Collapsed whitespace text steps.

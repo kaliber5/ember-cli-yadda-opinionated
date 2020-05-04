@@ -212,19 +212,11 @@ const steps = {
       : expect(actualValue).equal(expectedValue);
   },
 
-  "Then record of type $opinionatedString and id $opinionatedString should have attribute $opinionatedString with value $opinionatedString"(typeRaw, idStr, key, valueRaw) {
+  "Then record of type $opinionatedString and id $opinionatedString should have attribute $opinionatedString with value $opinionatedJSON"(typeRaw, idStr, key, value) {
     const typePlural = pluralize(camelize(typeRaw));
 
     const collection = server.db[typePlural];
     assert(`Collection ${typeRaw} does not exist in Mirage DB`, collection);
-
-    const value = (() => {
-      try {
-        return JSON.parse(valueRaw);
-      } catch (e) {
-        throw new Error("Invalid JSON passed as value");
-      }
-    })();
 
     const record = collection.find(idStr);
     assert(`Record of type ${typeRaw} with id ${idStr} not found in Mirage DB`, record);
