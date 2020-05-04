@@ -435,7 +435,7 @@ Checks if given attr of a record of given type and id has given value.
 
 Value is expected to be JSON (including string, number and `null`).
 
-**Signature**: `Then record of type $opinionatedString and id $opinionatedString should have attribute $opinionatedString with value $opinionatedString`.
+**Signature**: `Then record of type $opinionatedString and id $opinionatedString should have attribute $opinionatedString with value $opinionatedJSON`.
 
 **Example**:
 
