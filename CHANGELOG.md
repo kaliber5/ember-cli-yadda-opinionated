@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.0.0-beta.10] - 2020-05-07
+
+### Added
+- Added Then step for asserting HTML attr with value (not) matcing a regex.
+
+
+
 ## [1.0.0-beta.9] - 2020-05-03
 
 ### Fixed

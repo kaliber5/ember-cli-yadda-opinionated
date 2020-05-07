@@ -411,6 +411,25 @@ Then the second Menu-Item should NOT have HTML attr "href" with value "/products
 
 
 
+## Element HTML attr (regex match)
+
+Checks if given element has given HTML attr. Optionally checks the attr to match given value.
+
+Will crash if no elements or more than one element matched, except when NOT is passed.
+
+**Signature**:
+
+    `Then $opinionatedElement should (not |NOT )?have HTML attr $opinionatedString with value matching ${opinonatedString}`
+
+**Example**:
+
+```feature
+Then the second Menu-Item should have HTML attr "href" with value matching /^foo/
+Then the second Menu-Item should NOT have HTML attr "href" with value /^\d+$/
+```
+
+
+
 ## Element CSS property value
 
 Checks if given element has (or does not have) a CSS property with a given value (non-computed).

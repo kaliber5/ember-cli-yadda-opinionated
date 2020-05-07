@@ -198,6 +198,27 @@ const steps = {
       : expect(collection[0]).to.have.attr(attrName, attrValue);
   },
 
+  [`Then $opinionatedElement should (not |NOT )?have HTML attr $opinionatedString with value matching /(.*)/`]([collection/* , label, selector */], not, attrName, regexString) {
+    if (not && !collection.length) {
+      return;
+    }
+
+    assert(`Expected a single element, but ${collection.length} found.`, collection.length === 1);
+
+    const regex = new RegExp(regexString);
+    const [element] = collection;
+
+    const text = element.getAttribute(attrName);
+
+    if (not && text == null) {
+      return;
+    }
+
+    not
+      ? expect(regex.test(text)).false
+      : expect(regex.test(text)).true;
+  },
+
   "Then $opinionatedElement should (not |NOT )?have CSS property $opinionatedString with value $opinionatedString"([collection/* , label, selector */], not, propName, expectedValue) {
     if (not && !collection.length) {
       return;
