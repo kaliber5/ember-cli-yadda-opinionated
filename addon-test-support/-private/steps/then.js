@@ -257,7 +257,7 @@ const steps = {
     if (element.type === 'checkbox' || element.type === 'radio') {
       input = element;
     } else {
-      const inputs = element.querySelectorAll('input[type="text"], input[type="checkbox"]');
+      const inputs = element.querySelectorAll('input[type="radio"], input[type="checkbox"]');
       assert(`Expected one checkbox/radio, but ${inputs.length} found`, inputs.length === 1);
       [input] = inputs;
     }
