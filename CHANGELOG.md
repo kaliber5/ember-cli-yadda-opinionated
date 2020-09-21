@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [1.0.0-beta.10] - 2020-05-07
+## [1.0.0-beta.11] - 2020-09-21
+
+### Added
+- Properly singularize label naems. This *should* be non-breaking.
 
 ### Fixed
 - Fix radio button checked state step.

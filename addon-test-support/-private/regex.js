@@ -1,11 +1,11 @@
 
 
-export const REGEX_ITEM_MATCHING = /^(?:(a|an|the) )?(?:(\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?([\w-+]+?)(?:s\b|\b)?(?:\((.+?)\))?$/i;
+export const REGEX_ITEM_MATCHING = /^(?:(a|an|the) )?(?:(\d+)(?:st|nd|rd|th) |(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?([\w-+]+?)(?:\((.+?)\))?$/i;
 export const STR_SEPARATOR = ' (?:of|on|in|inside|under|from) ';
 export const REGEX_SEPARATOR = new RegExp(STR_SEPARATOR);
 export const REGEX_SELECTOR_WITH_EQ = /(.+?(?::eq\(\d+\)))/;
 export const REGEX_SELECTOR_MAYBE_WITH_EQ = /(.+?)(?::eq\((\d+)\)$|$)/;
-export const STR_ITEM_NON_MATCHING = `(?:(?:a|an|the) )?(?:\\d+(?:st|nd|rd|th) |(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?[\\w-+]+s?(?:\\(.+?\\))?`;
+export const STR_ITEM_NON_MATCHING = `(?:(?:a|an|the) )?(?:\\d+(?:st|nd|rd|th) |(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) )?[\\w-+]+(?:\\(.+?\\))?`;
 
 export function generateLabelRegexString(depth = 5) {
   let result = STR_ITEM_NON_MATCHING;

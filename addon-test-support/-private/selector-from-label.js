@@ -1,5 +1,6 @@
 import { assert } from '@ember/debug';
 import { dasherize }  from '@ember/string';
+import { singularize } from 'ember-inflector';
 
 import {
   REGEX_ITEM_MATCHING,
@@ -30,8 +31,9 @@ export default function selectorFromLabel(label) {
           subAttr
             .split('+')
             .map((attr) => {
+              const attrSinglular = singularize(attr);
               const value = valueRaw ? `="${valueRaw}"` : '';
-              return `[data-test-${attr}${value}]`;
+              return `[data-test-${attrSinglular}${value}]`;
             })
             .join('');
       }
