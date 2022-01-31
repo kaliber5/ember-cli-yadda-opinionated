@@ -1,18 +1,12 @@
 import { assert }  from '@ember/debug';
 import { click } from '@ember/test-helpers';
-import requireModule from 'ember-require-module';
+import { calendarSelect } from 'ember-power-calendar/test-support';
 
 import {
   powerDatePickerFindTrigger,
   powerDatePickerFindDropdown,
   POWER_DATE_PICKER_DROPDOWN_SELECTOR
 } from 'ember-cli-yadda-opinionated/test-support/-private/dom-helpers';
-
-
-const powerCalendarTestSupport = requireModule('ember-power-calendar/test-support');
-assert('ember-power-calendar is required!', powerCalendarTestSupport);
-const { calendarSelect } = powerCalendarTestSupport;
-
 
 const steps = {
 
