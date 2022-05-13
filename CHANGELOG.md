@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.0.0-beta.13] - 2022-05-13
+
+### Fixed
+- Fix ember-power-select dropdown discovery.
+
+
+
+## [1.0.0-beta.12] - 2022-01-31
+
+### Changed
+- Upgrade ember-power-select to v5.
+
+
+
 ## [1.0.0-beta.11] - 2020-09-21
 
 ### Added
