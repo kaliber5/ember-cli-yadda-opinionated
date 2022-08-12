@@ -64,20 +64,21 @@ const steps = {
   },
 
   "Then (?:(\\d+) )?$opinionatedElement should (not |NOT )?be visible"(countRaw, [collection/* , label, selector */], no) {
-    assert(`Don't use NOT and number at the same time`, !(no && countRaw));
-
-    let count =
-      no       ? 0                      :
+    const count =
       countRaw ? parseInt(countRaw, 10) :
                  1;
-
-    let m = `Element count`;
-    expect(collection, m).to.have.length(count);
-
-    collection.forEach((element, i) => {
-      m = `Element #${i} (zero-indexed) visibility`;
-      expect(isVisible(element), m).to.be.true;
-    });
+    const countVisible = collection.filter(element => isVisible(element)).length;
+    if (no) {
+      if (countRaw !== undefined) {
+        // check exact match of invisible elements
+        expect(collection.length - countVisible, 'Invisible element count').to.equal(count);
+      } else {
+        // check no element is visible
+        expect(countVisible, 'Visible element count').to.equal(0);
+      }
+    } else {
+      expect(countVisible, 'Visible element count').to.equal(count);
+    }
   },
 
   "Then I should see (NO |no )?(?:(\\d+) )?$opinionatedElement"(no, countRaw, [collection, label, selector]) {
