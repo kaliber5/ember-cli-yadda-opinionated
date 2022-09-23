@@ -200,8 +200,22 @@ const POWER_SEELCT_MULTIPLE_OPTION_SELECTOR = '.ember-power-select-multiple-opti
 const POWER_SEELCT_MULTIPLE_OPTION_DISABLED_CLASS = 'ember-power-select-multiple-option--disabled';
 const POWER_SELECT_MULTIPLE_OPTION_REMOVE_BUTTON_SELECTOR = '.ember-power-select-multiple-remove-btn';
 
-const powerSelectDropdownIdForTrigger = (trigger) => trigger.attributes['aria-controls'] && `${trigger.attributes['aria-controls'].value}` || trigger.attributes['aria-owns'] && `${trigger.attributes['aria-owns'].value}`;
-
+function powerSelectDropdownIdForTrigger(trigger) {
+  const dropdownId =
+    (trigger.attributes['aria-controls'] &&
+      `${trigger.attributes['aria-controls'].value}`) ||
+    (trigger.attributes['aria-owns'] &&
+      `${trigger.attributes['aria-owns'].value}`);
+  if (!dropdownId || dropdownId === '') {
+    // fallback if ID is not in aria-controls or aria-own, e.g. when @searchEnabled is set
+    // see https://github.com/kaliber5/ember-cli-yadda-opinionated/issues/63
+    return `ember-power-select-options-${trigger.dataset.ebdId?.replace(
+      '-trigger',
+      ''
+    )}`;
+  }
+  return dropdownId;
+}
 
 
 export function powerSelectFindTrigger(elementOrSelector) {
